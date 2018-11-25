@@ -1,0 +1,494 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<!-- Mobile Specific Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- Custom Fonts -->
+		<link rel="stylesheet" href="custom-font/fonts.css" />
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="css/font-awesome.min.css" />
+		<!-- Bootsnav -->
+		<link rel="stylesheet" href="css/bootsnav.css">
+		<!-- Fancybox -->
+		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />	
+		<!-- Custom stylesheet -->
+		<link rel="stylesheet" href="css/custom.css" />
+		<!-- AngularJS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	</head>
+	<body>
+
+		<!-- Preloader -->
+
+		<div id="loading">
+			<div id="loading-center">
+				<div id="loading-center-absolute">
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+				</div>
+			</div>
+		</div>
+
+		<!--End off Preloader -->
+
+		<!-- Header -->
+		<header>
+			<!-- Navbar -->
+			<nav class="navbar bootsnav">
+				<div class="container">
+					<!-- Header Navigation -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+							<i class="fa fa-bars"></i>
+						</button>
+						<a class="navbar-brand" href=""><img class="logo" src="images/logo.png" alt=""></a>
+					</div>
+					<!-- Navigation -->
+					<div class="collapse navbar-collapse" id="navbar-menu">
+						<ul class="nav navbar-nav menu">
+							<li><a href="">Trang chủ</a></li>                    
+							<li><a href="#new">Mới</a></li>
+							<li><a href="#popular">Phổ biến</a></li>
+							<li><a href="login.html">Đăng nhập</a></li>
+							<li><a href="register.html">Đăng ký</a></li>
+						</ul>
+					</div>
+				</div>   
+			</nav><!-- Navbar end -->
+		</header><!-- Header end -->
+
+
+		<section id="home" class="home">
+			<!-- Carousel -->
+			<div id="carousel" class="carousel slide" data-ride="carousel">
+				<!-- Carousel-inner -->
+				<div class="carousel-inner" role="listbox">
+					<div class="item active">
+						<img src="images/food.jpg">
+						<div class="overlay" ng-app="myApp" ng-controller="myCtrl" ng-init="show='false'">
+							<form>
+								<div class="inner-form">
+									<div class="input-field first-wrap">
+										<input id="search" type="text" placeholder="Quán ăn / món ăn / địa chỉ" />
+										<i class="fa fa-sliders" style="margin-top: 3px" ng-click="switchShow()"></i>
+								  	</div>
+								  	<div class="input-field third-wrap">
+										<button class="btn know_btn" type="button">Tìm</button>
+								 	</div>
+								</div>
+							</form>
+							<!-- Advanced Search Bar -->
+							<div class="advance-search unselectable" ng-init="type='area'" ng-hide="show!='true'">
+								<div class="sf-left">
+									<ul class="sf-cate">
+										<li ng-click="changeType('area')">
+											<i class="fa fa-location-arrow"></i>
+											<label style="margin-bottom: 0px; margin-left: 3px;">Khu vực</label>
+											<i class="fa fa-angle-right" style="float: right"></i>
+										</li>
+										<li ng-click="changeType('price')">
+											<i class="fa fa-bars"></i>
+											<label style="margin-bottom: 0px; margin-left: 3px;">Mức giá</label>
+											<i class="fa fa-angle-right" style="float: right"></i>
+										</li>
+										<li ng-click="changeType('category')">
+											<i class="fa fa-cutlery"></i>
+											<label style="margin-bottom: 0px; margin-left: 3px;	">Phân loại</label>
+											<i class="fa fa-angle-right" style="float: right"></i>
+										</li>
+									</ul>
+								</div>
+								<script>
+									var app = angular.module('myApp', []);
+									app.controller('myCtrl', function($scope) {
+										$scope.Districts = [{
+											Name: "Quận Đống Đa"
+											}, {
+											Name: "Quận Hoàn Kiếm"
+											}, {
+											Name: "Quận Ba Đình"
+											}, {
+											Name: "Quận Tây Hồ"
+											}, {
+											Name: "Quận Thanh Xuân"
+											}, {
+											Name: "Quận Hai Bà Trưng"
+											}, {
+											Name: "Quận Cầu Giấy"
+											}, {
+											Name: "Quận Hoàng Mai"
+											}, {
+											Name: "Quận Long Biên"
+											}, {
+											Name: "Quận Hà Đông"
+											}, {
+											Name: "Quận Nam Từ Liêm"
+											}, {
+											Name: "Quận Bắc Từ Liêm" 
+										}];
+										$scope.Prices = [{
+											Name: "< 10.000"
+											}, {
+											Name: "10.000 - 50.000"
+											}, {
+											Name: "50.000 - 100.000"
+											}, {
+											Name: "100.000 - 200.000"
+											}, {
+											Name: "200.000 - 500.000"
+											}, {
+											Name: "> 500.000" 
+										}];
+										$scope.Cates = [{
+											Name: "Ăn vặt - Vỉa hè"
+											}, {
+											Name: "Café - Dessert"
+											}, {
+											Name: "Nhà hàng"
+											}, {
+											Name: "Bar - Pub" 
+										}];
+									    $scope.changeType = function($type) {
+									        $scope.type = $type;
+									    };
+									    $scope.switchShow = function() {
+									        if ($scope.show == 'true') {
+									            $scope.show = 'false';
+									        } else {
+									            $scope.show = 'true';
+									        }
+									    };
+									    $scope.clearFilter = function() {
+									    	angular.forEach($scope.Districts, function(district) {
+									        district.Selected = false;
+									        });
+									        angular.forEach($scope.Prices, function(price) {
+									        price.Selected = false;
+									        });
+									        angular.forEach($scope.Cates, function(cate) {
+									        cate.Selected = false;
+									        });
+									    };
+									});
+								</script>
+								<div class="sf-right">
+									<div class="sf-result" ng-hide="type!='area'">
+										<ul>
+											<li ng-repeat="district in Districts">
+												<label class="checkbox-container" style="font-family: arial">{{district.Name}}
+													<input type="checkbox" ng-model="district.Selected">
+					  								<span class="checkmark"></span>
+												</label>
+											</li>	
+										</ul>
+									</div>
+									<div class="sf-result" ng-hide="type!='price'">
+										<ul>
+											<li ng-repeat="price in Prices">
+												<label class="checkbox-container" style="font-family: arial">{{price.Name}}
+													<input type="checkbox" ng-model="price.Selected">
+					  								<span class="checkmark"></span>
+												</label>
+											</li>
+										</ul>
+									</div>
+									<div class="sf-result" ng-hide="type!='category'">
+										<ul>
+											<li ng-repeat="cate in Cates">
+												<label class="checkbox-container" style="font-family: arial">{{cate.Name}}
+													<input type="checkbox" ng-model="cate.Selected">
+					  								<span class="checkmark"></span>
+												</label>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="sf-bottom">
+									<div class="sf-btns">
+										<a class="fd-btn" href="#" style="text-decoration:none;">Tìm kiếm</a>
+										<a class="fd-btn" href="#" style="text-decoration:none;" ng-click="clearFilter()">Xóa bộ lọc</a>
+									</div>
+								</div>
+							</div>
+							<!-- Advanced Search Bar end -->
+							<div class="carousel-caption">
+								<h3>Hedspi Food Review</h3>
+								<h1>Đánh giá đồ ăn</h1>
+								<h1 class="second_heading">Creative & Professional</h1>
+								<a href="#" class="btn know_btn">Viết review</a>
+							</div>					
+						</div>
+					</div>        
+				</div><!-- Carousel-inner end -->
+			</div><!-- Carousel end-->
+		</section>
+
+		<!-- New review -->
+		<section id="new">
+			<div class="container">
+				<div class="button__header">
+					<h2 class="styled-heading">REVIEW GẦN ĐÂY</h2>
+					<a class="btn-view__more" href="#">Xem tất cả</a>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="service_item">
+							<img src="temp/1.jpg"/>
+							<h3>Mỳ vằn thắn hủ tíu</h3>
+							<p>Lâu lắm rồi mới được ăn bát Mỳ Vằn Thắn hợp khẩu vị của mình đến như vậy.
+							Bát mỳ đầy đặn dặn nhiều thịt , thịt xá xíu và sủi cảo tẩm ướp vừa miệng , há cảo to giòn tan , gan nếp ăn rất bùi, nước dùng trong vắt ngon ngọt đậm vị xương và tôm chắc là ko có mỳ chính vì mình nuốt nước bọt cũng ko thấy lợ cổ
+							<br>+ Quán sạch sẽ đèn đuốc sáng choang , ông chú chủ quán hiền lành siêu vui tính , trà đá miễn phí 
+							<br>- Điểm trừ ko có tôm tươi và bóng bì ,quán hơi bé </p>
+							<a href="#" class="btn know_btn">xem thêm</a>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="service_item">
+							<img src="temp/2.jpg"/>
+							<h3>Gà rán</h3>
+							<p>Quán gà ngon nhất mình từng ăn
+							2 món là 480k ạaaa
+
+							Vị trí hơi khó tìm. Các cậu đi đến the manor tìm quán KFC, đi thêm 1 tẹo thì mới thấy quán này
+
+							Quán bình thường, tầng 1 khá mùi, tầng 2 thì ok. Quán hơn bình dân 1 xíu thôi. Đông khách lắm, nên ồn cực không gian chỉ là có chỗ để ngồi ăn thôi, ko xấu ko đẹp
+
+							Mình gọi 1/2 gà mật ong và má đùi sốt bbq. Gà mật ong k phải sốt như các quán khác, mà là dạng bột. Ăn ngon cực. Giòn giòn, ngọt ngọt, mặn mặn, thơm thơm 
+							Món này ngon nhất Hà Nội luôn ấy ngon lắm luônnnnnnnnnn
+
+							Đùi sốt bbq thì k có xương, vị ổn. Vì gà kia át vị mất rồi, ngon quá, nên t thấy má đùi cũng ngon nhưng k bằng mật ong
+
+							Nước lọc free, củ cải muối và salad free. Củ cải muối ăn vs gà vào cực
+
+							Ở đây k có dao đâu các cậu ạ. Ng ta đưa cho 2 cái dĩa ko hiểu lắm
+							Nên mình phải xin găng tay cầm ăn cho tiện
+
+							Nhân viên ngoan lắm
+
+							Tớ thấy bàn bên cạnh gọi tokbokki to như cái nồi lẩu nhìn hấp dẫn cực. Nhưng to quá, phải 4 người mới hết ý
+
+							Khen: đồ ngon, gà ko mềm oặt như gà công nghiệp.
+							Sốt chấm ngonnnnnn
+							Nhân viên xinh gái đẹp trai và nhiệt tình dù quán đông
+
+							Chê: Gà mật ong tầm 5p là có, còn bbq thì 20p đợi rõ lâu
+							Có mỗi salad vs củ cải-bắp cải muối
+							Quán ko đẹp
+							Giấy dùng giấy toilet rồi rút và xé
+
+							Chấm 9,5 nhé️ ngon lắm</p>
+							<a href="#" class="btn know_btn">xem thêm</a>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="service_item">
+							<img src="temp/3.jpg"/>
+							<h3>Bánh trôi tàu</h3>
+							<p>Hà Nội ngày trở rét, lại thèm một bát bánh trôi tàu nóng hổi. Năm ngoái nhà bác Bằng mở lại mà chưa có dịp ăn thử, được dịp lại lật đật lên phố. Ở đây bán 3 loại : bánh trôi tàu, chí má phù với lục tàu xá. Một bát có 2 bánh, một nhân dừa và một nhân mè đen. Cảm quan thì mình vẫn thích nhân mè hơn, ăn bùi bùi thơm thơm. Bánh mềm, nước dùng thơm mùi gừng và cũng bị ngọt quá. Ăn xong bát này vừa ấm bụng mà vừa ấm người. Chắc chắn sẽ quay lại để thử tiếp 2 món còn lại</p>
+							<a href="#" class="btn know_btn">xem thêm</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- New review end -->
+
+		<!-- Popular review -->
+		<section id="popular">
+			<div class="container">
+				<div class="button__header">
+					<h2 class="styled-heading">REVIEW PHỔ BIẾN</h2>
+					<a class="btn-view__more" href="#">Xem tất cả</a>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="service_item">
+							<img src="temp/4.jpg"/>
+							<h3>Quán chay</h3>
+							<p>Vừa ăn chay vừa từ thiện: 
+							quán chay này mở ra theo chương trình “ Gieo Yêu Thương”, chương trình là 1 chuỗi những dự án thiện nguyện dành cho những mảnh đời kém may. 
+							Quán nhỏ, không được trang trí cầu kỳ như những quán chay khác nhưng khi bước chân vào quán tự dưng trong tâm trí mình phải dặn lòng là không được gây mất trật tự 🙂 
+							<br>Ở đây có cơm gieo duyên chỉ 10k ( dạng cơm phần chọn món ý ạ), cơm gạo lức 15k với đầy đủ các món ăn kèm như: chả nấm, chả đậu hũ đồ chay ở đây ăn khá thanh, không bị dầu mỡ.
+							Hôm nay e thử: gỏi hoa chuối được trộn rất vừa ăn chua ngọt đủ vị, rau chuối dai giòn không hề bị chát khi ăn. Món ngó sen chiên phải nói cực ngon, giòn ngọt đồ chiên nhưng rất ráo dầu ăn đến miếng cuối cùng mà lớp bột bao ở ngoài vẫn giòn. Món mọi ng nên thử là chả nấm: ăn rất ấn tượng, ăn 1 lại muốn ăn 2 ngoài ra mọi ng có thể thử bún thái chay. Tất cả các món ăn mình thử qua ở đây đều nấu rất vừa miệng, rất thanh không bị dầu mỡ và rất dễ ăn không khác gì đồ mặn nhưng lại không nấu kiểu giả mặn đâu.
+							<br>Khi đến đây ăn xong mọi người tự dọn dẹp mang ra sau nhà vì ở đây chỉ có duy nhất 1 cô vừa nấu ăn vừa phục vụ đón khách. Cô tất bật nhưng vẫn luôn niềm nở với khách và rất ân cần hỏi thăm khách. Ăn xong mọi ng có thể trả tiền bằng cách cho vào 1 cái hòm để ở quầy bày đồ ăn, bạn có thể trả bằng hoặc dư tuỳ tâm bạn. 
+							Địa chỉ: 8 Châu Long</p>
+							<a href="#" class="btn know_btn">xem thêm</a>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="service_item">
+							<img src="temp/5.jpg"/>
+							<h3>Bún ốc</h3>
+							<p>Tự nghĩ tại sao lại không biết sớm hơn vì nó đúng chuẩn ngon rẻ luôn 😍 quán bán bún ốc, giò, cá siêu ngon mà chỉ 15k một bát ăn siêu no , bác ý kể bán được 20 năm r , bán rẻ thế thôi vì sinh viên làm gì có nhiều tiền , thanh toán đi về r vẫn còn thấy thích , quán ở cạnh quán phở kcc 112 b4 tôn thất tùng , đối diện nhà thuốc số 4 đại học y hà nội đến thử có khi quên lối về luôn </p>
+							<a href="#" class="btn know_btn">xem thêm</a>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="service_item">
+							<img src="temp/6.jpg"/>
+							<h3>King Dakgalbi</h3>
+							<p>Đọc review trên foody có người khen có người chê nhưng nhìn cái ảnh bạn nào đó up trên face hấp dẫn, đang chạm đến cơn thèm đồ Hàn nên mình bất chấp đến ăn. Mình đặt qua foody để được giảm 5 - 10% nhưng bảo là 20/11 quán đông khách nên không nhận. Mình lại gọi thẳng cho quán hẹn 18h30 cũng bảo khách đông nên đến 18h. Ok. Vừa đi làm về là phi lên luôn để dành bàn. Nhưng hỡi ôi, có khách đâu, lèo tèo dã man. Mình ngồi đến gần 9h tối đúng có 2 nhóm (2 bạn nữ + một nhóm 3 bạn và 1 bạn mua đồ về, còn lại 2 anh Deliver now đến mua). Cảm giác bị lừa í :(
+							<br>Mình gọi 1 suất gà 250 (6 cánh, 4 đùi), 1 mì tương đen, 1 cơm rang kim chi, 3 nước gạo hết 470k. Đồ hơi nguội, không ngon. Nhà hàng nhìn cứ tối tối, ẩm ẩm, lúc ăn có 1 con ruồi cứ loanh quanh, híc. Bên dưới là cái ảnh đã khiến mình lầm lỡ ạ.</p>
+							<a href="#" class="btn know_btn">xem thêm</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- Popular review end -->
+
+		<!-- start blog Area -->		
+		<section id="quick">
+			<div class="container">
+				<h2 class="styled-heading">TÌM KIẾM NHANH</h2>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="service_item">
+							<a href="#">
+								<div class ="container">
+									<img class="img-fluid image" src="images/anvat.jpg"/>
+									<div class="overlay">
+										<div class="text">Ăn vặt / Vỉa hè</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="service_item">
+							<a href="#">
+								<div class ="container2">
+									<img class="img-fluid image2" src="images/cake.jpg"/>
+									<div class="overlay2">
+										<div class="text">Café / Dessert</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="service_item">
+							<a href="#">
+								<div class ="container3">
+									<img class="img-fluid image3" src="images/pub.jpg"/>
+									<div class="overlay3">
+										<div class="text">Bar / Pub</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="service_item">
+							<a href="#">
+								<div class ="container4">
+									<img class="img-fluid image4" src="images/restaurant.jpg"/>
+									<div class="overlay4">
+										<div class="text">Nhà hàng</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end blog Area -->	
+
+		<!-- Footer -->
+		<footer>
+			<!-- Footer top -->
+			<div class="container footer_top">
+				<div class="row">
+					<div class="col-lg-4 col-sm-7">
+						<div class="footer_item">
+							<h4>About Company</h4>
+							<img class="logo" src="images/logo.png" alt="Construction" />
+							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem</p>
+
+							<ul class="list-inline footer_social_icon">
+								<li><a href=""><span class="fa fa-facebook"></span></a></li>
+								<li><a href=""><span class="fa fa-twitter"></span></a></li>
+								<li><a href=""><span class="fa fa-youtube"></span></a></li>
+								<li><a href=""><span class="fa fa-google-plus"></span></a></li>
+								<li><a href=""><span class="fa fa-linkedin"></span></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-2 col-sm-5">
+						<div class="footer_item">
+							<h4>Explore link</h4>
+							<ul class="list-unstyled footer_menu">
+								<li><a href=""><span class="fa fa-play"></span> Our services</a>
+								<li><a href=""><span class="fa fa-play"></span> Meet our team</a>
+								<li><a href=""><span class="fa fa-play"></span> Forum</a>
+								<li><a href=""><span class="fa fa-play"></span> Help center</a>
+								<li><a href=""><span class="fa fa-play"></span> Contact Cekas</a>
+								<li><a href=""><span class="fa fa-play"></span> Privacy Policy</a>
+								<li><a href=""><span class="fa fa-play"></span> Cekas terms</a>
+								<li><a href=""><span class="fa fa-play"></span> Site map</a>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-7">
+						<div class="footer_item">
+							<h4>Latest post</h4>
+							<ul class="list-unstyled post">
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-5">
+						<div class="footer_item">
+							<h4>Contact us</h4>
+							<ul class="list-unstyled footer_contact">
+								<li><a href=""><span class="fa fa-map-marker"></span> 124 New Line, London UK</a></li>
+								<li><a href=""><span class="fa fa-envelope"></span> hello@psdfreebies.com</a></li>
+								<li><a href=""><span class="fa fa-mobile"></span><p>+44 00 00 1234 <br />+44 00 00 1234</p></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div><!-- Footer top end -->
+
+			<!-- Footer bottom -->
+			<div class="footer_bottom text-center">
+				<p class="wow fadeInRight">
+					Made with 
+					<i class="fa fa-heart"></i>
+					by 
+					<a target="_blank" href="http://bootstrapthemes.co">Bootstrap Themes</a> 
+					2016. All Rights Reserved
+				</p>
+			</div><!-- Footer bottom end -->
+		</footer><!-- Footer end -->
+
+		<!-- JavaScript -->
+		<script src="js/jquery-1.12.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+
+		<!-- Bootsnav js -->
+		<script src="js/bootsnav.js"></script>
+
+		<!-- JS Implementing Plugins -->
+		<script src="js/isotope.js"></script>
+		<script src="js/isotope-active.js"></script>
+		<script src="js/jquery.fancybox.js?v=2.1.5"></script>
+
+		<script src="js/jquery.scrollUp.min.js"></script>
+
+		<script src="js/main.js"></script>
+	</body>	
+</html>	
