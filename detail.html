@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<!-- Mobile Specific Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- Custom Fonts -->
+		<link rel="stylesheet" href="custom-font/fonts.css" />
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="css/font-awesome.min.css" />
+		<!-- Bootsnav -->
+		<link rel="stylesheet" href="css/bootsnav.css">
+		<!-- Fancybox -->
+		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />	
+		<!-- Custom stylesheet -->
+		<link rel="stylesheet" href="css/listing-detail.css" />
+		<!-- AngularJS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<!-- Simple line Icon -->
+	    <link rel="stylesheet" href="css/simple-line-icons.css">
+	    <!-- Themify Icon -->
+	    <link rel="stylesheet" href="css/themify-icons.css">
+	    <!-- Swipper Slider -->
+	    <link rel="stylesheet" href="css/swiper.min.css">
+	    <!-- Magnific Popup CSS -->
+	    <link rel="stylesheet" href="css/magnific-popup.css">
+	</head>
+	<body>
+
+		<!-- Preloader -->
+
+		<div id="loading">
+			<div id="loading-center">
+				<div id="loading-center-absolute">
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+				</div>
+			</div>
+		</div>
+
+		<!--End off Preloader -->
+
+		<!-- Header -->
+		<header>
+			<!-- Navbar -->
+			<nav class="navbar bootsnav">
+				<div class="container">
+					<!-- Header Navigation -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+							<i class="fa fa-bars"></i>
+						</button>
+						<a class="navbar-brand" href=""><img class="logo" src="temp/logo.png" alt=""></a>
+					</div>
+					<!-- Navigation -->
+					<div class="collapse navbar-collapse" id="navbar-menu">
+						<ul class="nav navbar-nav menu">
+							<li><a href="index.html">Trang chủ</a></li>                    
+							<li><a href="login.html">Đăng nhập</a></li>
+							<li><a href="register.html">Đăng ký</a></li>
+						</ul>
+					</div>
+				</div>   
+			</nav><!-- Navbar end -->
+		</header><!-- Header end -->
+
+		<!-- Swiper -->
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+
+                <div class="swiper-slide">
+                    <a href="temp/reserve-slide2.jpg" class="grid image-link">
+                        <img src="temp/reserve-slide2.jpg" class="img-fluid" alt="#">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="temp/reserve-slide1.jpg" class="grid image-link">
+                        <img src="temp/reserve-slide1.jpg" class="img-fluid" alt="#">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="temp/reserve-slide3.jpg" class="grid image-link">
+                        <img src="temp/reserve-slide3.jpg" class="img-fluid" alt="#">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="temp/reserve-slide1.jpg" class="grid image-link">
+                        <img src="temp/reserve-slide1.jpg" class="img-fluid" alt="#">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="temp/reserve-slide2.jpg" class="grid image-link">
+                        <img src="temp/reserve-slide2.jpg" class="img-fluid" alt="#">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="temp/reserve-slide3.jpg" class="grid image-link">
+                        <img src="temp/reserve-slide3.jpg" class="img-fluid" alt="#">
+                    </a>
+                </div>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination swiper-pagination-white"></div>
+            <!-- Add Arrows -->
+            <div class="swiper-button-next swiper-button-white"></div>
+            <div class="swiper-button-prev swiper-button-white"></div>
+        </div>
+
+        <!--============================= RATE A REVIEW =============================-->
+	    <section class="store-block">
+	        <div class="container">
+	            <div class="row">
+	                <div class="col-md-6">
+	                    <h5 name="store_name">Bếp thái Sawadee - 35 Hòa mã</h5>
+	                    <p><span>$$$</span>$$</p> <!-- Based on price range -->
+	                    <p class="store-description" style="display: block;">
+	                    	<span class="store-description-type" name="store_type">Ăn vặt / Vỉa hè</span>
+	                    	
+	                    	<span class="store-description" style="display: inline-block; color: #b2b8c3">
+	                    		<span name="no_upvotes" style="color: #b2b8c3">34</span> người thấy review này hữu ích 
+	                    		<span style="display: inline-block; color: #b2b8c3; margin: 0 10px 0">•</span>
+	                    		<span name="no_downvotes" style="color: #b2b8c3">16</span> người thấy review này không hữu ích
+	                    	</span>
+	                    </p>
+	                </div>
+	                <div class="col-md-6">
+	                    <div class="store-seat-block">
+	                        <div class="store-rating">
+	                            <span>9.5</span>
+	                        </div>
+	                        <div class="upvote-btn">
+	                            <div class="featured-btn-wrap">
+	                                <button class="btn know_btn" name="upvote" style="font-size: 14px">UPVOTE</button>
+	                            </div>
+	                        </div>
+	                        <div class="downvote-btn">
+	                            <button class="btn btn-outline-danger" name="downvote" style="font-size: 14px">DOWNVOTE</button>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    <!--//END RATE A REVIEW -->
+	    
+	    <!--============================= REVIEW DETAILS =============================-->
+	    <section class="light-bg review-details_wrap">
+	        <div class="container">
+	            <div class="row">
+	                <div class="col-md-8 responsive-wrap">
+	                    <div class="review-checkbox_wrap">
+	                        <div class="review-checkbox" name="review_detail">
+	                            <p>Hôm qua mình vừa được bạn cho đi ăn lẩu ở đây. Ấn tượng ban đầu là nhân viên rất thân thiện nhiệt tình. Quán sạch sẽ, phục vụ nhanh.</p>
+								<p>Mình đi 2 người gọi 2 suất buffet 99k với 2 loại nước lẩu là lẩu thái tôm chua và sườn chua. Theo ý kiến của mj thì lẩu thái ngon hơn k bị quá cay mà vẫn thơm và đậm vị. Sườn chua thì hơi nhạt k rõ chua hay mặn gì cả. Gọi 2 loại nc dùng nhưng chỉ thấy mùi lẩu thái thôi.Thêm 59k sẽ được thêm buffet thịt bò cao cấp. Thịt bò ít mỡ, k bị đóng đá. Chúng mình thêm 19k ăn nấm thả ga có 3 loại nấm nhưng mình cũng rõ là nấm gì. Chỉ biết mỗi nấm kim châm thôi. </p>
+	                            <p>Điểm trừ ở quán là mục HẢI SẢN : thêm tiền bạn sẽ đc thêm buffet hải sản ( mk k nhóe rõ là bn) hải sản k được tươi. Tôm nấu lên k đc đỏ còn long cả đầu ra. Thanh cua thì bị đóng đá thành từng tảng luôn. 
+								Nước chấm ở đây k có gì đặc sắc. Nếu bạn thích ăn thịt bò thì đây sẽ nơi thích hợp, nhưng mình là team cuồng hải sản nên chắc sẽ k đến nữa. </p>
+	                            <hr>
+	                        </div>
+	                        <div class="row">
+	                            <div class="col-md-4">
+	                                <label class="custom-checkbox">
+					                    <span class="ti-check-box"></span>
+					                    <span class="custom-control-description" name="store_menu">Lẩu thái tôm chua </span>
+			                      	</label>
+				                    <label class="custom-checkbox">
+					                    <span class="fa fa-tag minmaxpriceicon"></span>
+					                    <span class="custom-control-description" name="store_menu_price">99.000đ </span>
+				                    </label> 
+	                 			</div>
+
+	                            <div class="col-md-4">
+	                                <label class="custom-checkbox">
+				                     	<span class="ti-check-box"></span>
+				                     	<span class="custom-control-description" name="store_menu">Buffet hải sản  </span>
+				                  	</label> 
+	                               	<label class="custom-checkbox">
+					                    <span class="fa fa-tag minmaxpriceicon"></span>
+					                    <span class="custom-control-description" name="store_menu_price">159.000đ</span>
+	                 				</label>
+	                            </div>
+	                            <div class="col-md-4">
+	                                <label class="custom-checkbox">
+					                   <span class="ti-check-box"></span>
+					                   <span class="custom-control-description" name="store_menu">Buffet thịt bò</span>
+					                </label>
+	                                <label class="custom-checkbox">
+					                  <span class="fa fa-tag minmaxpriceicon"></span>
+					                  <span class="custom-control-description" name="store_menu_price">159.000đ</span>
+					                </label>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <!-- Comment section -->
+	                    <div class="review-checkbox_wrap mt-4" style="margin-top: 1.5rem!important;">
+	                        <h5 name="no_comments">34 nhận xét</h5>
+	                        <hr>
+	                        <div class="customer-review_wrap">
+	                            <div class="customer-img">
+	                                <img src="temp/customer-img1.jpg" class="img-fluid" alt="#" name="user_avatar">
+	                                <p name="user_comment">Amanda G</p>
+	                            </div>
+	                            <div class="customer-content-wrap">
+	                                <div class="customer-content">
+	                                    <div class="customer-review">
+	                                        <h6 name="comment_title">Best noodles in the Newyork city</h6>
+	                                    </div>
+	                                </div>
+	                                <p class="customer-text" name="comment_detail">I love the noodles here but it is so rare that I get to come here. Tasty Hand-Pulled Noodles is the best type of whole in the wall restaurant. The staff are really nice, and you should be seated quickly. I usually get the
+	                                    hand pulled noodles in a soup. House Special #1 is amazing and the lamb noodles are also great. If you want your noodles a little chewier, get the knife cut noodles, which are also amazing. Their dumplings are great
+	                                    dipped in their chili sauce.
+	                                </p>
+	                            </div>
+	                        </div>
+	                        <hr>
+	                        <div class="customer-review_wrap">
+	                            <div class="customer-img">
+	                                <img src="temp/customer-img2.jpg" class="img-fluid" alt="#" name="user_avatar">
+	                                <p name="user_comment">Kevin W</p>
+	                            </div>
+	                            <div class="customer-content-wrap">
+	                                <div class="customer-content">
+	                                    <div class="customer-review">
+	                                        <h6 name="comment_title">A hole-in-the-wall old school shop.</h6>
+	                                    </div>
+	                                </div>
+	                                <p class="customer-text" name="comment_detail">The beef noodle soup was okay. I added black vinegar into the broth to give it some extra flavor. The soup has bok choy which I liked - it's a nice textural element. The shop itself is really unclean (which is the case in many restaurants in Chinatown) They don't wipe down the tables after customers have eaten. If you peak into the kitchen many of their supplies are on the ground which is unsettling... </p>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-md-4 responsive-wrap">
+	                    <div class="contact-info">
+	                        <div class="address">
+	                            <span class="icon-location-pin"></span>
+	                            <p name="store_address"> 35 Hòa Mã, Hai Bà Trưng, Hà Nội</p>
+	                        </div>
+	                        <div class="address">
+	                            <span class="fa fa-tag minmaxpriceicon"></span>
+	                            <p name="store_pricerange"> 100.000đ - 200.000đ</p>
+	                        </div>
+	                        <div class="address">
+	                            <span class="ti-time"></span>
+	                            <p style="margin-bottom: 16px" name="store_opening">09:30 am - 10:30 pm<br>
+	                                <span class="open-now" style="margin-top: 10px">OPEN NOW</span></p> <!-- Based on opening time -->
+	                        </div>
+	                    </div>
+	                    <div class="follow">
+	                        <div class="follow-img">
+	                            <img src="temp/follow-img.jpg" class="img-fluid" alt="#" name="writer-avatar">
+	                            <h6 name="writer-name">Christine Evans</h6>
+	                        </div>
+	                        <ul class="social-counts">
+	                            <li>
+	                                <h6 name="writer_no_reviews">26</h6>
+	                                <span>Reviews</span>
+	                            </li>
+	                            <li>
+	                                <h6 name="writer_no_upvotes">326</h6>
+	                                <span>Upvotes</span>
+	                            </li>
+	                            <li>
+	                                <h6 name="writer_no_downvotes">12</h6>
+	                                <span>Downvotes</span>
+	                            </li>
+	                        </ul>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    <!--//END REVIEW DETAILS -->
+
+		<!-- Footer -->
+		<footer>
+			<!-- Footer top -->
+			<div class="container footer_top">
+				<div class="row">
+					<div class="col-lg-4 col-sm-7">
+						<div class="footer_item">
+							<h4>About Company</h4>
+							<img class="logo" src="temp/logo.png" alt="Construction" />
+							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem</p>
+
+							<ul class="list-inline footer_social_icon">
+								<li><a href=""><span class="fa fa-facebook"></span></a></li>
+								<li><a href=""><span class="fa fa-twitter"></span></a></li>
+								<li><a href=""><span class="fa fa-youtube"></span></a></li>
+								<li><a href=""><span class="fa fa-google-plus"></span></a></li>
+								<li><a href=""><span class="fa fa-linkedin"></span></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-2 col-sm-5">
+						<div class="footer_item">
+							<h4>Explore link</h4>
+							<ul class="list-unstyled footer_menu">
+								<li><a href=""><span class="fa fa-play"></span> Our services</a>
+								<li><a href=""><span class="fa fa-play"></span> Meet our team</a>
+								<li><a href=""><span class="fa fa-play"></span> Forum</a>
+								<li><a href=""><span class="fa fa-play"></span> Help center</a>
+								<li><a href=""><span class="fa fa-play"></span> Contact Cekas</a>
+								<li><a href=""><span class="fa fa-play"></span> Privacy Policy</a>
+								<li><a href=""><span class="fa fa-play"></span> Cekas terms</a>
+								<li><a href=""><span class="fa fa-play"></span> Site map</a>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-7">
+						<div class="footer_item">
+							<h4>Latest post</h4>
+							<ul class="list-unstyled post">
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-5">
+						<div class="footer_item">
+							<h4>Contact us</h4>
+							<ul class="list-unstyled footer_contact">
+								<li><a href=""><span class="fa fa-map-marker"></span> 124 New Line, London UK</a></li>
+								<li><a href=""><span class="fa fa-envelope"></span> hello@psdfreebies.com</a></li>
+								<li><a href=""><span class="fa fa-mobile"></span><p>+44 00 00 1234 <br />+44 00 00 1234</p></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div><!-- Footer top end -->
+
+			<!-- Footer bottom -->
+			<div class="footer_bottom text-center">
+				<p class="wow fadeInRight">
+					Made with 
+					<i class="fa fa-heart"></i>
+					by 
+					<a target="_blank" href="http://bootstrapthemes.co">Bootstrap Themes</a> 
+					2016. All Rights Reserved
+				</p>
+			</div><!-- Footer bottom end -->
+		</footer><!-- Footer end -->
+
+		<!-- JavaScript -->
+		<script src="js/jquery-1.12.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/popper.min.js"></script>
+
+		<!-- Bootsnav js -->
+		<script src="js/bootsnav.js"></script>
+
+		<!-- JS Implementing Plugins -->
+		<script src="js/isotope.js"></script>
+		<script src="js/isotope-active.js"></script>
+		<script src="js/jquery.fancybox.js?v=2.1.5"></script>
+
+		<script src="js/jquery.scrollUp.min.js"></script>
+
+		<script src="js/main.js"></script>
+		<!-- Magnific popup JS -->
+	    <script src="js/jquery.magnific-popup.js"></script>
+	    <!-- Swipper Slider JS -->
+	    <script src="js/swiper.min.js"></script>
+	    <script>
+	        var swiper = new Swiper('.swiper-container', {
+	            slidesPerView: 3,
+	            slidesPerGroup: 3,
+	            loop: true,
+	            loopFillGroupWithBlank: true,
+	            pagination: {
+	                el: '.swiper-pagination',
+	                clickable: true,
+	            },
+	            navigation: {
+	                nextEl: '.swiper-button-next',
+	                prevEl: '.swiper-button-prev',
+	            },
+	        });
+	    </script>
+	    <script>
+	        if ($('.image-link').length) {
+	            $('.image-link').magnificPopup({
+	                type: 'image',
+	                gallery: {
+	                    enabled: true
+	                }
+	            });
+	        }
+	        if ($('.image-link2').length) {
+	            $('.image-link2').magnificPopup({
+	                type: 'image',
+	                gallery: {
+	                    enabled: true
+	                }
+	            });
+	        }
+	    </script>
+	</body>	
+</html>	

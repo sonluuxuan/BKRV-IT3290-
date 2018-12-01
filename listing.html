@@ -15,7 +15,7 @@
 		<!-- Fancybox -->
 		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />	
 		<!-- Custom stylesheet -->
-		<link rel="stylesheet" href="css/listing.css" />
+		<link rel="stylesheet" href="css/listing-detail.css" />
 		<!-- AngularJS -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 		<!-- Simple line Icon -->
@@ -61,7 +61,7 @@
 					<!-- Navigation -->
 					<div class="collapse navbar-collapse" id="navbar-menu">
 						<ul class="nav navbar-nav menu">
-							<li><a href="">Trang chủ</a></li>                    
+							<li><a href="index.html">Trang chủ</a></li>                    
 							<li><a href="login.html">Đăng nhập</a></li>
 							<li><a href="register.html">Đăng ký</a></li>
 						</ul>
@@ -86,7 +86,7 @@
 										<i class="fa fa-sliders" style="margin-top: 3px" ng-click="switchShow()"></i>
 								  	</div>
 								  	<div class="input-field third-wrap">
-										<button class="btn know_btn" type="button">Tìm</button>
+										<button class="btn know_btn" type="button" style="border-radius: 30px" onclick="window.location.href='listing.html'">Tìm</button>
 								 	</div>
 								</div>
 							</form>
@@ -236,37 +236,37 @@
 	            <div class="row justify-content-center">
 	                <div class="col-md-5">
 	                    <div class="styled-heading">
-	                        <h3>Featured Places</h3>
+	                        <h3>Kết quả tìm kiếm</h3>
 	                    </div>
 	                </div>
 	            </div>
-	            <div class="row">
+	            <div class="row"> <!-- add new row for new content -->
 	                <div class="col-md-4 featured-responsive">
 	                    <div class="featured-place-wrap">
 	                        <a href="detail.html">
 	                            <img src="temp/featured1.jpg" class="img-fluid" alt="#">
 	                            <span class="featured-rating-orange">6.5</span>
 	                            <div class="featured-title-box">
-	                                <h6>Burger & Lobster</h6>
-	                                <p>Restaurant </p> <span>• </span>
-	                                <p>3 Reviews</p> <span> • </span>
-	                                <p><span>$$$</span>$$</p>
+	                                <h6 name="store_name">Burger & Lobster</h6>
+	                                <p name="store_type">Ăn vặt / Vỉa hè </p> <span>• </span>
+	                                <p><span>$$$</span>$$</p> <!-- Based on price range -->
 	                                <ul>
-	                                    <li><span class="icon-location-pin"></span>
-	                                        <p>1301 Avenue, Brooklyn, NY 11230</p>
+	                                    <li><span class="ti-location-pin"></span>
+	                                        <p name="store_address">20 ngõ 24 Tạ Quang Bửu, Hai Bà Trưng</p>
 	                                    </li>
-	                                    <li><span class="icon-screen-smartphone"></span>
-	                                        <p>+44 20 7336 8898</p>
+	                                    <li><span class="fa fa-tag minmaxpriceicon"></span>
+	                                        <p name="store_pricerange">7.000đ - 20.000đ</p>
 	                                    </li>
-	                                    <li><span class="icon-link"></span>
-	                                        <p>https://burgerandlobster.com</p>
+	                                    <li><span class="ti-time"></span>
+	                                        <p name="store_opening">15:00 - 20:00</p>
 	                                    </li>
 
 	                                </ul>
 	                                <div class="bottom-icons">
-	                                    <div class="closed-now">CLOSED NOW</div>
-	                                    <span class="ti-heart"></span>
-	                                    <span class="ti-bookmark"></span>
+	                                    <div class="closed-now">CLOSED NOW</div> <!-- Based on opening hour -->
+	                                    <span class="ti-heart"><span class="upvote display-number" name="store_point">10</span></span> 
+	                                    <!-- Number of upvotes - number of downvotes -->
+	                                    <span class="ti-comments"><span class="comment display-number" name="no_comments">10</span></span>
 	                                </div>
 	                            </div>
 	                        </a>
@@ -279,25 +279,24 @@
 	                            <span class="featured-rating-green">9.5</span>
 	                            <div class="featured-title-box">
 	                                <h6>Joe’s Shanghai</h6>
-	                                <p>Restaurant </p> <span>• </span>
-	                                <p>3 Reviews</p> <span> • </span>
+	                                <p>Nhà hàng </p> <span>• </span>
 	                                <p><span>$$$</span>$$</p>
 	                                <ul>
-	                                    <li><span class="icon-location-pin"></span>
-	                                        <p>1301 Avenue, Brooklyn, NY 11230</p>
+	                                    <li><span class="ti-location-pin"></span>
+	                                        <p name="store_name">1301 Avenue, Brooklyn, NY 11230</p>
 	                                    </li>
-	                                    <li><span class="icon-screen-smartphone"></span>
-	                                        <p>+44 20 7336 8898</p>
+	                                    <li><span class="fa fa-tag minmaxpriceicon"></span>
+	                                        <p name="store_pricerange">7.000đ - 20.000đ</p>
 	                                    </li>
-	                                    <li><span class="icon-link"></span>
-	                                        <p>https://burgerandlobster.com</p>
+	                                    <li><span class="ti-time"></span>
+	                                        <p name="store_opening">15:00 - 20:00</p>
 	                                    </li>
 
 	                                </ul>
 	                                <div class="bottom-icons">
 	                                    <div class="closed-now">CLOSED NOW</div>
-	                                    <span class="ti-heart"></span>
-	                                    <span class="ti-bookmark"></span>
+	                                    <span class="ti-heart"><span class="upvote display-number" name="no_upvotes">10</span></span>
+	                                    <span class="ti-comments"><span class="comment display-number" name="no_comments">10</span></span>
 	                                </div>
 	                            </div>
 	                        </a>
@@ -310,25 +309,24 @@
 	                            <span class="featured-rating">3.2</span>
 	                            <div class="featured-title-box">
 	                                <h6>Tasty Hand-Pulled Noodles</h6>
-	                                <p>Restaurant </p> <span>• </span>
-	                                <p>3 Reviews</p> <span> • </span>
+	                                <p>Nhà hàng </p> <span>• </span>
 	                                <p><span>$$$</span>$$</p>
 	                                <ul>
-	                                    <li><span class="icon-location-pin"></span>
-	                                        <p>1301 Avenue, Brooklyn, NY 11230</p>
+	                                    <li><span class="ti-location-pin"></span>
+	                                        <p name="store_name">1301 Avenue, Brooklyn, NY 11230</p>
 	                                    </li>
-	                                    <li><span class="icon-screen-smartphone"></span>
-	                                        <p>+44 20 7336 8898</p>
+	                                    <li><span class="fa fa-tag minmaxpriceicon"></span>
+	                                        <p name="store_pricerange">7.000đ - 20.000đ</p>
 	                                    </li>
-	                                    <li><span class="icon-link"></span>
-	                                        <p>https://burgerandlobster.com</p>
+	                                    <li><span class="ti-time"></span>
+	                                        <p name="store_opening">15:00 - 20:00</p>
 	                                    </li>
 
 	                                </ul>
 	                                <div class="bottom-icons">
 	                                    <div class="open-now">OPEN NOW</div>
-	                                    <span class="ti-heart"></span>
-	                                    <span class="ti-bookmark"></span>
+	                                    <span class="ti-heart"><span class="upvote display-number" name="no_upvotes">10</span></span>
+	                                    <span class="ti-comments"><span class="comment display-number" name="no_comments">10</span></span>
 	                                </div>
 	                            </div>
 	                        </a>
@@ -338,7 +336,7 @@
 	            <div class="row justify-content-center">
 	                <div class="col-md-4">
 	                    <div class="featured-btn-wrap">
-	                        <a href="#" class="btn btn-danger">VIEW ALL</a>
+	                        <button class="btn know_btn" name="view_more">XEM THÊM</button> <!-- load 3 each time -->
 	                    </div>
 	                </div>
 	            </div>
