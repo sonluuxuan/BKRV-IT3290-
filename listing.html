@@ -113,7 +113,7 @@
 								</div>
 								<script>
 									var app = angular.module('myApp', []);
-									app.controller('myCtrl', function($scope) {
+									app.controller('myCtrl', function($scope, $http) {
 										$scope.Districts = [{
 											Name: "Quận Đống Đa"
 											}, {
@@ -182,6 +182,42 @@
 									        cate.Selected = false;
 									        });
 									    };
+									    $scope.selDistrict = 0;
+									    $scope.selPrice = 0;
+									    $scope.selCate = 0;
+									    $scope.sel = {};
+									    $scope.search = function() {
+									    	$scope.selDistrictArray = [];
+									    	angular.forEach($scope.Districts, function(district) {
+									    		if(district.Selected == true) {
+									    			$scope.selDistrict = $scope.selDistrict + 1;
+									    			$scope.selDistrictArray.push(district.Name);
+									    		}
+									    	});
+									    	$scope.selPriceArray = [];
+									    	angular.forEach($scope.Prices, function(price) {
+									    		if(price.Selected == true) {
+									    			$scope.selPrice = $scope.selPrice + 1;
+									    			$scope.selPriceArray.push(price.Name);
+									    		}
+									    	});
+									    	$scope.selCateArray = [];
+									    	angular.forEach($scope.Cates, function(cate) {
+									    		if(cate.Selected == true) {
+									    			$scope.selCate = $scope.selCate + 1;
+									    			$scope.selCateArray.push(cate.Name);
+									    		}
+									    	});
+									    	$scope.sel['no_districts'] = $scope.selDistrict;
+									    	$scope.sel['no_prices'] = $scope.selPrice;
+									    	$scope.sel['no_cates'] = $scope.selCate;
+									    	$scope.sel['selected_dist'] = $scope.selDistrictArray;
+									    	$scope.sel['selected_price'] = $scope.selPriceArray;
+									    	$scope.sel['selected_cate'] = $scope.selCateArray;
+									    	console.log($scope.sel);
+									    	// working //
+									    	window.location.href=('filtertest.php' + '?' + $.param($scope.sel)); //swap filtertest.php with listing.php //
+									    };
 									});
 								</script>
 								<div class="sf-right">
@@ -218,7 +254,7 @@
 								</div>
 								<div class="sf-bottom">
 									<div class="sf-btns">
-										<a class="fd-btn" href="#" style="text-decoration:none;">Tìm kiếm</a>
+										<a class="fd-btn" href="#" style="text-decoration:none;" ng-click="search()">Tìm kiếm</a>
 										<a class="fd-btn" href="#" style="text-decoration:none;" ng-click="clearFilter()">Xóa bộ lọc</a>
 									</div>
 								</div>

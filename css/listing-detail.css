@@ -70,23 +70,23 @@ a:hover,a:focus{ text-decoration: none}
 
 .object:nth-child(10){
     -webkit-animation-delay: 0.9s;
-    animation-delay: 0.9s;	
+    animation-delay: 0.9s;  
 }
 .object:nth-child(9){
     -webkit-animation-delay: 0.8s;
-    animation-delay: 0.8s;	
-}	
+    animation-delay: 0.8s;  
+} 
 .object:nth-child(8){
     -webkit-animation-delay: 0.7s;
-    animation-delay: 0.7s;	
+    animation-delay: 0.7s;  
 }
 .object:nth-child(7){
     -webkit-animation-delay: 0.6s;
-    animation-delay: 0.6s;	
+    animation-delay: 0.6s;  
 }
 .object:nth-child(6){
     -webkit-animation-delay: 0.5s;
-    animation-delay: 0.5s;	
+    animation-delay: 0.5s;  
 }
 .object:nth-child(5){
     -webkit-animation-delay: 0.4s;
@@ -94,16 +94,16 @@ a:hover,a:focus{ text-decoration: none}
 }
 .object:nth-child(4){
     -webkit-animation-delay: 0.3s;
-    animation-delay: 0.3s;		
+    animation-delay: 0.3s;    
 }
 .object:nth-child(3){
     -webkit-animation-delay: 0.2s;
-    animation-delay: 0.2s;	
+    animation-delay: 0.2s;  
 }
 .object:nth-child(2){
     -webkit-animation-delay: 0.1s;
     animation-delay: 0.1s;
-}						
+}           
 
 @-webkit-keyframes animate {
 
@@ -1031,15 +1031,18 @@ footer::after {
     font-size: 13px;
     margin-top: 3px; }
   .downvote-btn .btn-outline-danger {
-    color: #ff3a6d;
+    color: #fff;
+    background: #ff3a6d;
     border-color: #ff3a6d;
-    background: white;
     font-size: 16px;
     padding: 10px 20px;
     -webkit-transition: all 0.4s ease; }
     .downvote-btn .btn-outline-danger:hover {
-      color: #fff;
-      background: #ff3a6d; }
+      color: #ff3a6d;
+      background: white; }
+    .downvote-btn .btn-outline-danger:focus {
+      color: #ff3a6d;
+      background: white; }
 
 .upvote-btn {
   display: inline-block; }
@@ -1348,4 +1351,12 @@ footer::after {
 .img-fluid {
     max-width: 100%;
     height: auto;
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: auto;
+  max-height: 310px;
+  object-position: center;
+  object-fit: cover;
 }

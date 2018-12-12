@@ -236,7 +236,7 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
   height: 44px;
 }
 
-.overlay form .inner-form .input-field input {
+.overlay form .inner-form .input-field input:not(#ignored_element) {
   height: 100%;
   background: #fff;
   border-radius: .5px;
@@ -458,32 +458,13 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
   margin-right: -1em;
   padding-right: 1em;
 }
-/* create the ... */
-.service_item p:before {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of block */
-  right: 0;
-  bottom: 0;
+.service_item img {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-position: center;
+  object-fit: cover;
 }
-/* hide ... if we have text, which is less than or equal to max lines */
-.service_item p:after {
-  /* points in the end */
-  content: '';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of text */
-  right: 0;
-  /* set width and height */
-  width: 1em;
-  height: 1em;
-  margin-top: 0.2em;
-  /* bg color = bg color under block */
-  background: white;
-}
-
 
 /* Popular */
 #popular {

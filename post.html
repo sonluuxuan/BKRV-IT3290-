@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<!-- Mobile Specific Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- Custom Fonts -->
+		<link rel="stylesheet" href="custom-font/fonts.css" />
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="css/font-awesome.min.css" />
+		<!-- Bootsnav -->
+		<link rel="stylesheet" href="css/bootsnav.css">
+		<!-- Fancybox -->
+		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />	
+		<!-- Custom stylesheet -->
+		<link rel="stylesheet" href="css/listing-detail.css" />
+		<link rel="stylesheet" href="css/post.css"/>
+		<!-- AngularJS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<!-- Simple line Icon -->
+		<link rel="stylesheet" href="css/simple-line-icons.css">
+		<!-- Themify Icon -->
+		<link rel="stylesheet" href="css/themify-icons.css">
+		<!-- Swipper Slider -->
+		<link rel="stylesheet" href="css/swiper.min.css">
+		<!-- Magnific Popup CSS -->
+		<link rel="stylesheet" href="css/magnific-popup.css">
+		<script src="js/jquery-1.12.1.min.js"></script>
+		<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+		<script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+		<script src="http://malsup.github.com/jquery.form.js"></script> 
+	</head>
+	<body>
+
+		<!-- Preloader -->
+
+		<div id="loading">
+			<div id="loading-center">
+				<div id="loading-center-absolute">
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+				</div>
+			</div>
+		</div>
+
+		<!--End off Preloader -->
+
+		<!-- Header -->
+		<header>
+			<!-- Navbar -->
+			<nav class="navbar bootsnav">
+				<div class="container">
+					<!-- Header Navigation -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+							<i class="fa fa-bars"></i>
+						</button>
+						<a class="navbar-brand" href=""><img class="logo" src="temp/logo.png" alt=""></a>
+					</div>
+					<!-- Navigation -->
+					<div class="collapse navbar-collapse" id="navbar-menu">
+						<ul class="nav navbar-nav menu">
+							<li><a href="index.html">Trang chủ</a></li>                    
+							<li><a href="login.html">Đăng nhập</a></li>
+							<li><a href="register.html">Đăng ký</a></li>
+						</ul>
+					</div>
+				</div>   
+			</nav><!-- Navbar end -->
+		</header><!-- Header end -->
+
+		<section id="home" class="home">
+			<!-- Carousel -->
+			<div id="carousel" class="carousel slide" data-ride="carousel">
+				<!-- Carousel-inner -->
+				<div class="carousel-inner" role="listbox">
+					<div class="item active">
+						<img src="images/listing-food.jpg">
+						<div class="overlay">
+						</div>
+					</div>        
+				</div><!-- Carousel-inner end -->
+			</div><!-- Carousel end-->
+		</section>
+
+		<!--============================= DESCRIPTION =============================-->
+		<section class="store-block">
+			<div class="container">
+				<div class="row">
+						<h5 style="margin-bottom: 4px">Thêm review mới</h5>
+						<p class="store-description" style="display: block;">
+							<span class="store-description-type">Chia sẻ địa điểm của bạn với cộng đồng ngay!</span>
+						</p>
+				</div>
+			</div>
+		</section>
+		<!--//END DESCRIPTION -->
+		
+		<!--============================= REVIEW DETAILS =============================-->
+		<section class="light-bg review-details_wrap">
+			<div class="container">
+				<div class="review-checkbox_wrap" style="height: auto;">
+					<form ng-app="mealApp" ng-controller="mealController">
+						<div class="review-checkbox" name="basic_info" >
+							<span class="ti-check-box"></span>
+							<h6 style="display: inline-block;">Thông tin cơ bản</h6>
+							<hr>
+						</div>
+						<div class="info-content">
+							<div class="info-input">
+									<div class="item-label">Tên địa điểm:</div>
+									<div class="item-detail">
+										<input type="text" name="store_name" required/>
+									</div>
+							</div>
+							<div class="info-input">
+								<div class="item-label">Địa chỉ:</div>
+								<div class="item-detail">
+										<input type="text" name="store_location" required/>
+								</div>
+							</div>
+							<div class="info-input">
+									<div class="item-label">Loại hình:</div>
+									<div class="item-detail">
+										<select name="category"/>
+											<option value="1">Ăn vặt / Vỉa hè</option>
+											<option value="2">Café / Dessert</option>
+											<option value="3">Bar / Pub</option>
+											<option value="4">Nhà hàng</option>
+										</select>
+									</div>
+							</div>
+							<div class="info-input">
+								<div class="item-label">Khu vực:</div>
+								<div class="item-detail">
+									<select name="area"/>
+											<option value="1">Quận Đống Đa</option>
+											<option value="2">Quận Hoàn Kiếm</option>
+											<option value="3">Quận Ba Đình</option>
+											<option value="4">Quận Tây Hồ</option>
+											<option value="5">Quận Thanh Xuân</option>
+											<option value="6">Quận Hai Bà Trưng</option>
+											<option value="7">Quận Cầu Giấy</option>
+											<option value="8">Quận Hoàng Mai</option>
+											<option value="9">Quận Long Biên</option>
+											<option value="10">Quận Hà Đông</option>
+											<option value="11">Quận Nam Từ Liêm</option>
+											<option value="12">Quận Bắc Từ Liêm</option>
+									</select>
+								</div>
+							</div>
+							<div class="info-input">
+									<div class="item-label">Giờ mở cửa:</div>
+									<div class="item-detail">
+										<select id="opening_time-hour" name="hour_open"><option value="00">00</option>
+											<option value="01">01</option>
+											<option value="02">02</option>
+											<option value="03">03</option>
+											<option value="04">04</option>
+											<option value="05">05</option>
+											<option value="06">06</option>
+											<option value="07">07</option>
+											<option value="08">08</option>
+											<option value="09">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+										</select>
+										<select id="opening_time-minute" name="minute_open" style="margin-left: 10px"><option value="00">00</option>
+											<option value="01">01</option>
+											<option value="02">02</option>
+											<option value="03">03</option>
+											<option value="04">04</option>
+											<option value="05">05</option>
+											<option value="06">06</option>
+											<option value="07">07</option>
+											<option value="08">08</option>
+											<option value="09">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+											<option value="24">24</option>
+											<option value="25">25</option>
+											<option value="26">26</option>
+											<option value="27">27</option>
+											<option value="28">28</option>
+											<option value="29">29</option>
+											<option value="30">30</option>
+											<option value="31">31</option>
+											<option value="32">32</option>
+											<option value="33">33</option>
+											<option value="34">34</option>
+											<option value="35">35</option>
+											<option value="36">36</option>
+											<option value="37">37</option>
+											<option value="38">38</option>
+											<option value="39">39</option>
+											<option value="40">40</option>
+											<option value="41">41</option>
+											<option value="42">42</option>
+											<option value="43">43</option>
+											<option value="44">44</option>
+											<option value="45">45</option>
+											<option value="46">46</option>
+											<option value="47">47</option>
+											<option value="48">48</option>
+											<option value="49">49</option>
+											<option value="50">50</option>
+											<option value="51">51</option>
+											<option value="52">52</option>
+											<option value="53">53</option>
+											<option value="54">54</option>
+											<option value="55">55</option>
+											<option value="56">56</option>
+											<option value="57">57</option>
+											<option value="58">58</option>
+											<option value="59">59</option>
+										</select>
+									</div>
+							</div>
+							<div class="info-input">
+									<div class="item-label">Giờ đóng cửa:</div>
+									<div class="item-detail">
+										<select id="closing_time-hour" name="hour_close"><option value="00">00</option>
+											<option value="01">01</option>
+											<option value="02">02</option>
+											<option value="03">03</option>
+											<option value="04">04</option>
+											<option value="05">05</option>
+											<option value="06">06</option>
+											<option value="07">07</option>
+											<option value="08">08</option>
+											<option value="09">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+										</select>
+										<select id="closing_time-minute" name="minute_close" style="margin-left: 10px"><option value="00">00</option>
+											<option value="01">01</option>
+											<option value="02">02</option>
+											<option value="03">03</option>
+											<option value="04">04</option>
+											<option value="05">05</option>
+											<option value="06">06</option>
+											<option value="07">07</option>
+											<option value="08">08</option>
+											<option value="09">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+											<option value="24">24</option>
+											<option value="25">25</option>
+											<option value="26">26</option>
+											<option value="27">27</option>
+											<option value="28">28</option>
+											<option value="29">29</option>
+											<option value="30">30</option>
+											<option value="31">31</option>
+											<option value="32">32</option>
+											<option value="33">33</option>
+											<option value="34">34</option>
+											<option value="35">35</option>
+											<option value="36">36</option>
+											<option value="37">37</option>
+											<option value="38">38</option>
+											<option value="39">39</option>
+											<option value="40">40</option>
+											<option value="41">41</option>
+											<option value="42">42</option>
+											<option value="43">43</option>
+											<option value="44">44</option>
+											<option value="45">45</option>
+											<option value="46">46</option>
+											<option value="47">47</option>
+											<option value="48">48</option>
+											<option value="49">49</option>
+											<option value="50">50</option>
+											<option value="51">51</option>
+											<option value="52">52</option>
+											<option value="53">53</option>
+											<option value="54">54</option>
+											<option value="55">55</option>
+											<option value="56">56</option>
+											<option value="57">57</option>
+											<option value="58">58</option>
+											<option value="59">59</option>
+										</select>
+									</div>
+							</div>						
+						</div>
+
+						<div class="review-checkbox" name="detailed_info" style="margin-top: 50px">
+							<span class="ti-check-box"></span>
+							<h6 style="display: inline-block;">Thông tin chi tiết</h6>
+							<hr>
+						</div>
+						<script>
+							var Mapp = angular.module('mealApp', []);
+							Mapp.controller('mealController', function($scope) {
+								$scope.Meals = [{
+									Id: 1
+									}];
+								$scope.id = 2;
+								$scope.addElement = function() {
+									$scope.Meals.push({
+										Id: $scope.id
+									});
+									$scope.id = $scope.id + 1;
+								};
+							});
+						</script>
+						<div class="info-content">
+							<div ng-repeat="meal in Meals">
+								<div class="info-input">
+									<div class="item-label">Tên món ăn:</div>
+									<div class="item-detail">
+										<input type="text" placeholder="{{meal.Id}}" />
+									</div>
+								</div>
+								<div class="info-input">
+									<div class="item-label">Mức giá:</div>
+									<div class="item-detail">
+										<input type="text" placeholder="{{meal.Id}}" />
+									</div>
+								</div>
+							</div>
+							<div class="add-meal-btn" style="margin-bottom: 10px">
+								<button type="button" ng-click="addElement()">+</button>
+							</div>
+						</div>
+						<div class="info-content">
+							<div class="info-input">
+								<div class="item-label" style="width: 100%">Review chi tiết:</div>
+								<textarea style="width: 100%; height: 400px; padding: 16px"></textarea>
+							</div>
+						</div>
+						<div class="info-content">
+							<div class="info-input">
+								<div class="item-label" style="width: 100%">Upload ảnh:</div>
+								<div id="wrapper" style="margin-top: 30px">
+									<form action="upload_file.php" method="post" enctype="multipart/form-data">
+										<input type="file" id="upload_file" name="upload_file[]" onchange="preview_image();" style="display: inline-block; font-size: 12px" multiple />
+										<input type="submit" name='submit_image' value="Upload Image" style="display: inline-block; font-size: 12px; line-height: normal;"/>
+									</form>
+									<div id="image_preview"></div>
+								</div>
+							</div>
+						</div>
+						<input class="btn submit_btn" type="submit" value="Đăng bài">
+					</form>
+				</div>
+			</div>
+		</section>
+		<!--//END REVIEW DETAILS -->
+
+		<!-- Footer -->
+		<footer>
+			<!-- Footer top -->
+			<div class="container footer_top">
+				<div class="row">
+					<div class="col-lg-4 col-sm-7">
+						<div class="footer_item">
+							<h4>About Company</h4>
+							<img class="logo" src="temp/logo.png" alt="Construction" />
+							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem</p>
+
+							<ul class="list-inline footer_social_icon">
+								<li><a href=""><span class="fa fa-facebook"></span></a></li>
+								<li><a href=""><span class="fa fa-twitter"></span></a></li>
+								<li><a href=""><span class="fa fa-youtube"></span></a></li>
+								<li><a href=""><span class="fa fa-google-plus"></span></a></li>
+								<li><a href=""><span class="fa fa-linkedin"></span></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-2 col-sm-5">
+						<div class="footer_item">
+							<h4>Explore link</h4>
+							<ul class="list-unstyled footer_menu">
+								<li><a href=""><span class="fa fa-play"></span> Our services</a>
+								<li><a href=""><span class="fa fa-play"></span> Meet our team</a>
+								<li><a href=""><span class="fa fa-play"></span> Forum</a>
+								<li><a href=""><span class="fa fa-play"></span> Help center</a>
+								<li><a href=""><span class="fa fa-play"></span> Contact Cekas</a>
+								<li><a href=""><span class="fa fa-play"></span> Privacy Policy</a>
+								<li><a href=""><span class="fa fa-play"></span> Cekas terms</a>
+								<li><a href=""><span class="fa fa-play"></span> Site map</a>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-7">
+						<div class="footer_item">
+							<h4>Latest post</h4>
+							<ul class="list-unstyled post">
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-5">
+						<div class="footer_item">
+							<h4>Contact us</h4>
+							<ul class="list-unstyled footer_contact">
+								<li><a href=""><span class="fa fa-map-marker"></span> 124 New Line, London UK</a></li>
+								<li><a href=""><span class="fa fa-envelope"></span> hello@psdfreebies.com</a></li>
+								<li><a href=""><span class="fa fa-mobile"></span><p>+44 00 00 1234 <br />+44 00 00 1234</p></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div><!-- Footer top end -->
+
+			<!-- Footer bottom -->
+			<div class="footer_bottom text-center">
+				<p class="wow fadeInRight">
+					Made with 
+					<i class="fa fa-heart"></i>
+					by 
+					<a target="_blank" href="http://bootstrapthemes.co">Bootstrap Themes</a> 
+					2016. All Rights Reserved
+				</p>
+			</div><!-- Footer bottom end -->
+		</footer><!-- Footer end -->
+
+		<!-- JavaScript -->
+		<script>
+		$(document).ready(function() 
+		{ 
+		 $('form').ajaxForm(function() 
+		 {
+		  alert("Uploaded SuccessFully");
+		 }); 
+		});
+
+		function preview_image() 
+		{
+		 var total_file=document.getElementById("upload_file").files.length;
+		 for(var i=0;i<total_file;i++)
+		 {
+		  $('#image_preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'><br>");
+		 }
+		}
+		</script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/popper.min.js"></script>
+
+		<!-- Bootsnav js -->
+		<script src="js/bootsnav.js"></script>
+
+		<!-- JS Implementing Plugins -->
+		<script src="js/isotope.js"></script>
+		<script src="js/isotope-active.js"></script>
+		<script src="js/jquery.fancybox.js?v=2.1.5"></script>
+
+		<script src="js/jquery.scrollUp.min.js"></script>
+
+		<script src="js/main.js"></script>
+		<!-- Magnific popup JS -->
+		<script src="js/jquery.magnific-popup.js"></script>
+	</body>	
+</html>	
