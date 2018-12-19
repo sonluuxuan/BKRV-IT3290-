@@ -107,10 +107,39 @@
 		<!--//END DESCRIPTION -->
 		
 		<!--============================= REVIEW DETAILS =============================-->
+		<script type="text/javascript">
+			function submitForm (){
+				// match anything not a [ or ]
+				regexp = /^[^[\]]+/;
+				var fileInput = $('.putImages input[type="file"]');
+				var fileInputName = regexp.exec( fileInput.attr('name') );
+
+				// make files available
+				var data = new FormData();
+				jQuery.each($(fileInput)[0].files, function(i, file) {
+				    data.append(fileInputName+'['+i+']', file);
+				});
+				// HERE
+			    $.ajax({
+			        url:'upload_file.php',
+			        type:'post',
+			        method: 'POST',
+			        contentType: false,
+    				processData: false,
+    				cache:false,
+    				enctype: 'multipart/form-data',
+			        data: data,
+			        success:function(){
+			            alert("Upload thành công!");
+			            window.location.href="index.php"; // TODO: swap index.php with index file 
+			        }
+			    });
+			}
+		</script>
 		<section class="light-bg review-details_wrap">
 			<div class="container">
 				<div class="review-checkbox_wrap" style="height: auto;">
-					<form ng-app="mealApp" ng-controller="mealController">
+					<div ng-app="mealApp" ng-controller="mealController">
 						<div class="review-checkbox" name="basic_info" >
 							<span class="ti-check-box"></span>
 							<h6 style="display: inline-block;">Thông tin cơ bản</h6>
@@ -120,42 +149,42 @@
 							<div class="info-input">
 									<div class="item-label">Tên địa điểm:</div>
 									<div class="item-detail">
-										<input type="text" name="store_name" required/>
+										<input type="text" name="store_name" id="storeNameId" required/>
 									</div>
 							</div>
 							<div class="info-input">
 								<div class="item-label">Địa chỉ:</div>
 								<div class="item-detail">
-										<input type="text" name="store_location" required/>
+										<input type="text" name="store_location" id="storeLocationId" required/>
 								</div>
 							</div>
 							<div class="info-input">
 									<div class="item-label">Loại hình:</div>
 									<div class="item-detail">
-										<select name="category"/>
-											<option value="1">Ăn vặt / Vỉa hè</option>
-											<option value="2">Café / Dessert</option>
-											<option value="3">Bar / Pub</option>
-											<option value="4">Nhà hàng</option>
+										<select name="category" id="typeId"/>
+											<option value="Ăn vặt / Vỉa hè">Ăn vặt / Vỉa hè</option>
+											<option value="Café / Dessert">Café / Dessert</option>
+											<option value="Bar / Pub">Bar / Pub</option>
+											<option value="Nhà hàng">Nhà hàng</option>
 										</select>
 									</div>
 							</div>
 							<div class="info-input">
 								<div class="item-label">Khu vực:</div>
 								<div class="item-detail">
-									<select name="area"/>
-											<option value="1">Quận Đống Đa</option>
-											<option value="2">Quận Hoàn Kiếm</option>
-											<option value="3">Quận Ba Đình</option>
-											<option value="4">Quận Tây Hồ</option>
-											<option value="5">Quận Thanh Xuân</option>
-											<option value="6">Quận Hai Bà Trưng</option>
-											<option value="7">Quận Cầu Giấy</option>
-											<option value="8">Quận Hoàng Mai</option>
-											<option value="9">Quận Long Biên</option>
-											<option value="10">Quận Hà Đông</option>
-											<option value="11">Quận Nam Từ Liêm</option>
-											<option value="12">Quận Bắc Từ Liêm</option>
+									<select name="area" id="areaId"/>
+											<option value="Quận Đống Đa">Quận Đống Đa</option>
+											<option value="Quận Hoàn Kiếm">Quận Hoàn Kiếm</option>
+											<option value="Quận Ba Đình">Quận Ba Đình</option>
+											<option value="Quận Tây Hồ">Quận Tây Hồ</option>
+											<option value="Quận Thanh Xuân">Quận Thanh Xuân</option>
+											<option value="Quận Hai Bà Trưng">Quận Hai Bà Trưng</option>
+											<option value="Quận Cầu Giấy">Quận Cầu Giấy</option>
+											<option value="Quận Hoàng Mai">Quận Hoàng Mai</option>
+											<option value="Quận Long Biên">Quận Long Biên</option>
+											<option value="Quận Hà Đông">Quận Hà Đông</option>
+											<option value="Quận Nam Từ Liêm">Quận Nam Từ Liêm</option>
+											<option value="Quận Bắc Từ Liêm">Quận Bắc Từ Liêm</option>
 									</select>
 								</div>
 							</div>
@@ -350,16 +379,63 @@
 						</div>
 						<script>
 							var Mapp = angular.module('mealApp', []);
-							Mapp.controller('mealController', function($scope) {
+							Mapp.controller('mealController', function($scope, $http) {
 								$scope.Meals = [{
-									Id: 1
+									Id: 1,
+									Name: "",
+									Price: ""
 									}];
 								$scope.id = 2;
 								$scope.addElement = function() {
 									$scope.Meals.push({
-										Id: $scope.id
+										Id: $scope.id,
+										Name: "",
+										Price: ""
 									});
 									$scope.id = $scope.id + 1;
+
+								};
+								$scope._submit = function() {
+									$scope.sel = {};
+									$scope.selMealName = [];
+									$scope.selMealPrice = [];
+									$scope.noMeals = $scope.id - 1;
+									angular.forEach($scope.Meals, function(meal) {
+									    $scope.selMealName.push(meal.Name);
+									    $scope.selMealPrice.push(meal.Price);
+								 	});
+								 	$scope.storeName = document.getElementById("storeNameId").value;
+								 	$scope.storeLocation = document.getElementById("storeLocationId").value;
+								 	$scope.storeType = document.getElementById("typeId").value;
+								 	$scope.storeArea = document.getElementById("areaId").value;
+								 	$scope.storeOpnHour = document.getElementById("opening_time-hour").value;
+								 	$scope.storeOpnMin = document.getElementById("opening_time-minute").value;
+								 	$scope.storeClsHour = document.getElementById("closing_time-hour").value;
+								 	$scope.storeClsMin = document.getElementById("closing_time-minute").value;
+
+								 	$scope.sel['storeName'] = $scope.storeName;
+									$scope.sel['storeLocation'] = $scope.storeLocation;
+									$scope.sel['storeType'] = $scope.storeType;
+									$scope.sel['storeArea'] = $scope.storeArea;
+									$scope.sel['storeOpnHour'] = $scope.storeOpnHour;
+									$scope.sel['storeOpnMin'] = $scope.storeOpnMin;
+									$scope.sel['storeClsHour'] = $scope.storeClsHour;
+									$scope.sel['storeClsMin'] = $scope.storeClsMin;
+									$scope.sel['mealName'] = $scope.selMealName;
+									$scope.sel['mealPrice'] = $scope.selMealPrice;
+
+									console.log("message=" + $.param($scope.sel));
+									// working //
+									$http({
+									    method: 'POST',
+									    url: 'testpost.php', // TODO: path to php file // test file works fine 
+									    data: $.param($scope.sel),
+									    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									})
+									.then(function(response) {
+								        console.log(response);
+								        submitForm();
+								    });
 								};
 							});
 						</script>
@@ -368,13 +444,13 @@
 								<div class="info-input">
 									<div class="item-label">Tên món ăn:</div>
 									<div class="item-detail">
-										<input type="text" placeholder="{{meal.Id}}" />
+										<input type="text" ng-model="meal.Name" />
 									</div>
 								</div>
 								<div class="info-input">
 									<div class="item-label">Mức giá:</div>
 									<div class="item-detail">
-										<input type="text" placeholder="{{meal.Id}}" />
+										<input type="text" ng-model="meal.Price"/>
 									</div>
 								</div>
 							</div>
@@ -392,16 +468,15 @@
 							<div class="info-input">
 								<div class="item-label" style="width: 100%">Upload ảnh:</div>
 								<div id="wrapper" style="margin-top: 30px">
-									<form action="upload_file.php" method="post" enctype="multipart/form-data">
-										<input type="file" id="upload_file" name="upload_file[]" onchange="preview_image();" style="display: inline-block; font-size: 12px" multiple />
-										<input type="submit" name='submit_image' value="Upload Image" style="display: inline-block; font-size: 12px; line-height: normal;"/>
-									</form>
+								<form id="uploadForm" action="upload_file.php" method="post" enctype="multipart/form-data" class="putImages">
+									<input type="file" id="upload_file" name="upload_file[]" onchange="preview_image();" style="display: inline-block; font-size: 12px" multiple />
 									<div id="image_preview"></div>
+								</form>
 								</div>
 							</div>
 						</div>
-						<input class="btn submit_btn" type="submit" value="Đăng bài">
-					</form>
+						<button type="button" class="btn submit_btn" ng-click="_submit()">Đăng bài</button>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -482,7 +557,7 @@
 		<script>
 		$(document).ready(function() 
 		{ 
-		 $('form').ajaxForm(function() 
+		 $('#uploadForm').ajaxForm(function() 
 		 {
 		  alert("Uploaded SuccessFully");
 		 }); 
@@ -493,7 +568,7 @@
 		 var total_file=document.getElementById("upload_file").files.length;
 		 for(var i=0;i<total_file;i++)
 		 {
-		  $('#image_preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'><br>");
+		  $('#image_preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'>");
 		 }
 		}
 		</script>

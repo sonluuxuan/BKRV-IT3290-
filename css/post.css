@@ -103,3 +103,12 @@ textarea {
     background: transparent;
     color: #949497;
 }
+
+#image_preview img {
+    width: 25%;
+    height: auto;
+    max-height: 250px;
+    object-position: center;
+    object-fit: cover;
+    padding: 5px
+}
