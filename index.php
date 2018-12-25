@@ -1,6 +1,18 @@
 <?php
 	include 'DB_functions.php';
 	include 'function.php';
+
+	session_start();
+	$flags = 0;
+	if(isset($_GET["username"]))
+	{
+		$usernameGet = $_GET["username"];
+		if(isset($_SESSION[$usernameGet][1]))
+			{
+				$usernamePhp = $_SESSION[$usernameGet][0];
+				$flags = 1;
+			}
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,16 +68,31 @@
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 							<i class="fa fa-bars"></i>
 						</button>
-						<a class="navbar-brand" href=""><img class="logo" src="images/logo.png" alt=""></a>
+						<a class="navbar-brand" href=""><img class="logo" src="images/logo.png" alt="" style="height: 50px; width: 200px"></a>
 					</div>
 					<!-- Navigation -->
 					<div class="collapse navbar-collapse" id="navbar-menu">
 						<ul class="nav navbar-nav menu">
-							<li><a href="">Trang chủ</a></li>                    
+							<li><a href="">Trang chủ</a></li>					
+							<!--session for login and logout-->		
+							<?php
+								if($flags == 0)
+								{
+									echo "<li><a href='login.php'>Đăng Nhập</a></li>";
+									echo "<li><a href='register.php'>Đăng Ký</a></li>";
+								}   
+								if($flags == 1)
+								{
+									echo "<li><a href=''>".$usernamePhp."</a></li>";
+								}
+							?>
 							<li><a href="#new">Mới</a></li>
 							<li><a href="#popular">Phổ biến</a></li>
-							<li><a href="login.html">Đăng nhập</a></li>
-							<li><a href="register.html">Đăng ký</a></li>
+							<?php
+							if($flags == 1){
+								echo "<li><a href='logout.php?location=".urldecode($_SERVER['REQUEST_URI'])."&username=".$usernamePhp."'>Logout</a></li>";
+							}
+							?>	
 						</ul>
 					</div>
 				</div>   
@@ -81,14 +108,25 @@
 					<div class="item active">
 						<img src="images/food.jpg">
 						<div class="overlay" ng-app="myApp" ng-controller="myCtrl" ng-init="show='false'">
-							<form action="test.php" method="post">
+						<!-- session for form -->
+						<?php
+							if($flags == 0)
+							{
+								echo '<form action="listing.php" method="post">';
+							}   
+							if($flags == 1)
+							{
+								echo '<form action="listing.php?username='.$usernamePhp.'" method="post">';
+							}
+						?>
+							<!--<form action="listing.php" method="post">-->
 								<div class="inner-form">
 									<div class="input-field first-wrap">
-										<input class="search_box" id="search" type="text" placeholder="Quán ăn / món ăn / địa chỉ" />
+										<input class="search_box" id="search" name="search_input" type="text" placeholder="Quán ăn / món ăn / địa chỉ" />
 										<i class="fa fa-sliders" style="margin-top: 3px" ng-click="switchShow()"></i>
 								  	</div>
 								  	<div class="input-field third-wrap">
-										<input id="ignored_element" class="btn know_btn" type="submit" name="search_info" value="Tìm"></input>
+										<input id="ignored_element" class="btn know_btn" type="submit" name="find" value="Tìm"></input>
 								 	</div>
 								</div>
 							</form>
@@ -142,22 +180,22 @@
 											Name: "Quận Bắc Từ Liêm" 
 										}];
 										$scope.Prices = [{
-											Name: "< 10.000"
+											Name: "0 - 10000"
 											}, {
-											Name: "10.000 - 50.000"
+											Name: "10000 - 50000"
 											}, {
-											Name: "50.000 - 100.000"
+											Name: "50000 - 100000"
 											}, {
-											Name: "100.000 - 200.000"
+											Name: "100000 - 200000"
 											}, {
-											Name: "200.000 - 500.000"
+											Name: "200000 - 500000"
 											}, {
-											Name: "> 500.000" 
+											Name: "> 500000" 
 										}];
 										$scope.Cates = [{
 											Name: "Ăn vặt - Vỉa hè"
 											}, {
-											Name: "Café - Dessert"
+											Name: "Cafe - Dessert"
 											}, {
 											Name: "Nhà hàng"
 											}, {
@@ -218,7 +256,23 @@
 									    	$scope.sel['selected_cate'] = $scope.selCateArray;
 									    	console.log($.param($scope.sel));
 									    	// working //
-									    	window.location.href=('filtertest.php' + '?' + $.param($scope.sel)); //swap filtertest.php with listing.php // 
+									    	//session for filter 
+									    	<?php
+												if($flags == 0)
+												{
+													?>
+													window.location.href=('listing.php?button=filter' + '&' + $.param($scope.sel));
+											<?php
+													
+												}   
+												if($flags == 1)
+												{
+													?>
+													window.location.href=('listing.php?button=filter&username=<?php echo $usernamePhp?>' + '&' + $.param($scope.sel));
+													<?php
+												}
+											?>
+									    	//window.location.href=('listing.php' + '?' + $.param($scope.sel)); //swap filtertest.php with listing.php // 
 									    	//TODO: //
 									    };
 									});
@@ -257,8 +311,8 @@
 								</div>
 								<div class="sf-bottom">
 									<div class="sf-btns">
-										<a class="fd-btn" href="#" style="text-decoration:none;" ng-click="search()">Tìm kiếm</a>
-										<a class="fd-btn" href="#" style="text-decoration:none;" ng-click="clearFilter()">Xóa bộ lọc</a>
+										<a class="fd-btn" href="" style="text-decoration:none;" ng-click="search()">Tìm kiếm</a>
+										<a class="fd-btn" href="" style="text-decoration:none;" ng-click="clearFilter()">Xóa bộ lọc</a>
 									</div>
 								</div>
 							</div>
@@ -267,7 +321,16 @@
 								<h3>Hedspi Food Review</h3>
 								<h1>Đánh giá đồ ăn</h1>
 								<h1 class="second_heading">Creative & Professional</h1>
-								<a href="#" class="btn know_btn">Viết review</a>
+								<!-- session for viet review -->
+								<?php 
+									if($flags == 1)
+									{
+										echo "<a href='post.php?username=".$usernamePhp."' class='btn know_btn'>Viết review</a>";
+									}
+									if ($flags == 0) {
+										echo "<a href='login.php' class='btn know_btn'>Viết review</a>";
+									}
+								?>
 							</div>					
 						</div>
 					</div>        
@@ -276,87 +339,125 @@
 		</section>
 
 		<!-- New review -->
+		<?php
+				$result = get_latest_review();
+				$result2 = get_popular_reviews();
+				if(!empty($result2[0]))
+					$popular_review1 = $result2[0];
+				if(!empty($result2[1]))
+					$popular_review2 = $result2[1];
+				if(!empty($result2[2]))
+					$popular_review3 = $result2[2];
+				if(!empty($result[0]))
+					$review1 = $result[0];
+				if(!empty($result[1]))
+					$review2 = $result[1];
+				if(!empty($result[2]))
+					$review3 = $result[2];
+				if(count($result) > 0){
+		?>
 		<section id="new">
 			<div class="container">
 				<div class="button__header">
 					<h2 class="styled-heading">REVIEW GẦN ĐÂY</h2>
-					<a class="btn-view__more" href="listing.html">Xem tất cả</a>
+					<?php
+							if($flags == 0)
+							{
+								echo "<a class='btn-view__more' href='listing.php?button=latest'>Xem tất cả</a>";
+							}   
+							if($flags == 1)
+							{
+								echo "<a class='btn-view__more' href='listing.php?button=latest&username=".$usernamePhp."'>Xem tất cả</a>";
+							}
+					?>
 				</div>
 				<div class="row">
-				<?php
-						$result = get_latest_review();
-						$result2 = get_popular_reviews();
-						$popular_review1 = $result2[0];
-						$popular_review2 = $result2[1];
-						$popular_review3 = $result2[2];
-						$review1 = $result[0];
-						$review2 = $result[1];
-						$review3 = $result[2];
-				?>
+					<?php
+					if(count($result) <= 3)
+						$ele = count($result);
+					else $ele = 3;
+					for ($i = 0; $i < $ele; $i++) {
+					?>
 					<div class="col-md-4">
 						<div class="service_item">
-							<img src="<?php echo get_thumbnail($review1["anh"]);?>"/>
-							<h3> <?php echo $review1["ten"]?> </h3>
-							<p> <?php echo nl2br($review1["review"]). "<br>";?> </p>
-							<a href="detail.php?review_id=<?php echo$review1["id"]?>" class="btn know_btn">xem thêm</a>
+							<img src="<?php echo get_thumbnail("images/".$result[$i]["id"]);?>"/>
+							<h3> <?php echo $result[$i]["ten"]?> </h3>
+							<p> <?php echo nl2br($result[$i]["review"]). "<br>";?> </p>
+							<!--session for xem them button in-->
+							<?php
+								if($flags == 0)
+								{
+									echo '<a href="detail.php?review_id='.$result[$i]["id"].'" class="btn know_btn">xem thêm</a>';
+								}   
+								if($flags == 1)
+								{
+									echo '<a href="detail.php?review_id='.$result[$i]["id"].'&username='.$usernamePhp.'" class="btn know_btn">xem thêm</a>';
+								}
+							?>
 						</div>
 					</div>
-					<div class="col-md-4">
-						<div class="service_item">
-							<img src="<?php echo get_thumbnail($review2["anh"]);?>"/>
-							<h3> <?php echo $review2["ten"]?> </h3>
-							<p> <?php echo nl2br($review2["review"]). "<br>";?> </p>
-							<a href="detail.php?review_id=<?php echo$review2["id"]?>" class="btn know_btn">xem thêm</a>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="service_item">
-							<img src="<?php echo get_thumbnail($review3["anh"]);?>"/>
-							<h3> <?php echo $review3["ten"]?> </h3>
-							<p> <?php echo nl2br($review3["review"]). "<br>";?> </p>
-							<a href="detail.php?review_id=<?php echo$review3["id"]?>" class="btn know_btn">xem thêm</a>
-						</div>
-					</div>
+					<?php
+					} 
+					?>
 				</div>
 			</div>
 		</section><!-- New review end -->
-
+		<?php
+		}
+		if(count($result2) > 0){
+		?>
 		<!-- Popular review -->
 		<section id="popular">
 			<div class="container">
 				<div class="button__header">
 					<h2 class="styled-heading">REVIEW PHỔ BIẾN</h2>
-					<a class="btn-view__more" href="listing.html">Xem tất cả</a>
+					<?php
+							if($flags == 0)
+							{
+								echo "<a class='btn-view__more' href='listing.php?button=popular'>Xem tất cả</a>";
+							}   
+							if($flags == 1)
+							{
+								echo "<a class='btn-view__more' href='listing.php?button=popular&username=".$usernamePhp."'>Xem tất cả</a>";
+							}
+					?>
+					<!--<a class="btn-view__more" href="listing.html">Xem tất cả</a>-->
 				</div>
 				<div class="row">
+					<?php
+					if(count($result2) <= 3)
+						$ele = count($result2);
+					else $ele = 3;
+					for ($i = 0; $i < $ele; $i++) {
+					?>
 					<div class="col-md-4">
 						<div class="service_item">
-							<img src="<?php echo get_thumbnail($popular_review1["anh"]);?>"/>
-							<h3> <?php echo $popular_review1["ten"]?> </h3>
-							<p> <?php echo nl2br($popular_review1["review"]). "<br>";?> </p>
-							<a href="detail.php" class="btn know_btn">xem thêm</a>
+							<img src="<?php echo get_thumbnail("images/".$result2[$i]["id"]);?>"/>
+							<h3> <?php echo $result2[$i]["ten"]?> </h3>
+							<p> <?php echo nl2br($result2[$i]["review"]). "<br>";?> </p>
+							<!--session for xem them button in-->
+							<?php
+								if($flags == 0)
+								{
+									echo '<a href="detail.php?review_id='.$result2[$i]["id"].'" class="btn know_btn">xem thêm</a>';
+								}   
+								if($flags == 1)
+								{
+									echo '<a href="detail.php?review_id='.$result2[$i]["id"].'&username='.$usernamePhp.'" class="btn know_btn">xem thêm</a>';
+								}
+							?>
+							<!--<a href="detail.php?review_id=<?php// echo$review1["id"]?>" class="btn know_btn">xem thêm</a>-->
 						</div>
 					</div>
-					<div class="col-md-4">
-						<div class="service_item">
-							<img src="<?php echo get_thumbnail($popular_review2["anh"]);?>"/>
-							<h3> <?php echo $popular_review2["ten"]?> </h3>
-							<p> <?php echo nl2br($popular_review2["review"]). "<br>";?> </p>
-							<a href="detail.php" class="btn know_btn">xem thêm</a>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="service_item">
-							<img src="<?php echo get_thumbnail($popular_review3["anh"]);?>"/>
-							<h3> <?php echo $popular_review3["ten"]?> </h3>
-							<p> <?php echo nl2br($popular_review3["review"]). "<br>";?> </p>
-							<a href="detail.php" class="btn know_btn">xem thêm</a>
-						</div>
-					</div>
+					<?php
+					} 
+					?>
 				</div>
 			</div>
 		</section><!-- Popular review end -->
-
+		<?php
+		}
+		?>
 		<!-- start blog Area -->		
 		<section id="quick">
 			<div class="container">
@@ -364,7 +465,18 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="service_item">
-							<a href="listing.html">
+						<!--session for an vat-via he-->
+						<?php
+							if($flags == 0)
+							{
+								echo '<a href="listing.php?button=an_vat_via_he">';
+							}   
+							if($flags == 1)
+							{
+								echo '<a href="listing.php?button=an_vat_via_he&username='.$usernamePhp.'">';
+							}
+						?>
+							<!--<a href="listing.html">-->
 								<div class ="container">
 									<img class="img-fluid image" src="images/anvat.jpg"/>
 									<div class="overlay">
@@ -376,7 +488,18 @@
 					</div>
 					<div class="col-md-3">
 						<div class="service_item">
-							<a href="listing.html">
+						<!--session for cafe-dessert-->
+						<?php
+							if($flags == 0)
+							{
+								echo '<a href="listing.php?button=cafe_dessert">';
+							}   
+							if($flags == 1)
+							{
+								echo '<a href="listing.php?button=cafe_dessert&username='.$usernamePhp.'">';
+							}
+						?>
+							<!--<a href="listing.html">-->
 								<div class ="container2">
 									<img class="img-fluid image2" src="images/cake.jpg"/>
 									<div class="overlay2">
@@ -388,7 +511,17 @@
 					</div>
 					<div class="col-md-3">
 						<div class="service_item">
-							<a href="listing.html">
+							<!--session for cafe-dessert-->
+						<?php
+							if($flags == 0)
+							{
+								echo '<a href="listing.php?button=bar_pub">';
+							}   
+							if($flags == 1)
+							{
+								echo '<a href="listing.php?button=bar_pub&username='.$usernamePhp.'">';
+							}
+						?>
 								<div class ="container3">
 									<img class="img-fluid image3" src="images/pub.jpg"/>
 									<div class="overlay3">
@@ -400,7 +533,17 @@
 					</div>
 					<div class="col-md-3">
 						<div class="service_item">
-							<a href="listing.html">
+							<!--session for cafe-dessert-->
+						<?php
+							if($flags == 0)
+							{
+								echo '<a href="listing.php?button=nhahang">';
+							}   
+							if($flags == 1)
+							{
+								echo '<a href="listing.php?button=nhahang&username='.$usernamePhp.'">';
+							}
+						?>
 								<div class ="container4">
 									<img class="img-fluid image4" src="images/restaurant.jpg"/>
 									<div class="overlay4">
@@ -423,8 +566,8 @@
 					<div class="col-lg-4 col-sm-7">
 						<div class="footer_item">
 							<h4>About Company</h4>
-							<img class="logo" src="images/logo.png" alt="Construction" />
-							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem</p>
+							<img class="logo" src="images/logo.png" style="width: 200px; height: 50px" />
+							<p>Sản phẩm là quá trình sản sinh tri thức một cách khách quan và tự nguyện của một nhóm bạn trẻ SDL Đại Học Bách Khoa Hà Nội .Lấy ý tưởng từ phần mềm diệt virus BKAV , BKRV ra đời nhằm mục đích quảng bá món ăn Việt Nam đến với bạn bè Thế Giới .</p>
 
 							<ul class="list-inline footer_social_icon">
 								<li><a href=""><span class="fa fa-facebook"></span></a></li>
@@ -437,37 +580,38 @@
 					</div>
 					<div class="col-lg-2 col-sm-5">
 						<div class="footer_item">
-							<h4>Explore link</h4>
+							<h4>Sponsers</h4>
 							<ul class="list-unstyled footer_menu">
-								<li><a href=""><span class="fa fa-play"></span> Our services</a>
-								<li><a href=""><span class="fa fa-play"></span> Meet our team</a>
-								<li><a href=""><span class="fa fa-play"></span> Forum</a>
-								<li><a href=""><span class="fa fa-play"></span> Help center</a>
-								<li><a href=""><span class="fa fa-play"></span> Contact Cekas</a>
-								<li><a href=""><span class="fa fa-play"></span> Privacy Policy</a>
-								<li><a href=""><span class="fa fa-play"></span> Cekas terms</a>
-								<li><a href=""><span class="fa fa-play"></span> Site map</a>
+								<li><a href="https://www.facebook.com/cafetrasuathayphuong/"><span class="fa fa-play"></span> Citea FUN</a>
+								<li><a href="https://www.facebook.com/chienhedspi"><span class="fa fa-play"></span> TSCBSM Group</a>
+								<li><a href="https://www.facebook.com/vingroup.net/"><span class="fa fa-play"></span> Vin Group</a>
+								<li><a href="https://www.foody.vn/ha-noi"><span class="fa fa-play"></span> Foody.vn</a>
+								<li><a href="https://lala.vn/"><span class="fa fa-play"></span> LALA</a>
+								<li><a href="https://www.facebook.com/The.ThanosMadTitan"><span class="fa fa-play"></span> Thanos</a>
+								<li><a href="https://www.facebook.com/vuduc153"><span class="fa fa-play"></span> Spider MAN</a>
+								<li><a href="https://www.facebook.com/hedspi.nichibu/"><span class="fa fa-play"></span> Hedspi Nichibu</a>
+								<li><a href="https://www.facebook.com/JAV-Company-233850186650513/"><span class="fa fa-play"></span> JAV Company</a>
 							</ul>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-7">
 						<div class="footer_item">
-							<h4>Latest post</h4>
+							<h4>Don't read the lines below</h4>
 							<ul class="list-unstyled post">
-								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
-								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
-								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
-								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">03 <small>MBR</small></span>  Project made by SDL Team<br/>with 3 members</a></li>
+								<li><a href=""><span class="date">02 <small>WRK</small></span>  Number of people really doing this project</a></li>
+								<li><a href=""><span class="date">01 <small>TER</small></span>  Takes 1 month of implementation</a></li>
+								<li><a href=""><span class="date">10 <small>DIM</small></span><b>  Số điểm mà nhóm mong muốn có được</b></a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-5">
 						<div class="footer_item">
-							<h4>Contact us</h4>
+							<h4>Come with us</h4>
 							<ul class="list-unstyled footer_contact">
-								<li><a href=""><span class="fa fa-map-marker"></span> 124 New Line, London UK</a></li>
-								<li><a href=""><span class="fa fa-envelope"></span> hello@psdfreebies.com</a></li>
-								<li><a href=""><span class="fa fa-mobile"></span><p>+44 00 00 1234 <br />+44 00 00 1234</p></a></li>
+								<li><a href=""><span class="fa fa-map-marker"></span> 17 Ta Quang Buu , HBC HN VN</a></li>
+								<li><a href=""><span class="fa fa-envelope"></span> Email.Never.Read@gmail.com</a></li>
+								<li><a href=""><span class="fa fa-mobile"></span><p>+84 24 66 711 211 <br />+84 69 96 069 069</p></a></li>
 							</ul>
 						</div>
 					</div>
@@ -503,3 +647,6 @@
 		<script src="js/main.js"></script>
 	</body>	
 </html>	
+
+
+<!-- kanseishimashit -->

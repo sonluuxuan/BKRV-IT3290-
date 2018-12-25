@@ -1,3 +1,19 @@
+<?php
+	
+	session_start();
+	$usernamePhp = "none";
+	$flags = 0;
+	if(isset($_GET["username"]))
+	{
+		$usernameGet = $_GET["username"];
+		if(isset($_SESSION[$usernameGet][1]))
+			{
+				$usernamePhp = $_SESSION[$usernameGet][0];
+				$flags = 1;
+			}
+	}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -65,14 +81,32 @@
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 							<i class="fa fa-bars"></i>
 						</button>
-						<a class="navbar-brand" href=""><img class="logo" src="temp/logo.png" alt=""></a>
+						<a class="navbar-brand" href=""><img class="logo" src="images/logo.png" alt="" style="width: 200px; height: 50px"></a>
 					</div>
 					<!-- Navigation -->
 					<div class="collapse navbar-collapse" id="navbar-menu">
 						<ul class="nav navbar-nav menu">
-							<li><a href="index.html">Trang chủ</a></li>                    
-							<li><a href="login.html">Đăng nhập</a></li>
-							<li><a href="register.html">Đăng ký</a></li>
+
+							<!--session for login and logout-->		
+							<?php
+							$a = 1;
+								if($flags == 0)
+								{
+									echo "<li><a href='index.php'>Trang chủ</a></li>";
+									echo "<li><a href='login.php'>Đăng Nhập</a></li>";
+									echo "<li><a href='register.php'>Đăng Ký</a></li>";
+								}   
+								if($flags == 1)
+								{
+									echo "<li><a href='index.php?username=".$usernamePhp."'>Trang chủ</a></li>";
+									echo "<li><a href=''>".$usernamePhp."</a></li>";
+								}
+							?>
+							<?php
+							if($flags == 1){
+								echo "<li><a href='logout.php?username=".$usernamePhp."'>Logout</a></li>";
+							}
+							?>	
 						</ul>
 					</div>
 				</div>   
@@ -131,7 +165,8 @@
 			        data: data,
 			        success:function(){
 			            alert("Upload thành công!");
-			            window.location.href="index.php"; // TODO: swap index.php with index file 
+			            //window.location.href="index.php"; // TODO: swap index.php with index file 
+			            window.location.href="index.php?username="+"<?php echo $usernamePhp; ?>";
 			        }
 			    });
 			}
@@ -162,9 +197,9 @@
 									<div class="item-label">Loại hình:</div>
 									<div class="item-detail">
 										<select name="category" id="typeId"/>
-											<option value="Ăn vặt / Vỉa hè">Ăn vặt / Vỉa hè</option>
-											<option value="Café / Dessert">Café / Dessert</option>
-											<option value="Bar / Pub">Bar / Pub</option>
+											<option value="Ăn vặt - Vỉa hè">Ăn vặt / Vỉa hè</option>
+											<option value="Cafe - Dessert">Café / Dessert</option>
+											<option value="Bar - Pub">Bar / Pub</option>
 											<option value="Nhà hàng">Nhà hàng</option>
 										</select>
 									</div>
@@ -412,6 +447,8 @@
 								 	$scope.storeOpnMin = document.getElementById("opening_time-minute").value;
 								 	$scope.storeClsHour = document.getElementById("closing_time-hour").value;
 								 	$scope.storeClsMin = document.getElementById("closing_time-minute").value;
+								 	$scope.storeRating = document.getElementById("ratingId").value;
+								 	$scope.storeReview = document.getElementById("reviewId").value;
 
 								 	$scope.sel['storeName'] = $scope.storeName;
 									$scope.sel['storeLocation'] = $scope.storeLocation;
@@ -421,9 +458,11 @@
 									$scope.sel['storeOpnMin'] = $scope.storeOpnMin;
 									$scope.sel['storeClsHour'] = $scope.storeClsHour;
 									$scope.sel['storeClsMin'] = $scope.storeClsMin;
+									$scope.sel['storeRating'] = $scope.storeRating;
 									$scope.sel['mealName'] = $scope.selMealName;
 									$scope.sel['mealPrice'] = $scope.selMealPrice;
-
+									$scope.sel['storeReview'] = $scope.storeReview;
+									$scope.sel['username'] = "<?php echo $usernamePhp;?>";
 									console.log("message=" + $.param($scope.sel));
 									// working //
 									$http({
@@ -461,7 +500,25 @@
 						<div class="info-content">
 							<div class="info-input">
 								<div class="item-label" style="width: 100%">Review chi tiết:</div>
-								<textarea style="width: 100%; height: 400px; padding: 16px"></textarea>
+								<textarea id="reviewId" style="width: 100%; height: 400px; padding: 16px"></textarea>
+							</div>
+							<div class="info-input">
+									<div class="item-label">Rating:</div>
+									<div class="item-detail">
+										<select name="store_rating" id="ratingId"/>
+											<option value="00">0</option>
+											<option value="01">1</option>
+											<option value="02">2</option>
+											<option value="03">3</option>
+											<option value="04">4</option>
+											<option value="05">5</option>
+											<option value="06">6</option>
+											<option value="07">7</option>
+											<option value="08">8</option>
+											<option value="09">9</option>
+											<option value="10">10</option>
+										</select>
+									</div>
 							</div>
 						</div>
 						<div class="info-content">
@@ -490,8 +547,8 @@
 					<div class="col-lg-4 col-sm-7">
 						<div class="footer_item">
 							<h4>About Company</h4>
-							<img class="logo" src="temp/logo.png" alt="Construction" />
-							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem</p>
+							<img class="logo" src="images/logo.png" style="width: 200px; height: 50px" />
+							<p>Sản phẩm là quá trình sản sinh tri thức một cách khách quan và tự nguyện của một nhóm bạn trẻ SDL Đại Học Bách Khoa Hà Nội .Lấy ý tưởng từ phần mềm diệt virus BKAV , BKRV ra đời nhằm mục đích quảng bá món ăn Việt Nam đến với bạn bè Thế Giới .</p>
 
 							<ul class="list-inline footer_social_icon">
 								<li><a href=""><span class="fa fa-facebook"></span></a></li>
@@ -504,37 +561,38 @@
 					</div>
 					<div class="col-lg-2 col-sm-5">
 						<div class="footer_item">
-							<h4>Explore link</h4>
+							<h4>Sponsers</h4>
 							<ul class="list-unstyled footer_menu">
-								<li><a href=""><span class="fa fa-play"></span> Our services</a>
-								<li><a href=""><span class="fa fa-play"></span> Meet our team</a>
-								<li><a href=""><span class="fa fa-play"></span> Forum</a>
-								<li><a href=""><span class="fa fa-play"></span> Help center</a>
-								<li><a href=""><span class="fa fa-play"></span> Contact Cekas</a>
-								<li><a href=""><span class="fa fa-play"></span> Privacy Policy</a>
-								<li><a href=""><span class="fa fa-play"></span> Cekas terms</a>
-								<li><a href=""><span class="fa fa-play"></span> Site map</a>
+								<li><a href="https://www.facebook.com/cafetrasuathayphuong/"><span class="fa fa-play"></span> Citea FUN</a>
+								<li><a href="https://www.facebook.com/chienhedspi"><span class="fa fa-play"></span> TSCBSM Group</a>
+								<li><a href="https://www.facebook.com/vingroup.net/"><span class="fa fa-play"></span> Vin Group</a>
+								<li><a href="https://www.foody.vn/ha-noi"><span class="fa fa-play"></span> Foody.vn</a>
+								<li><a href="https://lala.vn/"><span class="fa fa-play"></span> LALA</a>
+								<li><a href="https://www.facebook.com/The.ThanosMadTitan"><span class="fa fa-play"></span> Thanos</a>
+								<li><a href="https://www.facebook.com/vuduc153"><span class="fa fa-play"></span> Spider MAN</a>
+								<li><a href="https://www.facebook.com/hedspi.nichibu/"><span class="fa fa-play"></span> Hedspi Nichibu</a>
+								<li><a href="https://www.facebook.com/JAV-Company-233850186650513/"><span class="fa fa-play"></span> JAV Company</a>
 							</ul>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-7">
 						<div class="footer_item">
-							<h4>Latest post</h4>
+							<h4>Don't read the lines below</h4>
 							<ul class="list-unstyled post">
-								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
-								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
-								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
-								<li><a href=""><span class="date">20 <small>AUG</small></span>  Luptatum omittantur duo ne mpetus indoctum</a></li>
+								<li><a href=""><span class="date">03 <small>MBR</small></span>  Project made by SDL Team<br/>with 3 members</a></li>
+								<li><a href=""><span class="date">02 <small>WRK</small></span>  Number of people really doing this project</a></li>
+								<li><a href=""><span class="date">01 <small>TER</small></span>  Takes 1 month of implementation</a></li>
+								<li><a href=""><span class="date">10 <small>DIM</small></span><b>  Số điểm mà nhóm mong muốn có được</b></a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-5">
 						<div class="footer_item">
-							<h4>Contact us</h4>
+							<h4>Come with us</h4>
 							<ul class="list-unstyled footer_contact">
-								<li><a href=""><span class="fa fa-map-marker"></span> 124 New Line, London UK</a></li>
-								<li><a href=""><span class="fa fa-envelope"></span> hello@psdfreebies.com</a></li>
-								<li><a href=""><span class="fa fa-mobile"></span><p>+44 00 00 1234 <br />+44 00 00 1234</p></a></li>
+								<li><a href=""><span class="fa fa-map-marker"></span> 17 Ta Quang Buu , HBC HN VN</a></li>
+								<li><a href=""><span class="fa fa-envelope"></span> Email.Never.Read@gmail.com</a></li>
+								<li><a href=""><span class="fa fa-mobile"></span><p>+84 24 66 711 211 <br />+84 69 96 069 069</p></a></li>
 							</ul>
 						</div>
 					</div>
@@ -590,3 +648,5 @@
 		<script src="js/jquery.magnific-popup.js"></script>
 	</body>	
 </html>	
+
+<!-- kanseishimashita -->

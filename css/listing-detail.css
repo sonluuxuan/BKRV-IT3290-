@@ -239,7 +239,7 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
   height: 44px;
 }
 
-.overlay form .inner-form .input-field input {
+.overlay form .inner-form .input-field input:not([id="ignored_element"]) {
   height: 100%;
   background: #fff;
   border-radius: .5px;
@@ -351,6 +351,7 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
     text-transform: uppercase;
     border:1px solid transparent;
     margin-left: 20px;
+    border-radius: 30px;
 }
 .carousel-caption .btn.know_btn {
     margin-top: 40px;
@@ -1033,15 +1034,17 @@ footer::after {
   .downvote-btn .btn-outline-danger {
     color: #fff;
     background: #ff3a6d;
-    border-color: #ff3a6d;
+    border-color: transparent;
     font-size: 16px;
     padding: 10px 20px;
     -webkit-transition: all 0.4s ease; }
     .downvote-btn .btn-outline-danger:hover {
       color: #ff3a6d;
+      border-color: #ff3a6d;
       background: white; }
     .downvote-btn .btn-outline-danger:focus {
       color: #ff3a6d;
+      border-color: #ff3a6d;
       background: white; }
 
 .upvote-btn {
@@ -1359,4 +1362,96 @@ footer::after {
   max-height: 310px;
   object-position: center;
   object-fit: cover;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.customer-review input {
+    border-radius: 2px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 4px 6px;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+}
+
+textarea {
+    resize: none;
+    outline: none;
+}
+
+.comment-submit {
+  margin-top: 30px;
+
+  background: #c0c0c3;
+  border: 1px solid #c0c0c3;
+  color: #fff;
+  font-family: "futura_ltbold",sans-serif;
+  font-size: 16px;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  width: 100%;
+  transition: all 0.4s ease;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  -ms-transition: all 0.4s ease; 
+
+}
+
+.comment-submit:hover,
+.comment-submit:focus {
+    background: transparent;
+    color: #949497;
+}
+
+.wtf {
+    background: #ffcb0f none repeat scroll 0 0;
+    color: #fff;
+    font-family: "futura_ltbold",sans-serif;
+    font-size: 16px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    border:1px solid transparent;
+    border-radius: 30px;
+    width: 20%;
+    margin-left: 40%;
+    margin-top: 40px;
+    transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    -ms-transition: all 0.4s ease;
+}
+
+.wtf:hover,
+.wtf:focus {
+    background: transparent;
+    color:#ffcb0f;
+    border:1px solid #ffcb0f;
+}
+
+.featured-place-wrap img{
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-position: center;
+  object-fit: cover;
+}
+
+.notice_review {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }

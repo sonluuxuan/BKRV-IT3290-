@@ -1,4 +1,18 @@
+<?php
+if(isset($_GET['error'])){
+	$error = $_GET['error'];
+}
+?>
 <!DOCTYPE html>
+<script type="text/javascript">
+	$(document).ready(function(){
+	var error = "";
+	error = "<?php echo "$error";?>";
+	if(error != ""){
+		alert(error);
+	}
+});
+</script>
 <html lang="en" >
 
 <head>
@@ -35,41 +49,39 @@
 		</div>
 	</div>
 	<!--End off Preloader -->
-	<div class="signup__container">
-	<div class="container__child signup__thumbnail">
-	</div>
-	<div class="container__child signup__form">
-		<form action="#">
-			<div class="form-group">
+	<div class="register__container">
+	<div class="container__child register__form">
+		<form action="login2.php" method="post">
+			<?php
+				echo '<input type="hidden" name="location" value="';
+				if(isset($_GET['location'])) {
+				    echo htmlspecialchars($_GET['location']);
+				}
+				echo '" />';
+			?>
+			<div class="form-group" style="margin-top: 73px">
 				<label for="username">Tên đăng nhập</label>
 				<input class="form-control" type="text" name="username" id="username" placeholder="username" required />
-			</div>
-			<div class="form-group">
-				<label for="email">Email</label>
-				<input class="form-control" type="text" name="email" id="email" placeholder="user.name@gmail.com" required />
 			</div>
 			<div class="form-group">
 				<label for="password">Mật khẩu</label>
 				<input class="form-control" type="password" name="password" id="password" placeholder="********" required />
 			</div>
-			<div class="form-group">
-				<label for="passwordRepeat">Xác nhận mật khẩu</label>
-				<input class="form-control" type="password" name="passwordRepeat" id="passwordRepeat" placeholder="********" required />
-			</div>
 			<div class="m-t-lg">
 				<ul class="list-inline">
 					<li>
-						<input class="btn btn--form" type="submit" value="Đăng ký" />
+						<input class="btn btn--form" type="submit" name="submit" value="Đăng nhập" />
 					</li>
 					<li>
-						<a class="signup__link" href="login.html">Đã là thành viên?</a>
+						<a class="register__link" href="register.php">Đăng ký</a>
 					</li>
 				</ul>
 			</div>
 		</form>  
 	</div>
+	<div class="container__child register__thumbnail">
+	</div>
 </div>
-
 <!-- JavaScript -->
 <script src="js/jquery-1.12.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
