@@ -9,6 +9,7 @@
 		if($flags == 1)
 			{
 				$usernamePhp = $_SESSION['username'];
+				$useridPhp = $_SESSION['userid'];
 			}
 	}
 ?>
@@ -371,6 +372,11 @@
 								$no_cates = 0;
 							}else if($button == "popular"){
 								$result = get_popular_reviews();
+								$no_districts = 0;
+								$no_prices = 0;
+								$no_cates = 0;
+							}else if($button == "subscribe"){
+								$result = get_subscribe_review($useridPhp);
 								$no_districts = 0;
 								$no_prices = 0;
 								$no_cates = 0;

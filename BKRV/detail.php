@@ -118,8 +118,9 @@
 				$result_loai = get_loai($review_id);
 				$loai = $result_loai[0];
 				$result_mon_gia = get_mon_gia($review_id);
+				// $sub_result = check_sub()
 		?>
-		<div clas
+		<!-- <div clas -->
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
 			<?php
@@ -524,9 +525,22 @@
 								<?php
 									$result_profile = get_user($review_id);
 									$user = $result_profile[0];
+									// echo $user['id'], $useridPhp;
+									$sub_status = check_sub($user['id'], $useridPhp);
 								?>
 								<img src="<?php echo get_profile_pic('profile_pics/user'.$user["id"]);?>" class="img-fluid" alt="#" name="writer-avatar">
 								<h6 name="writer-name"><?php echo $user["username"];?></h6>
+								<?php
+								if($sub_status == 0 && $flags == 1){
+									echo'<button class="sub_but" id="sub_button" style="margin-top:10px; background-color: #46cd38; border-radius: 10px; border: none; color:white; height: 40px; width: 120px; /*opacity: 0.5; cursor: not-allowed;*/" type="button">SUBSCRIBE</button>';
+								}
+								else if($sub_status > 0 && $flags == 1){
+									echo '<button class="sub_but" id="sub_button" style="margin-top:10px; /*background-color: #46cd38;*/ border-radius: 10px; border: none; color:grey; height: 40px; width: 120px; opacity: 0.5; /*cursor: not-allowed;*/" type="button" disabled>SUBSCRIBED</button>';
+								}
+								else{
+									echo '<button class="sub_but" id="sub_button" style="margin-top:10px; background-color: #46cd38; border-radius: 10px; border: none; color:white; height: 40px; width: 120px; opacity: 0.5; /*cursor: not-allowed;*/" type="button" disabled title="login to subscribe">SUBSCRIBE</button>';
+								}
+								?>
 							</div>
 							<ul class="social-counts">
 								<li>
@@ -543,6 +557,26 @@
 								</li>
 							</ul>
 						</div>
+						<script type="text/javascript">
+							$(document).ready(function(){
+								$('#sub_button').click(function(){
+									var posterId = "<?php echo $user["id"];?>";
+									var subscriberId = "<?php echo $useridPhp;?>";
+									alert(posterId);
+									alert(subscriberId);
+									$.ajax({
+										url:'subscribe.php',
+										type:'post',
+										data:{posterId:posterId, subscriberId:subscriberId},
+										dataType:'json',
+										success: function(data){
+											alert(data);
+										}
+
+									});
+								});
+							});
+						</script>
 					</div>
 				</div>
 			</div>

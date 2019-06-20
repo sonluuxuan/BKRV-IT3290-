@@ -843,6 +843,38 @@ function get_latest_review(){
 
 }
 
+function get_subscribe_review($userId){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $query = "SELECT * FROM Review WHERE user_id in (SELECT sub_to_id FROM User_subscribes WHERE user = ?) ORDER BY id DESC limit 3";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $userId);
+    if (mysqli_stmt_execute($stmt)){
+        //echo "executed";
+        $results = get_result($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $results;
+    }
+
+}
+
+function get_subscribe_review_view_more($userId, $cnt_post){
+    include 'connection.php';
+    require_once('work_around_func.php');
+
+    $query = "SELECT * FROM (SELECT * FROM Review WHERE user_id in (SELECT sub_to_id FROM User_subscribes WHERE user = ?) ORDER BY id DESC) AVA LIMIT ?,3"; // get 3 more reviews
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ii", $userId, $cnt_post);
+    if (mysqli_stmt_execute($stmt)){
+        //echo "executed";
+        $result = get_result($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $result;
+    }
+
+}
 
 function get_latest_review_view_more($cnt_post){
     include 'connection.php';
@@ -1037,6 +1069,49 @@ function like_dislike($review_id, $user_id, $type){
         mysqli_close($conn);
         $return_arr = array("likes"=>$totalLikes,"dislikes"=>$totalUnlikes);
         return $return_arr;
+}
+
+function check_sub($posterId, $subscriberId){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $find_query = "SELECT COUNT(*) as cntSub FROM User_subscribes WHERE user = ? and sub_to_id = ?";
+    $find_stmt = mysqli_prepare($conn, $find_query);
+    mysqli_stmt_bind_param($find_stmt, "ii", $subscriberId, $posterId);
+    if(mysqli_stmt_execute($find_stmt)){
+        $result = get_result($find_stmt);
+        $count = $result[0]['cntSub'];
+        return $count;
+    }
+    // if($count > 0){
+    //     return array("result"=>1);
+    // }
+    // else{
+    //     return array("result"=>0);
+    // }
+}
+
+function add_subscriber($posterId, $subscriberId){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    // $find_query = "SELECT COUNT(*) as cntSub FROM User_subscribes WHERE user = ? and sub_to_id = ?";
+    // $find_stmt = mysqli_prepare($conn, $find_query);
+    // mysqli_stmt_bind_param($stmt, "ii", $subscriberId, $posterId);
+    // if(mysqli_stmt_execute($stmt)){
+    //     $result = get_result($stmt);
+    //     $count = $result[0]['cntSub'];
+    // }
+    // if($count > 0){
+    //     return array("result"=>"already sub");
+    // }
+    $query = "INSERT INTO User_subscribes (user, sub_to_id) VALUES (?,?)";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ii", $subscriberId, $posterId);
+    if(mysqli_stmt_execute($stmt)){
+        return array("result"=>"success");
+    }
+    else{
+        return array("result"=>"failed");
+    }
 }
 
 function get_mon_gia($review_id){

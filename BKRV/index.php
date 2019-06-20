@@ -5,12 +5,14 @@
 	session_start();
 	$flags = 0;
 	$usernamePhp = "none";
+	$useridPhp = -10;
 	if(isset($_SESSION["logged_in"]))
 	{
 		$flags = $_SESSION["logged_in"];
 		if($flags == 1)
 			{
 				$usernamePhp = $_SESSION['username'];
+				$useridPhp = $_SESSION['userid'];
 			}
 	}
 ?>
@@ -344,6 +346,9 @@
 		<?php
 				$result = get_latest_review();
 				$result2 = get_popular_reviews();
+				if($flags == 1){
+					$result0 = get_subscribe_review($useridPhp);
+				}
 				if(!empty($result2[0]))
 					$popular_review1 = $result2[0];
 				if(!empty($result2[1]))
@@ -356,6 +361,50 @@
 					$review2 = $result[1];
 				if(!empty($result[2]))
 					$review3 = $result[2];
+				if(!empty($result0[0]))
+					$sub_review1 = $result0[0];
+				if(!empty($result0[1]))
+					$sub_review2 = $result0[1];
+				if(!empty($result0[2]))
+					$sub_review3 = $result0[2];
+				if($flags == 1){
+					if(count($result0) > 0){
+						?>
+						<section id="new">
+							<div class="container">
+								<div class="button__header">
+									<h2 class="styled-heading">SUBSCRIBE REVIEW</h2>
+									<?php
+										echo "<a class='btn-view__more' href='listing.php?button=subscribe'>Xem tất cả</a>";
+									?>
+								</div>
+								<div class="row">
+									<?php
+									if(count($result0) < 3)
+										$ele = count($result0);
+									else $ele = 3;
+									for ($i = 0; $i < $ele; $i++) {
+									?>
+									<div class="col-md-4">
+										<div class="service_item">
+											<img src="<?php echo get_thumbnail("images/".$result0[$i]["id"]);?>"/>
+											<h3> <?php echo $result0[$i]["ten"]?> </h3>
+											<p> <?php echo nl2br($result0[$i]["review"]). "<br>";?> </p>
+											<!--session for xem them button in-->
+											<?php
+												echo '<a href="detail.php?review_id='.$result0[$i]["id"].'" class="btn know_btn">xem thêm</a>';
+											?>
+										</div>
+									</div>
+									<?php
+									} 
+									?>
+								</div>
+							</div>
+						</section><!-- Sub review end -->
+						<?php
+					}
+				}
 				if(count($result) > 0){
 		?>
 		<section id="new">
@@ -364,14 +413,6 @@
 					<h2 class="styled-heading">REVIEW GẦN ĐÂY</h2>
 					<?php
 						echo "<a class='btn-view__more' href='listing.php?button=latest'>Xem tất cả</a>";
-							/*if($flags == 0)
-							{
-								echo "<a class='btn-view__more' href='listing.php?button=latest'>Xem tất cả</a>";
-							}   
-							if($flags == 1)
-							{
-								echo "<a class='btn-view__more' href='listing.php?button=latest&username=".$usernamePhp."'>Xem tất cả</a>";
-							}*/
 					?>
 				</div>
 				<div class="row">
@@ -389,14 +430,6 @@
 							<!--session for xem them button in-->
 							<?php
 								echo '<a href="detail.php?review_id='.$result[$i]["id"].'" class="btn know_btn">xem thêm</a>';
-								/*if($flags == 0)
-								{
-									echo '<a href="detail.php?review_id='.$result[$i]["id"].'" class="btn know_btn">xem thêm</a>';
-								}   
-								if($flags == 1)
-								{
-									echo '<a href="detail.php?review_id='.$result[$i]["id"].'&username='.$usernamePhp.'" class="btn know_btn">xem thêm</a>';
-								}*/
 							?>
 						</div>
 					</div>

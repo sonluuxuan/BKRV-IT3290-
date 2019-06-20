@@ -56,7 +56,8 @@ if(isset($_GET['error'])){
 	<div class="container__child signup__thumbnail">
 	</div>
 	<div class="container__child signup__form">
-		<form action="http://localhost/BKRV/signup.php" method="post">
+		<!-- <form action="http://localhost/BKRV-IT3290-/BKRV/signup.php" method="post"> -->
+			<form action="signup.php" method="post">
 			<?php
 				echo '<input type="hidden" name="location" value="';
 				if(isset($_GET['location'])) {

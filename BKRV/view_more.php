@@ -1,4 +1,17 @@
 <?php
+session_start();
+$flags = 0;
+$usernamePhp = "none";
+$useridPhp = -10;
+if(isset($_SESSION["logged_in"]))
+{
+	$flags = $_SESSION["logged_in"];
+	if($flags == 1)
+		{
+			$usernamePhp = $_SESSION['username'];
+			$useridPhp = $_SESSION['userid'];
+		}
+}
 date_default_timezone_set("Asia/Ho_Chi_Minh");
 include 'DB_functions.php';
 include 'function.php';
@@ -11,6 +24,13 @@ if ($type == "latest"){
 	//$return_arr = array('response'=>2);
 	//echo json_encode($return_arr);
 	$results = get_latest_review_view_more($cnt_post);
+
+}
+
+else if ($type == "subscribe"){
+	//$return_arr = array('response'=>2);
+	//echo json_encode($return_arr);
+	$results = get_subscribe_review_view_more($useridPhp, $cnt_post);
 
 }
 
