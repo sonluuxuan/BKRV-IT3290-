@@ -352,51 +352,7 @@
 						</div>
 						<!-- Comment section -->
 						<div id="comments_box" class="review-checkbox_wrap mt-4" style="margin-top: 1.5rem!important;">
-							<?php
-								$result_num_comment = get_number_of_comments($review_id);
-								if(empty($result_num_comment)) {
-									$cnt["cnt"] = 0; 
-								}
-								else 
-									$cnt = $result_num_comment[0]; 
-							?>
-							<h5 name="no_comments"><?php echo $cnt["cnt"]." nhận xét";?></h5>
-							<?php
-								if($cnt["cnt"] != 0)
-									echo '<hr>';
-							?>
-							<!-- Actual Comments -->
-							<?php
-							$result_comment_user = get_comment_user($review_id);
-							$num = count($result_comment_user);
-							$count = 0;
-							foreach ($result_comment_user as $user_comment) {
-							echo '<div class="customer-review_wrap">';
-								echo '<div class="customer-img">';
-									$result_user_commented = getUserById($user_comment["user_id"]);
-									$user_commented = $result_user_commented[0];
-								
-									echo '<img src="'.get_profile_pic('profile_pics/user'.$user_comment["user_id"]).'"class="img-fluid" alt="#" name="user_avatar">';
-									echo '<p name="user_comment">'.$user_commented["username"].'</p>';
-								echo '</div>';
-								echo '<div class="customer-content-wrap">';
-									echo '<div class="customer-content">';
-										echo '<div class="customer-review">';
-											echo '<h6 name="comment_title">'.$user_comment["summary"].'</h6>';
-										echo '</div>';
-									echo '</div>';
-									echo '<p class="customer-text" name="comment_detail">'.$user_comment["comment"].'</p>';
-								echo '</div>';
-							echo '</div>';
-							if($count < $num-1) {
-								echo '<hr>';
-							}
-							$count++;
-							}
-							?>
-							
-						</div>
-						<!-- Write comment section -->
+							<!-- Write comment section -->
 						<div class="review-checkbox_wrap mt-4" style="margin-top: 1.5rem!important; padding-bottom: 50px;">
 							<h5>Viết nhận xét</h5>
 							<?php
@@ -473,6 +429,51 @@
 									
 						</script>
 						<!--end write comment -->
+							<?php
+								$result_num_comment = get_number_of_comments($review_id);
+								if(empty($result_num_comment)) {
+									$cnt["cnt"] = 0; 
+								}
+								else 
+									$cnt = $result_num_comment[0]; 
+							?>
+							<h5 name="no_comments"><?php echo $cnt["cnt"]." nhận xét";?></h5>
+							<?php
+								if($cnt["cnt"] != 0)
+									echo '<hr>';
+							?>
+							<!-- Actual Comments -->
+							<?php
+							$result_comment_user = get_comment_user($review_id);
+							$num = count($result_comment_user);
+							$count = 0;
+							foreach ($result_comment_user as $user_comment) {
+							echo '<div class="customer-review_wrap">';
+								echo '<div class="customer-img">';
+									$result_user_commented = getUserById($user_comment["user_id"]);
+									$user_commented = $result_user_commented[0];
+								
+									echo '<img src="'.get_profile_pic('profile_pics/user'.$user_comment["user_id"]).'"class="img-fluid" alt="#" name="user_avatar">';
+									echo '<p name="user_comment">'.$user_commented["username"].'</p>';
+								echo '</div>';
+								echo '<div class="customer-content-wrap">';
+									echo '<div class="customer-content">';
+										echo '<div class="customer-review">';
+											echo '<h6 name="comment_title">'.$user_comment["summary"].'</h6>';
+										echo '</div>';
+									echo '</div>';
+									echo '<p class="customer-text" name="comment_detail">'.$user_comment["comment"].'</p>';
+								echo '</div>';
+							echo '</div>';
+							if($count < $num-1) {
+								echo '<hr>';
+							}
+							$count++;
+							}
+							?>
+							
+						</div>
+						
 					</div>
 					<div class="col-md-4 responsive-wrap">
 						<div class="contact-info">
