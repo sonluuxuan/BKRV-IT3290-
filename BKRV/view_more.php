@@ -86,6 +86,7 @@ else {
 foreach($results as $result){
 	//get loai
 	$result_loai = get_loai($result["id"]);
+	$result_username = getUserById($result["user_id"])[0]["username"];
 	//get price range
 	$result_price_range = get_price_range($result["id"]);
 	$low = $result_price_range[0]["gia"];
@@ -144,6 +145,7 @@ foreach($results as $result){
 	$response[$cnt_received-1]['status'] = $status;
 	$response[$cnt_received-1]['class_time'] = $class_time;
 	$response[$cnt_received-1]['class_rating'] = $class_rating;
+	$response[$cnt_received-1]['username'] = $result_username;
 }
 $response["cnt_received"] = $cnt_received;
 echo json_encode($response);
