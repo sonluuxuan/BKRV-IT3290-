@@ -350,9 +350,7 @@
 								</div>-->
 							</div>
 						</div>
-						<!-- Comment section -->
-						<div id="comments_box" class="review-checkbox_wrap mt-4" style="margin-top: 1.5rem!important;">
-							<!-- Write comment section -->
+						<!-- Write comment section -->
 						<div class="review-checkbox_wrap mt-4" style="margin-top: 1.5rem!important; padding-bottom: 50px;">
 							<h5>Viết nhận xét</h5>
 							<?php
@@ -413,8 +411,8 @@
 											success: function(data){
 												
 												var profile_picture = data['profile_picture'];
-												large += '<hr>	<div class="customer-review_wrap">		<div class="customer-img">			<img src="'+data['profile_picture']+'" class="img-fluid" alt="#" name="user_avatar">			<p name="user_comment">'+username+'</p>		</div>		<div class="customer-content-wrap">			<div class="customer-content">				<div class="customer-review">					<h6 name="comment_title">'+data['title']+'</h6>				</div>			</div>			<p class="customer-text" name="comment_detail">'+data['comment']+'</p>		</div>	</div>';
-												$("#comments_box").append(large);
+												large += '<div class="customer-review_wrap">		<div class="customer-img">			<img src="'+data['profile_picture']+'" class="img-fluid" alt="#" name="user_avatar">			<p name="user_comment">'+username+'</p>		</div>		<div class="customer-content-wrap">			<div class="customer-content">				<div class="customer-review">					<h6 name="comment_title">'+data['title']+'</h6>				</div>			</div>			<p class="customer-text" name="comment_detail">'+data['comment']+'</p>		</div>	</div> <hr>';
+												$("#comments_box").prepend(large);
 												
 												}
 									
@@ -429,7 +427,9 @@
 									
 						</script>
 						<!--end write comment -->
-							<?php
+						<!-- Comment section -->
+						<div id="comments_box_title" class="review-checkbox_wrap mt-4" style="margin-top: 1.5rem!important;">
+						<?php
 								$result_num_comment = get_number_of_comments($review_id);
 								if(empty($result_num_comment)) {
 									$cnt["cnt"] = 0; 
@@ -438,9 +438,12 @@
 									$cnt = $result_num_comment[0]; 
 							?>
 							<h5 name="no_comments"><?php echo $cnt["cnt"]." nhận xét";?></h5>
+							<hr>
+						</div>
+						<div  id="comments_box" class="review-checkbox_wrap mt-4">
 							<?php
 								if($cnt["cnt"] != 0)
-									echo '<hr>';
+									// echo '<hr>';
 							?>
 							<!-- Actual Comments -->
 							<?php
