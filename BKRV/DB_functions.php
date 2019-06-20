@@ -1093,25 +1093,41 @@ function check_sub($posterId, $subscriberId){
 function add_subscriber($posterId, $subscriberId){
     include 'connection.php';
     require_once('work_around_func.php');
-    // $find_query = "SELECT COUNT(*) as cntSub FROM User_subscribes WHERE user = ? and sub_to_id = ?";
-    // $find_stmt = mysqli_prepare($conn, $find_query);
-    // mysqli_stmt_bind_param($stmt, "ii", $subscriberId, $posterId);
-    // if(mysqli_stmt_execute($stmt)){
-    //     $result = get_result($stmt);
-    //     $count = $result[0]['cntSub'];
-    // }
-    // if($count > 0){
-    //     return array("result"=>"already sub");
-    // }
+    $sub_no_query = "SELECT COUNT(*) as cntSub FROM(SELECT user * FROM User_subscribes WHERE sub_to_id = ?) ali";
+    $sub_no_stmt = mysqli_prepare($conn, $sub_no_query);
+    mysqli_stmt_bind_param($sub_no_stmt, "i", $posterId);
+    if(mysqli_stmt_execute($sub_no_stmt)){
+        $result = get_result($sub_no_stmt);
+        $countSub = $result[0]['cntSub'];
+    }
+    $final_result = array();
+    $final_result["countSub"] = $countSub;
+
     $query = "INSERT INTO User_subscribes (user, sub_to_id) VALUES (?,?)";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "ii", $subscriberId, $posterId);
     if(mysqli_stmt_execute($stmt)){
-        return array("result"=>"success");
+        $final_result["result"] = "success";
+        return $final_result;
     }
     else{
-        return array("result"=>"failed");
+        $final_result["result"] = "failed";
+        return $final_result;
     }
+}
+
+function get_number_of_subscribers($userId){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $query = "SELECT COUNT(*) as cntSub FROM(SELECT distinct user FROM User_subscribes WHERE sub_to_id = ?) ali";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $userId);
+    if(mysqli_stmt_execute($stmt)){
+        $result = get_result($stmt);
+        $countSub = $result[0]['cntSub'];
+        return $countSub;
+    }
+
 }
 
 function get_mon_gia($review_id){
@@ -1147,9 +1163,25 @@ function get_user($review_id){
 function get_comment_user($review_id){
     include 'connection.php';
     require_once('work_around_func.php');
-    $query = "SELECT * FROM Review_comments WHERE Review_id = ?";
+    $query = "SELECT * FROM Review_comments WHERE Review_id = ? limit 5";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "i", $review_id);
+    if (mysqli_stmt_execute($stmt)){
+        //echo "executed";
+        $result = get_result($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $result;
+    }
+
+}
+
+function get_comment_user_view_more($review_id, $cnt){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $query = "SELECT * FROM Review_comments WHERE Review_id = ? limit ?,5";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ii", $review_id, $cnt);
     if (mysqli_stmt_execute($stmt)){
         //echo "executed";
         $result = get_result($stmt);

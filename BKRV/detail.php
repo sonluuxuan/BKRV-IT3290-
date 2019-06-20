@@ -450,22 +450,23 @@
 							$result_comment_user = get_comment_user($review_id);
 							$num = count($result_comment_user);
 							$count = 0;
-							foreach ($result_comment_user as $user_comment) {
+							// foreach ($result_comment_user as $user_comment) {
+							for($i=0; $i<$num && $i<3; $i++){
 							echo '<div class="customer-review_wrap">';
 								echo '<div class="customer-img">';
-									$result_user_commented = getUserById($user_comment["user_id"]);
+									$result_user_commented = getUserById($result_comment_user[$i]["user_id"]);
 									$user_commented = $result_user_commented[0];
 								
-									echo '<img src="'.get_profile_pic('profile_pics/user'.$user_comment["user_id"]).'"class="img-fluid" alt="#" name="user_avatar">';
+									echo '<img src="'.get_profile_pic('profile_pics/user'.$result_comment_user[$i]["user_id"]).'"class="img-fluid" alt="#" name="user_avatar">';
 									echo '<p name="user_comment">'.$user_commented["username"].'</p>';
 								echo '</div>';
 								echo '<div class="customer-content-wrap">';
 									echo '<div class="customer-content">';
 										echo '<div class="customer-review">';
-											echo '<h6 name="comment_title">'.$user_comment["summary"].'</h6>';
+											echo '<h6 name="comment_title">'.$result_comment_user[$i]["summary"].'</h6>';
 										echo '</div>';
 									echo '</div>';
-									echo '<p class="customer-text" name="comment_detail">'.$user_comment["comment"].'</p>';
+									echo '<p class="customer-text" name="comment_detail">'.$result_comment_user[$i]["comment"].'</p>';
 								echo '</div>';
 							echo '</div>';
 							if($count < $num-1) {
@@ -474,8 +475,29 @@
 							$count++;
 							}
 							?>
-							
+							<button id="taithem" class="comment-submit">TAI THEM</button> <!-- submit -->
 						</div>
+						<script>
+							$(document).ready(function(){
+								$('#taithem').click(function(){
+									var review_id = '<?php echo $review_id;?>';
+									var cnt = '<?php echo $count;?>';
+									alert(cnt);
+									$.ajax({
+										url:'load_comments.php',
+										type:'post',
+										data:{review_id:review_id, cnt:cnt},
+										dataType:'json',
+										success: function(data){
+											alert("success");
+											alert(data["cntmore"]);
+											alert(data[2]['comment']);
+										}
+ 
+									});
+								});
+							});
+						</script>
 						
 					</div>
 					<div class="col-md-4 responsive-wrap">
@@ -552,11 +574,15 @@
 									<span>Reviews</span>
 								</li>
 								<li>
-									<h6 name="writer_no_upvotes"><?php echo get_number_of_like_of_user($user["id"]);?></h6>
+									<h6 id="writer_subscribers" name="writer_no_subscriber"><?php echo get_number_of_subscribers($user["id"]);?></h6>
+									<span>Subscribers</span>
+								</li>
+								<li>
+									<h6 id="writer_likes" name="writer_no_upvotes"><?php echo get_number_of_like_of_user($user["id"]);?></h6>
 									<span>Upvotes</span>
 								</li>
 								<li>
-									<h6 name="writer_no_downvotes"><?php echo get_number_of_dislike_of_user($user["id"]);?></h6>
+									<h6 id="writer_dislikes" name="writer_no_downvotes"><?php echo get_number_of_dislike_of_user($user["id"]);?></h6>
 									<span>Downvotes</span>
 								</li>
 							</ul>
@@ -574,7 +600,8 @@
 										data:{posterId:posterId, subscriberId:subscriberId},
 										dataType:'json',
 										success: function(data){
-											alert(data);
+											alert(data["result"]);
+
 										}
 
 									});

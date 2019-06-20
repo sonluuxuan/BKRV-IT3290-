@@ -1279,11 +1279,11 @@ footer::after {
     .follow ul li {
       list-style: none;
       padding: 13px 0;
-      width: 33%; }
+      width: 25%; }
       @media (max-width: 1200px) {
         .follow ul li {
           padding: 12px 18px; } }
-      .follow ul li:first-child, .follow ul li:nth-child(2) {
+      .follow ul li:first-child, .follow ul li:nth-child(3),.follow ul li:nth-child(2) {
         border-right: 1px solid #ededed; }
       .follow ul li h6 {
         margin: 0; }
