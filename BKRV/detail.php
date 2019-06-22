@@ -451,7 +451,7 @@
 							$num = count($result_comment_user);
 							$count = 0;
 							// foreach ($result_comment_user as $user_comment) {
-							for($i=0; $i<$num && $i<3; $i++){
+							for($i=0; $i<$num && $i<3; $i++){ // 3 comments at a time
 							echo '<div class="customer-review_wrap">';
 								echo '<div class="customer-img">';
 									$result_user_commented = getUserById($result_comment_user[$i]["user_id"]);
@@ -475,13 +475,15 @@
 							$count++;
 							}
 							?>
-							<button id="taithem" class="comment-submit">TAI THEM</button> <!-- submit -->
+							<!-- <button id="taithem" class="comment-submit">TAI THEM</button> --> <!-- submit -->
 						</div>
+						<button id="taithem" class="comment-submit">TAI THEM</button>
 						<script>
 							$(document).ready(function(){
 								$('#taithem').click(function(){
 									var review_id = '<?php echo $review_id;?>';
 									var cnt = '<?php echo $count;?>';
+									var large = '';
 									alert(cnt);
 									$.ajax({
 										url:'load_comments.php',
@@ -489,9 +491,14 @@
 										data:{review_id:review_id, cnt:cnt},
 										dataType:'json',
 										success: function(data){
-											alert("success");
-											alert(data["cntmore"]);
-											alert(data[2]['comment']);
+											// alert(JSON.stringify(data));
+											// alert("success");
+											// alert(data["cntmore"]);
+											// alert(data[2]['comment']);
+											for (i=0; i<data['cntmore']; i++){
+												large += '<div class="customer-review_wrap">	<div class="customer-img">		<img src="'+data[i]["profile_pic"]+'"class="img-fluid" alt="#" name="user_avatar">		<p name="user_comment">'+data[i]["username"]+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data[i]["summary"]+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data[i]["comment"]+'</p>	</div></div> <hr>';
+											}
+											$("#comments_box").append(large);
 										}
  
 									});

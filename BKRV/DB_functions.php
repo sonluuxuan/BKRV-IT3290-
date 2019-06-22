@@ -1179,7 +1179,7 @@ function get_comment_user($review_id){
 function get_comment_user_view_more($review_id, $cnt){
     include 'connection.php';
     require_once('work_around_func.php');
-    $query = "SELECT * FROM Review_comments WHERE Review_id = ? limit ?,5";
+    $query = "SELECT * FROM Review_comments WHERE Review_id = ? limit ?,3";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "ii", $review_id, $cnt);
     if (mysqli_stmt_execute($stmt)){
