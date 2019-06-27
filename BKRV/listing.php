@@ -380,6 +380,16 @@
 								$no_districts = 0;
 								$no_prices = 0;
 								$no_cates = 0;
+							}else if($button == "liked"){
+								$result = get_liked_review($useridPhp);
+								$no_districts = 0;
+								$no_prices = 0;
+								$no_cates = 0;
+							}else if($button == "disliked"){
+								$result = get_liked_review($useridPhp);
+								$no_districts = 0;
+								$no_prices = 0;
+								$no_cates = 0;	
 							}else if($button == "filter"){
 								$no_districts = $_GET['no_districts'];
 								$no_prices = $_GET['no_prices'];
