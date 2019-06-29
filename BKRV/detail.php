@@ -610,7 +610,11 @@
 										dataType:'json',
 										success: function(data){
 											alert(data["result"]);
-
+											$("#writer_subscribers").text(data["countSub"] +1);
+											$("#sub_button").attr("disabled", true);
+											$("#sub_button").text("SUBSCRIBED");
+											$("#sub_button").css('background-color','grey');
+											$("#sub_button").css('opacity','0.5');
 										}
 
 									});
