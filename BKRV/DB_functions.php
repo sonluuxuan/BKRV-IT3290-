@@ -843,6 +843,40 @@ function get_latest_review(){
 
 }
 
+function get_posted_review($userId){
+    include 'connection.php';
+    require_once('work_around_func.php');
+
+    $query = "SELECT * FROM Review where user_id = ? ORDER BY id DESC LIMIT 3";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $userId);
+    if (mysqli_stmt_execute($stmt)){
+        //echo "executed";
+        $result = get_result($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $result;
+    }
+
+}
+
+function get_posted_review_view_more($userId, $cnt_post){
+    include 'connection.php';
+    require_once('work_around_func.php');
+
+    $query = "SELECT * FROM Review where user_id = ? ORDER BY id DESC LIMIT ?,3";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ii", $userId, $cnt_post);
+    if (mysqli_stmt_execute($stmt)){
+        //echo "executed";
+        $result = get_result($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $result;
+    }
+
+}
+
 function get_liked_review($userId){
     include 'connection.php';
     require_once('work_around_func.php');
@@ -1536,14 +1570,14 @@ function post_review($storeName, $username, $storeReview, $storeRating ,$storeLo
     $user_id = get_user_id_by_username($username);
     $district_id = get_district_id($storeArea);
     $loai_id = get_type_id($storeType);
-    $query1 = "INSERT INTO review (ten, review, rating, time_open, time_close, user_id, loai_id, dia_chi, district_id) 
+    $query1 = "INSERT INTO Review (ten, review, rating, time_open, time_close, user_id, loai_id, dia_chi, district_id) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt1 = mysqli_prepare($conn, $query1);
     mysqli_stmt_bind_param($stmt1, "ssissiisi", $storeName, $storeReview, $storeRating, $storeOpnTime, $storeClsTime, $user_id, $loai_id, $storeLocation, $district_id);
     if(mysqli_stmt_execute($stmt1)){
         $result = 'true';
         mysqli_stmt_close($stmt1);
-        $query2 = "INSERT INTO review_mon_gia (review_id, ten_mon, gia) VALUES (?, ?, ?)";
+        $query2 = "INSERT INTO Review_mon_gia (review_id, ten_mon, gia) VALUES (?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query2);
         $review_id = get_review_id_for_posting($storeName, $user_id);
         $cnt_dish = count($mealName);

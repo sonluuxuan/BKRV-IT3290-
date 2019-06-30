@@ -48,6 +48,13 @@ else if ($type == "disliked"){
 
 }
 
+else if ($type == "posted"){
+	//$return_arr = array('response'=>2);
+	//echo json_encode($return_arr);
+	$results = get_posted_review_view_more($useridPhp, $cnt_post);
+
+}
+
 else if ($type == "popular"){
 	$results = get_popular_review_view_more($cnt_post);
 }

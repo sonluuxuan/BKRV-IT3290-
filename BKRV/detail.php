@@ -248,8 +248,12 @@
 											success: function(data){
 												var likes = data['likes'];
 												var unlikes = data['dislikes']; 
+												var writer_likes = data['writer_likes']; 
+												var writer_dislikes = data['writer_dislikes']; 
 												$("#num_of_likes").text(likes);        // setting likes
 												$("#num_of_dislikes").text(unlikes);    // setting unlikes
+												$("#writer_likes").text(writer_likes);        // setting likes
+												$("#writer_dislikes").text(writer_dislikes);    // setting unlikes
 												if(type == 1){
 													$("#like_"+postid).css("background-color","#A0A0A0");
 													$("#like_"+postid).attr("disabled", true);

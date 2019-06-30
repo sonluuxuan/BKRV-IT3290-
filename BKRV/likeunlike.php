@@ -9,6 +9,8 @@
         //echo "<script type='text/javascript'>alert('$postid');</script>";
         // Check entry within table
         $return_arr = like_dislike($postid, $user_id, $type);
+        $return_arr["writer_likes"] = get_number_of_like_of_user($user_id);
+        $return_arr["writer_dislikes"] = get_number_of_dislike_of_user($user_id);
         // initalizing array
         //$return_arr = array("likes"=>$totalLikes,"unlikes"=>$totalUnlikes);
         //echo $return_arr;

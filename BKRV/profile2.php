@@ -94,7 +94,8 @@
 								if($flags == 1)
 								{
 									echo "<li><a href='index.php'>Trang chủ</a></li>";
-									echo "<li><a href=''>".$usernamePhp."</a></li>";
+									// echo "<li><a href=''>".$usernamePhp."</a></li>";
+									echo "<li><a href='profile2.php'>".$usernamePhp."</a></li>";
 								}
 							?>
 							<?php
@@ -196,6 +197,7 @@
 			<?php
 				$result = get_liked_review($useridPhp);
 				$result2 = get_disliked_review($useridPhp);
+				$result3 = get_posted_review($useridPhp);
 			?>
 			<!-- LIKED REVIEWS BEGIN -->
 			<section class="main-block">
@@ -317,7 +319,7 @@
 			</div>
 			</section>
 			<!-- LIKED REVIEWS END -->
-			
+			<hr>
 			<!-- DISLIKED REVIEWS BEGIN -->
 			<section class="main-block">
 				<div class="container" id="row_of_review">
@@ -437,8 +439,131 @@
 						<a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=disliked" id="<?php echo $button?>">XEM THÊM</a> 
 					</div>
 			</section>
+			<hr>
+			<!-- DISLIKED REVIEWS END -->
+
+			<!-- POSTED REVIEWS BEGIN -->
+			<section class="main-block">
+				<div class="container" id="row_of_review">
+					<div class="row justify-content-center">
+						<div class="col-md-5">
+							<div class="styled-heading">
+								<h3>POSTED</h3>
+							</div>
+						</div>
+					</div>
+					<div class="row" > <!-- LIKED REIVEWS -->
+			<?php
+					$cnt = 0;
+					if(!empty($result3)) {
+						$cnt_result = count($result3);
+					}
+					// print($cnt)
+					else $cnt_result = 0;
+					// echo($cnt);
+					//echo var_dump($result);
+					while($cnt < 3 && $cnt < $cnt_result){ // 3 reviews per row
+						if($result3[$cnt]["rating"] < 5){
+							$class_rating = "featured-rating";
+						}else if($result3[$cnt]["rating"] >= 5 && $result3[$cnt]["rating"] < 8){
+							$class_rating = "featured-rating-orange";
+						}else if($result3[$cnt]["rating"] >= 8){
+							$class_rating = "featured-rating-green";
+						}
+					?>
+						<div class="col-md-4 featured-responsive">
+							<div class="featured-place-wrap">
+								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
+
+								<!--session for detail.php not in ajax-->
+								<?php
+									echo '<a href="detail.php?review_id='.$result3[$cnt]["id"].'">';
+								?>
+									<img src="<?php echo get_thumbnail("images/".$result[$cnt]["id"]);?>" class="img-fluid" alt="#">
+									<span class="<?php echo $class_rating?>"><?php echo $result3[$cnt]["rating"];?></span>
+									<div class="featured-title-box">
+										<h6 name="store_name"><?php echo $result3[$cnt]["ten"];?></h6>
+										<?php $result_loai = get_loai($result3[$cnt]["id"]);?>
+										<p name="store_type"><?php echo $result_loai[0]["loai"];?></p>
+										<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
+										<ul>
+											<li><span class="ti-location-pin"></span>
+												<p name="store_address"><?php echo $result3[$cnt]["dia_chi"];?></p>
+											</li>
+											<li><span class="fa fa-tag minmaxpriceicon"></span>
+											<?php
+												$result_price_range = get_price_range($result3[$cnt]["id"]);
+												$low = $result_price_range[0]["gia"];
+												$high = $result_price_range[1]["gia"];
+												//if($low === $high)
+											?>
+												<p name="store_pricerange"> 
+													<?php
+														if($low === $high){
+															echo $low;
+														}
+														else{
+															echo $low." - ".$high;
+														}	
+													?>
+												</p>
+											</li>
+											<li><span class="ti-time"></span>
+											<?php
+												$result_time_range = get_time_range($result3[$cnt]["id"]);
+												$time_low = $result_time_range[0]["time_open"];
+												$time_high = $result_time_range[0]["time_close"];
+												//if($low === $high)
+											?>
+												<p name="store_opening"><?php echo $time_low." - ".$time_high?></p>
+											</li>
+										</ul>
+										<h4 style="font-style:italic; font-size: 15px; color:grey;"> <?php echo getUserById($result3[$cnt]["user_id"])[0]["username"]?> </h4>
+										<div class="bottom-icons">
+											<!--<div class="closed-now">CLOSED NOW</div> --><!-- Based on opening hour -->
+											<?php
+												date_default_timezone_set("Asia/Ho_Chi_Minh");
+												$time = date("H:i:s");
+												if (strtotime($time) >= strtotime($time_low) && strtotime($time) <= strtotime($time_high)){
+													echo '<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->';
+												}
+												else{
+													echo '<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->';
+												}
+											?>
+											<?php
+												$like_dislike_arr = get_num_of_like_dislike($result3[$cnt]["id"]);
+											?>
+											<span class="ti-heart"><span class="upvote display-number" name="store_point"><?php echo $like_dislike_arr["likes"];?></span></span> 
+											<!-- Number of upvotes - number of downvotes -->
+											<?php
+												$result_num_comment = get_number_of_comments($result3[$cnt]["id"]);
+												if(empty($result_num_comment)) {
+													$cnt_comment["cnt"] = 0; 
+												}
+												else 
+													$cnt_comment = $result_num_comment[0]; 
+											?> 
+											<span class="ti-comments"><span class="comment display-number" name="no_comments"><?php echo $cnt_comment["cnt"];?></span></span>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+						<?php
+						$cnt = $cnt+1;
+						//echo "_____________________________________".$cnt;
+						}
+						?>
+					</div> 				
+				</div>
+			<div class="featured_btn_wrap" style="width: 100%" >
+						<a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=posted" id="<?php echo $button?>">XEM THÊM</a> 
+					</div>
+			</section>
+			<hr>
 		</div>
-		<!-- DISLIKED REVIEWS END -->
+		<!-- POSTED REVIEWS END -->
 		<!-- END REVIEW DETAILS -->
 
 		<!-- PERSONAL INFORMATION -->

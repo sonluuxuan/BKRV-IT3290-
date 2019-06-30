@@ -1,7 +1,7 @@
 <?php
 include 'connection.php';
 // get review id for forder name //
-$query = "SELECT id FROM review WHERE id >= ALL(SELECT id FROM review)";
+$query = "SELECT id FROM Review WHERE id >= ALL(SELECT id FROM Review)";
 $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
 $id = $row['id'];
