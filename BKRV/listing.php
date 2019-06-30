@@ -91,7 +91,7 @@
 								if($flags == 1)
 								{
 									echo "<li><a href='index.php'>Trang chủ</a></li>";
-									echo "<li><a href='profile.php'>".$usernamePhp."</a></li>";
+									echo "<li><a href='profile2.php'>".$usernamePhp."</a></li>";
 								}
 							?>
 							<!--session for logout-->

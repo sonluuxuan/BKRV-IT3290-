@@ -31,32 +31,19 @@
 		<link rel="stylesheet" href="css/font-awesome.min.css" />
 		<!-- Bootsnav -->
 		<link rel="stylesheet" href="css/bootsnav.css">
+		<link rel="stylesheet" href="css/post.css"/>
 		<!-- Fancybox -->
 		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />	
 		<!-- Custom stylesheet -->
 		<link rel="stylesheet" href="css/listing-detail.css" />
-		<link rel="stylesheet" href="css/post.css"/>
-
 		<!-- AngularJS -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 		<!-- Simple line Icon -->
 		<link rel="stylesheet" href="css/simple-line-icons.css">
 		<!-- Themify Icon -->
 		<link rel="stylesheet" href="css/themify-icons.css">
-		<!--ajax lib-->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<meta charset="utf-8">
-		<!-- Fancybox -->
-		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />	
-		<!-- Custom stylesheet -->
-		<!-- <link rel="stylesheet" href="css/listing-detail.css" /> -->
-		<link rel="stylesheet" href="css/listing.css" />
-		<link rel="stylesheet" href="css/custom.css" />
-
-		<!-- AngularJS -->
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 		<!-- Magnific Popup CSS -->
-		<!-- <link rel="stylesheet" href="css/magnific-popup.css"> -->
+		<link rel="stylesheet" href="css/magnific-popup.css">
 		<script src="js/jquery-1.12.1.min.js"></script>
 		<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 		<script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
@@ -121,36 +108,30 @@
 			</nav><!-- Navbar end -->
 		</header><!-- Header end -->
 
-		<section id="home" class="home">
-			<!-- Carousel -->
-			<div id="carousel" class="carousel slide" data-ride="carousel">
-				<!-- Carousel-inner -->
-				<div class="carousel-inner" role="listbox">
-					<div class="item active">
-						<img src="images/listing-food.jpg">
-						<div class="overlay">
-						</div>
-					</div>        
-				</div><!-- Carousel-inner end -->
-			</div><!-- Carousel end-->
-		</section>
+		
 
 		<!--============================= DESCRIPTION =============================-->
 		<section class="store-block">
-			<div class="container">
+			<div class="container" style="left:0;border:0;padding:0">
 				<div class="row">
 					<!-- TABS -->
-					<div class="tab" style="position:absolute;bottom:10%;">
-					  <button class="tablinks" id="defaultOpenTab" onclick="openCity(event, 'reviews')">REVIEWS</button>
-					  <button class="tablinks" onclick="openCity(event, 'Paris')">INFO</button>
+					<div class="tab">
+					  <button class="tablinks" id="defaultOpenTab" onclick="openTab(event, 'reviews')">REVIEWS</button>
+					  <button class="tablinks" onclick="openTab(event, 'infos')">INFO</button>
 					  <!-- <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button> -->
 					</div>
 					<style type="text/css">
 						/* Style the tab */
 						.tab {
-						  overflow: hidden;
-						  border: 1px solid #ccc;
+						  overflow: auto;
+						  border: none;
 						  background-color: #f1f1f1;
+						}
+						.tablinks{
+							width:50%;
+							margin:0 auto;
+							font-weight: bold;
+							font-size: 20px;
 						}
 
 						/* Style the buttons that are used to open the tab content */
@@ -182,9 +163,8 @@
 						  border-top: none;
 						}
 					</style>
-					<script type="text/javascript">
-						document.getElementById("defaultOpenTab").click();
-						function openCity(evt, cityName) {
+					<script>
+						function openTab(evt, tabname) {
 						  // Declare all variables
 						  var i, tabcontent, tablinks;
 
@@ -201,7 +181,7 @@
 						  }
 
 						  // Show the current tab, and add an "active" class to the button that opened the tab
-						  document.getElementById(cityName).style.display = "block";
+						  document.getElementById(tabname).style.display = "block";
 						  evt.currentTarget.className += " active";
 						}
 					</script>
@@ -462,7 +442,7 @@
 		<!-- END REVIEW DETAILS -->
 
 		<!-- PERSONAL INFORMATION -->
-		<div id="Paris" class="tabcontent">
+		<div id="infos" class="tabcontent">
 		  <h3>Paris</h3>
 		  <p>Paris is the capital of France.</p> 
 		</div>
@@ -543,6 +523,7 @@
 
 		<!-- JavaScript -->
 		<script>
+		document.getElementById("defaultOpenTab").click();
 		$(document).ready(function() 
 		{ 
 		 $('#uploadForm').ajaxForm(function() 
