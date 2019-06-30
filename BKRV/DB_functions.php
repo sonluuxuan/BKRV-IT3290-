@@ -1150,12 +1150,6 @@ function check_sub($posterId, $subscriberId){
         $count = $result[0]['cntSub'];
         return $count;
     }
-    // if($count > 0){
-    //     return array("result"=>1);
-    // }
-    // else{
-    //     return array("result"=>0);
-    // }
 }
 
 function check_like_dislike($reviewId, $userId){
@@ -1179,7 +1173,7 @@ function check_like_dislike($reviewId, $userId){
 function add_subscriber($posterId, $subscriberId){
     include 'connection.php';
     require_once('work_around_func.php');
-    $sub_no_query = "SELECT COUNT(*) as cntSub FROM(SELECT user_id * FROM User_subscribes WHERE sub_to_id = ?) ali";
+    $sub_no_query = "SELECT COUNT(*) as cntSub FROM(SELECT distinct user_id  FROM User_subscribes WHERE sub_to_id = ?) ali";
     $sub_no_stmt = mysqli_prepare($conn, $sub_no_query);
     mysqli_stmt_bind_param($sub_no_stmt, "i", $posterId);
     if(mysqli_stmt_execute($sub_no_stmt)){
@@ -1190,6 +1184,32 @@ function add_subscriber($posterId, $subscriberId){
     $final_result["countSub"] = $countSub;
 
     $query = "INSERT INTO User_subscribes (user_id, sub_to_id) VALUES (?,?)";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ii", $subscriberId, $posterId);
+    if(mysqli_stmt_execute($stmt)){
+        $final_result["result"] = "success";
+        return $final_result;
+    }
+    else{
+        $final_result["result"] = "failed";
+        return $final_result;
+    }
+}
+
+function remove_subscriber($posterId, $subscriberId){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $sub_no_query = "SELECT COUNT(*) as cntSub FROM(SELECT distinct user_id FROM User_subscribes WHERE sub_to_id = ?) ali";
+    $sub_no_stmt = mysqli_prepare($conn, $sub_no_query);
+    mysqli_stmt_bind_param($sub_no_stmt, "i", $posterId);
+    if(mysqli_stmt_execute($sub_no_stmt)){
+        $result = get_result($sub_no_stmt);
+        $countSub = $result[0]['cntSub'];
+    }
+    $final_result = array();
+    $final_result["countSub"] = $countSub;
+
+    $query = "DELETE FROM User_subscribes WHERE user_id = ? and sub_to_id = ?";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "ii", $subscriberId, $posterId);
     if(mysqli_stmt_execute($stmt)){

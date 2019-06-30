@@ -598,7 +598,7 @@
 								}
 								else if($sub_status > 0 && $flags == 1){
 									// echo "<script type='text/javascript'>alert('shiteesfdfdk');</script>";
-									echo '<button class="sub_but" id="sub_button" style="margin-top:10px; /*background-color: #46cd38;*/ border-radius: 10px; border: none; color:grey; height: 40px; width: 120px; opacity: 0.5; /*cursor: not-allowed;*/" type="button" disabled>SUBSCRIBED</button>';
+									echo '<button class="sub_but" id="sub_button" style="margin-top:10px; /*background-color: #46cd38;*/ border-radius: 10px; border: none; color:grey; height: 40px; width: 120px; opacity: 0.5; /*cursor: not-allowed;*/" type="button">SUBSCRIBED</button>';
 								}
 								else{
 									echo '<button class="sub_but" id="sub_button" style="margin-top:10px; background-color: #46cd38; border-radius: 10px; border: none; color:white; height: 40px; width: 120px; opacity: 0.5; /*cursor: not-allowed;*/" type="button" disabled title="login to subscribe">SUBSCRIBE</button>';
@@ -626,23 +626,37 @@
 						</div>
 						<script type="text/javascript">
 							$(document).ready(function(){
+								var sub_status = "<?php echo $sub_status;?>";
 								$('#sub_button').click(function(){
 									var posterId = "<?php echo $user["id"];?>";
 									var subscriberId = "<?php echo $useridPhp;?>";
 									alert(posterId);
 									alert(subscriberId);
+									alert(sub_status);
 									$.ajax({
 										url:'subscribe.php',
 										type:'post',
-										data:{posterId:posterId, subscriberId:subscriberId},
+										data:{posterId:posterId, subscriberId:subscriberId, sub_status:sub_status},
 										dataType:'json',
 										success: function(data){
 											alert(data["result"]);
-											$("#writer_subscribers").text(data["countSub"] +1);
-											$("#sub_button").attr("disabled", true);
-											$("#sub_button").text("SUBSCRIBED");
-											$("#sub_button").css('background-color','grey');
-											$("#sub_button").css('opacity','0.5');
+											if(sub_status == 0){
+												$("#writer_subscribers").text(data["countSub"] +1);
+												// $("#sub_button").attr("disabled", true);
+												$("#sub_button").text("SUBSCRIBED");
+												$("#sub_button").css('background-color','grey');
+												$("#sub_button").css('opacity','0.5');
+												sub_status = 1;
+											}
+											else{
+												$("#writer_subscribers").text(data["countSub"] -1);
+												// $("#sub_button").attr("disabled", true);
+												$("#sub_button").text("SUBSCRIBE");
+												$("#sub_button").css('background-color','#46cd38');
+												$("#sub_button").css('color','white');
+												$("#sub_button").css('opacity','1');
+												sub_status = 0;
+											}
 										}
 
 									});
