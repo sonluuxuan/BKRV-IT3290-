@@ -148,6 +148,7 @@
 				jQuery.each($(fileInput)[0].files, function(i, file) {
 				    data.append(fileInputName+'['+i+']', file);
 				});
+				// alert(fileInputName[1]);
 				// HERE
 			    $.ajax({
 			        url:'upload_file.php',
