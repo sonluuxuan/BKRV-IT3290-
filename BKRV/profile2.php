@@ -11,7 +11,10 @@
 			{
 				$usernamePhp = $_SESSION['username'];
 				$useridPhp = $_SESSION['userid'];
-				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);				
+				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
+				$loggedInUser = get_user($useridPhp)[0];
+				$userEmail = $loggedInUser['email'];
+
 			}
 	}
 	if($flags == 0){
@@ -108,7 +111,7 @@
 
 		
 
-		<!--============================= DESCRIPTION =============================-->
+		<!--============================= TAB BUTTONS =============================-->
 		<section class="store-block">
 			<div class="container" style="left:0;border:0;padding:0">
 				<div class="row">
@@ -561,14 +564,17 @@
 			<hr>
 		</div>
 		<!-- POSTED REVIEWS END -->
-		<!-- END REVIEW DETAILS -->
+		<!--=================================== END REVIEW DETAILS ==================================-->
 
-		<!-- PERSONAL INFORMATION -->
+
+
+		<!--=================================== PERSONAL INFORMATION ================================-->
 		<div id="infos" class="tabcontent">
-		  <h3>Paris</h3>
-		  <p>Paris is the capital of France.</p> 
+		  Username: <input type="text" value="<?php echo $usernamePhp; ?>"><br>
+		  <br>
+		  Email: <input type="text" value="<?php echo $userEmail; ?>">
 		</div>
-		<!-- END PERSONAL INFORMATION -->
+		<!--=================================== END PERSONAL INFORMATION ============================-->
 
 
 		<!-- Footer -->
