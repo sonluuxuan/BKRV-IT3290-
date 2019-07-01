@@ -13,6 +13,7 @@
 			{
 				$usernamePhp = $_SESSION['username'];
 				$useridPhp = $_SESSION['userid'];
+				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
 			}
 	}
 ?>
@@ -85,16 +86,18 @@
 								}   
 								if($flags == 1)
 								{
-									echo "<li><a href='profile2.php'>".$usernamePhp."</a></li>";
+									echo "<li><a href='logout.php?location=".urldecode($_SERVER['REQUEST_URI'])."'>Logout</a></li>";
 								}
 							?>
 							<li><a href="#new">Mới</a></li>
 							<li><a href="#popular">Phổ biến</a></li>
 							<?php
-							if($flags == 1){
-								echo "<li><a href='logout.php?location=".urldecode($_SERVER['REQUEST_URI'])."'>Logout</a></li>";
-							}
-							?>	
+								if($flags == 1)
+								{
+									// echo "<li><a href='profile2.php'>".$usernamePhp."</a></li>";
+									echo "<a href='profile2.php'><img href='profile2.php' src=".$userProfilePic." style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>";
+								}
+							?>
 						</ul>
 					</div>
 				</div>   

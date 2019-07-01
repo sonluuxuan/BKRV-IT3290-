@@ -12,7 +12,8 @@ if (isset($_POST['user_id']) && isset($_POST['title']) && isset($_POST['comment'
 	
 	$result = store_comment($comment, $user_id, $review_id, $title);
 	$return_arr = array();
-	$return_arr['profile_picture'] = get_profile_pic("profile_pics/user".$user_id);
+	$return_arr['profile_picture'] = get_profile_pic("profile_pics/".$user_id);
+	// get_profile_pic("profile_pics/".$useridPhp)
 	$return_arr['title'] = $title;
 	$return_arr['comment'] = $comment;
 	if($result == 1){

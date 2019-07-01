@@ -1,4 +1,5 @@
 <?php
+	include 'function.php';
 	session_start();
 	$flags = 0;
 	$usernamePhp = "none";
@@ -9,6 +10,7 @@
 			{
 				$usernamePhp = $_SESSION['username'];
 				$useridPhp = $_SESSION['userid'];
+				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
 			}
 	}
 ?>
@@ -94,14 +96,10 @@
 								if($flags == 1)
 								{
 									echo "<li><a href='index.php'>Trang chủ</a></li>";
-									echo "<li><a href='profile2.php'>".$usernamePhp."</a></li>";
+									echo "<li><a href='logout.php?location=".urlencode($_SERVER['REQUEST_URI'])."'>Logout</a></li>";
+									echo "<a href='profile2.php'><img href='profile2.php' src=".$userProfilePic." style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>";
 								}
 							?>
-							<?php
-							if($flags == 1){
-								echo "<li><a href='logout.php?location=".urlencode($_SERVER['REQUEST_URI'])."'>Logout</a></li>"; //this line too
-							}
-							?>	
 						</ul>
 					</div>
 				</div>   
@@ -111,7 +109,6 @@
 		<!-- Swiper -->
 		<?php
 				include 'DB_functions.php';
-				include 'function.php';
 				$review_id = $_GET['review_id'];
 				$result = get_img_dir($review_id);
 				$review = $result[0];
@@ -390,7 +387,7 @@
 							<!-- Actual Comments --> <!-- TODO: -->
 							<div class="customer-review_wrap">
 								<div class="customer-img">
-									<img src="<?php echo get_profile_pic("profile_pics/user".$useridPhp)?>" class="img-fluid" alt="#" name="user_avatar"> <!-- current user's profile pic -->
+									<img src="<?php echo get_profile_pic("profile_pics/".$useridPhp)?>" class="img-fluid" alt="#" name="user_avatar"> <!-- current user's profile pic -->
 									<p name="user_comment"><?php echo $usernamePhp;?></p> <!-- current user's username -->
 								</div>
 								<div class="customer-content-wrap">
@@ -487,7 +484,7 @@
 									$result_user_commented = getUserById($result_comment_user[$i]["user_id"]);
 									$user_commented = $result_user_commented[0];
 								
-									echo '<img src="'.get_profile_pic('profile_pics/user'.$result_comment_user[$i]["user_id"]).'"class="img-fluid" alt="#" name="user_avatar">';
+									echo '<img src="'.get_profile_pic('profile_pics/'.$result_comment_user[$i]["user_id"]).'"class="img-fluid" alt="#" name="user_avatar">';
 									echo '<p name="user_comment">'.$user_commented["username"].'</p>';
 								echo '</div>';
 								echo '<div class="customer-content-wrap">';
@@ -593,7 +590,7 @@
 									// echo $user['id'], $useridPhp;
 									$sub_status = check_sub($user['id'], $useridPhp);
 								?>
-								<img src="<?php echo get_profile_pic('profile_pics/user'.$user["id"]);?>" class="img-fluid" alt="#" name="writer-avatar">
+								<img src="<?php echo get_profile_pic("profile_pics/".$user['id']);?>" class="img-fluid" alt="#" name="writer-avatar">
 								<h6 name="writer-name"><?php echo $user["username"];?></h6>
 								<?php
 								if($sub_status == 0 && $flags == 1){

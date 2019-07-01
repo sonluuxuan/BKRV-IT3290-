@@ -1,5 +1,5 @@
 <?php
-
+	include 'function.php';
 	session_start();
 	$flags = 0;
 	$usernamePhp = "none";
@@ -10,6 +10,7 @@
 			{
 				$usernamePhp = $_SESSION['username'];
 				$useridPhp = $_SESSION['userid'];
+				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
 			}
 	}
 ?>
@@ -91,21 +92,17 @@
 								if($flags == 1)
 								{
 									echo "<li><a href='index.php'>Trang chủ</a></li>";
-									echo "<li><a href='profile2.php'>".$usernamePhp."</a></li>";
+									if(isset($_GET['button'])){
+									echo "<li><a href='logout.php?location=".urlencode(($_SERVER['REQUEST_URI']))."'>Logout</a></li>";
+									}
+									else{
+										echo "<li><a href='logout.php'>Logout</a></li>";
+									}
+									echo "<a href='profile2.php'><img href='profile2.php' src=".$userProfilePic." style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>";
 								}
 							?>
 							<!--session for logout-->
-							<?php
-							if($flags == 1){
-								//echo "<li><a href='logout.php?username=".$usernamePhp."'>Logout</a></li>";// this line to
-								if(isset($_GET['button'])){
-									echo "<li><a href='logout.php?location=".urlencode(($_SERVER['REQUEST_URI']))."'>Logout</a></li>";
-								}
-								else{
-									echo "<li><a href='logout.php'>Logout</a></li>";
-								}
-							}
-							?>
+							
 						</ul>
 					</div>
 				</div>   
@@ -359,7 +356,6 @@
 				<div class="row" > <!-- add new row for new content -->
 				<?php
 						include 'DB_functions.php';
-						include 'function.php';
 						$districts = ['Quận Đống Đa', 'Quận Hoàn Kiếm', 'Quận Ba Đình', 'Quận Tây Hồ', 'Quận Thanh Xuân', 'Quận Hai Bà Trưng', 'Quận Cầu Giấy', 'Quận Hoàng Mai', 'Quận Long Biên', 'Quận Hà Đông', 'Quận Nam Từ Liêm', 'Quận Bắc Từ Liêm'];
 						$prices = ['0 - 50000', '50000 - 100000', '100000 - 200000', '200000 - 500000', '> 500000'];
 						$cates = ['Ăn vặt - Vỉa hè', 'Cafe - Dessert', 'Bar - Pub', 'Nhà hàng'];

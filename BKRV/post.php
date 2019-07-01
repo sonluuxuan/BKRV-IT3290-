@@ -1,4 +1,5 @@
 <?php
+	include 'function.php';
 	session_start();
 	$flags = 0;
 	$usernamePhp = "none";
@@ -9,6 +10,7 @@
 			{
 				$usernamePhp = $_SESSION['username'];
 				$useridPhp = $_SESSION['userid'];
+				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
 			}
 	}
 	if($flags == 0){
@@ -94,14 +96,10 @@
 								if($flags == 1)
 								{
 									echo "<li><a href='index.php'>Trang chủ</a></li>";
-									echo "<li><a href='profile2.php'>".$usernamePhp."</a></li>";
+									echo "<li><a href='logout.php'>Logout</a></li>";
+									echo "<a href='profile2.php'><img href='profile2.php' src=".$userProfilePic." style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>";
 								}
 							?>
-							<?php
-							if($flags == 1){
-								echo "<li><a href='logout.php'>Logout</a></li>";
-							}
-							?>	
 						</ul>
 					</div>
 				</div>   
