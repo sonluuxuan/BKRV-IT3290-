@@ -12,9 +12,8 @@
 				$usernamePhp = $_SESSION['username'];
 				$useridPhp = $_SESSION['userid'];
 				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
-				$loggedInUser = get_user($useridPhp)[0];
-				$userEmail = $loggedInUser['email'];
-
+				// $loggedInUser = get_user($useridPhp)[0];
+				$userEmail = get_user_email($useridPhp);
 			}
 	}
 	if($flags == 0){
@@ -52,6 +51,10 @@
 		<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 		<script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
 		<script src="http://malsup.github.com/jquery.form.js"></script> 
+		<!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet"> -->
 	</head>
 	<body>
 
@@ -117,8 +120,8 @@
 				<div class="row">
 					<!-- TABS -->
 					<div class="tab">
-					  <button class="tablinks" id="defaultOpenTab" onclick="openTab(event, 'reviews')">REVIEWS</button>
-					  <button class="tablinks" onclick="openTab(event, 'infos')">INFO</button>
+					  <button class="tablinks" onclick="openTab(event, 'reviews')">REVIEWS</button>
+					  <button class="tablinks" id="defaultOpenTab" onclick="openTab(event, 'infos')">INFO</button>
 					  <!-- <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button> -->
 					</div>
 					<style type="text/css">
@@ -570,9 +573,169 @@
 
 		<!--=================================== PERSONAL INFORMATION ================================-->
 		<div id="infos" class="tabcontent">
-		  Username: <input type="text" value="<?php echo $usernamePhp; ?>"><br>
-		  <br>
-		  Email: <input type="text" value="<?php echo $userEmail; ?>">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+			    	 	<div class="well profile">
+				            <div class="col-sm-12">
+				                <div class="col-xs-12 col-sm-8">
+				                    <h2 style="display: inline-block;"><?php echo $usernamePhp;?></h2><a href="edit_profile.php" style="margin-left: 15px">Edit Profile</a>
+				                    <p><strong>Email: </strong>  <?php echo $userEmail;?></p>
+				                    <p><strong>Description: </strong>asdfksdjklfjdskf
+				                    saldkfjsdkljfsdklfjsdklfj
+				                sdlkfjsdklfjsdklfjsdklfjsdklfjsdklfjsdkljf</p>
+				                    <!-- <p><strong>Hobbies: </strong> Read, out with friends, listen to music, draw and learn new things. </p> -->
+				                    <!-- <p><strong>Skills: </strong>
+				                        <span class="tags">html5</span> 
+				                        <span class="tags">css3</span>
+				                        <span class="tags">jquery</span>
+				                        <span class="tags">bootstrap3</span>
+				                    </p> -->
+				                </div>             
+				                <div class="col-xs-12 col-sm-4 text-center">
+				                    <figure>
+				                        <img src="<?php echo $userProfilePic?>">
+				                        <!-- <img src="images/man.png"> -->
+				                        <figcaption class="ratings">
+				                            <!-- <p>Ratings
+				                            <a href="#">
+				                                <span class="fa fa-star"></span>
+				                            </a>
+				                            <a href="#">
+				                                <span class="fa fa-star"></span>
+				                            </a>
+				                            <a href="#">
+				                                <span class="fa fa-star"></span>
+				                            </a>
+				                            <a href="#">
+				                                <span class="fa fa-star"></span>
+				                            </a>
+				                            <a href="#">
+				                                 <span class="fa fa-star-o"></span>
+				                            </a> 
+				                            </p> -->
+				                            <!-- <p style="float:left; margin-right:5px; color: green">Likes: <?php// echo get_number_of_like_of_user($useridPhp);?>
+				                            </p>
+				                            <p style="float:left; color:red">Dislikes: <?php// echo get_number_of_dislike_of_user($useridPhp);?>
+				                        	</p> -->
+				                        </figcaption>
+				                    </figure>
+				                </div>
+				            </div>            
+				            <div class="col-xs-12 divider text-center" style="height:100%">
+				            	
+				                <div class="col-xs-12 col-sm-4 emphasis">
+				                    <h2 style="margin-bottom: 10px; text-align: center; color:blue;display:inline-block;"><strong> <?php echo get_number_of_subscribers($useridPhp);?></strong></h2>                    
+				                    <!-- <p><small>Subscribers</small></p> -->
+				                    <!-- <button class="btn btn-success btn-block"> Subscribe </button> -->
+				                    <h3 style="color:blue"><strong> SUBSCRIBERS </strong></h3>
+				                </div>
+				                <div class="col-xs-12 col-sm-4 emphasis">
+				                    <h2 style="margin-bottom: 10px; text-align: center; color:green;"><strong> <?php echo get_number_of_like_of_user($useridPhp);?> </strong></h2>                    
+				                    <!-- <p><small>Subscribers</small></p> -->
+				                    <!-- <button class="btn btn-success btn-block"> Subscribe </button> -->
+				                    <h3 style="color:green"><strong> LIKES </strong></h3>
+				                </div>
+				                <div class="col-xs-12 col-sm-4 emphasis">
+				                    <h2 style="margin-bottom: 10px; text-align: center; color:red"><strong><?php echo get_number_of_dislike_of_user($useridPhp);?></strong></h2>                    
+				                    <!-- <p><small>Subscribers</small></p> -->
+				                    <!-- <button class="btn btn-success btn-block"> Subscribe </button> -->
+				                    <h3 style="color:red"><strong> DISLIKES </strong></h3>
+				                </div>
+				                <!-- <button style="float:right">Edit</button> -->
+				            </div>
+			    	    </div>                 
+					</div>
+				</div>
+			</div>
+			<style type="text/css">
+				@import url(http://fonts.googleapis.com/css?family=Lato:400,700);
+				body
+				{
+				    font-family: 'Lato', 'sans-serif';
+				    }
+				.profile 
+				{
+				    min-height: 255px;
+				    display: inline-block;
+				    }
+				.emphasis 
+				{
+				    margin-top:20px;
+				    }
+				figcaption.ratings
+				{
+				    margin-top:20px;
+				    }
+				figcaption.ratings a
+				{
+				    color:#f1c40f;
+				    font-size:11px;
+				    }
+				figcaption.ratings a:hover
+				{
+				    color:#f39c12;
+				    text-decoration:none;
+				    }
+				.divider 
+				{
+				    border-top:1px solid rgba(0,0,0,0.1);
+				    margin-bottom:0;
+				    }
+				.emphasis 
+				{
+				    border-top: 4px solid transparent;
+				    }
+				.emphasis:hover 
+				{
+				    border-top: 4px solid #1abc9c;
+				    }
+				.emphasis h2
+				{
+				    margin-bottom:0;
+				    }
+				span.tags 
+				{
+				    background: #1abc9c;
+				    border-radius: 2px;
+				    color: #f5f5f5;
+				    font-weight: bold;
+				    padding: 2px 4px;
+				    }
+				.dropdown-menu 
+				{
+				    background-color: #34495e;    
+				    box-shadow: none;
+				    -webkit-box-shadow: none;
+				    width: 250px;
+				    margin-left: -125px;
+				    left: 50%;
+				    }
+				.dropdown-menu .divider 
+				{
+				    background:none;    
+				    }
+				.dropdown-menu>li>a
+				{
+				    color:#f5f5f5;
+				    }
+				.dropup .dropdown-menu 
+				{
+				    margin-bottom:10px;
+				    }
+				.dropup .dropdown-menu:before 
+				{
+				    content: "";
+				    border-top: 10px solid #34495e;
+				    border-right: 10px solid transparent;
+				    border-left: 10px solid transparent;
+				    position: absolute;
+				    bottom: -10px;
+				    left: 50%;
+				    margin-left: -10px;
+				    z-index: 10;
+				    }
+			</style>
 		</div>
 		<!--=================================== END PERSONAL INFORMATION ============================-->
 

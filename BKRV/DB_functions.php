@@ -36,6 +36,74 @@ function storeUser($password, $username, $email){
     mysqli_close($conn);
 }
 
+function change_profile_and_password($useridPhp, $Username, $Email, $NewPassword ,$Description){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $hash = hashSSHA($NewPassword);
+    $encrypted_password = $hash["encrypted"];
+    $salt = $hash["salt"];
+    $query = "UPDATE User SET username=?, email=?, password=?, salt=?, bio=? WHERE user_id=?";
+    $stmt = mysqli_prepare($conn,$query);
+    mysqli_stmt_bind_param($stmt, "sssssi", $Username, $Email, $encrypted_password, $salt, $Description, $useridPhp);
+    if(mysqli_stmt_execute($stmt))
+    {
+       
+        $kq = "success";
+    }
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+    return $kq;
+}
+
+function change_profile($useridPhp, $Username, $Email, $Description){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $query = "UPDATE User SET username=?, email=?, bio=? WHERE id=?";
+    $stmt = mysqli_prepare($conn,$query);
+    mysqli_stmt_bind_param($stmt, "sssi", $Username, $Email, $Description, $useridPhp);
+    if(mysqli_stmt_execute($stmt))
+    {
+       
+        $kq = "success";
+    }
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+    return $kq;
+}
+
+function get_user_description($useridPhp){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $query = "SELECT bio FROM User WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $useridPhp);
+
+    if(mysqli_stmt_execute($stmt)){
+        //echo " get executed";
+        $result = get_result($stmt);
+        $Description = $result[0]["bio"];
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $Description;
+    }
+}
+
+function get_user_email($useridPhp){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $query = "SELECT email FROM User WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $useridPhp);
+
+    if(mysqli_stmt_execute($stmt)){
+        //echo " get executed";
+        $result = get_result($stmt);
+        $Email = $result[0]["email"];
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $Email;
+    }
+}
 
 function isUserExisted($username) {
     include 'connection.php';
@@ -1343,7 +1411,12 @@ function get_number_of_post_by_user($user_id){
         $result = get_result($stmt);
         mysqli_stmt_close($stmt);
         mysqli_close($conn);
-        return $result[0]['cnt'];
+        if(count($result) > 0){
+            return $result[0]['cnt'];
+        }
+        else{
+            return 0;
+        }
     }
 }
 
@@ -1359,7 +1432,12 @@ function get_number_of_like_of_user($user_id){
         $result = get_result($stmt);
         mysqli_stmt_close($stmt);
         mysqli_close($conn);
-        return $result[0]['cnt'];
+        if(count($result) > 0){
+            return $result[0]['cnt'];
+        }
+        else{
+            return 0;
+        }
     }
 }
 
@@ -1375,8 +1453,14 @@ function get_number_of_dislike_of_user($user_id){
         $result = get_result($stmt);
         mysqli_stmt_close($stmt);
         mysqli_close($conn);
-        return $result[0]['cnt'];
+        if(count($result) > 0){
+            return $result[0]['cnt'];
+        }
+        else{
+            return 0;
+        }
     }
+
 }
 
 function get_number_of_comments($review_id){
