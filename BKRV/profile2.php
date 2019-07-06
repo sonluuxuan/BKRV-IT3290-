@@ -12,7 +12,7 @@
 				$usernamePhp = $_SESSION['username'];
 				$useridPhp = $_SESSION['userid'];
 				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
-				// $loggedInUser = get_user($useridPhp)[0];
+				$userDescription = get_user_description($useridPhp);
 				$userEmail = get_user_email($useridPhp);
 			}
 	}
@@ -354,7 +354,7 @@
 					?>
 						<div class="col-md-4 featured-responsive">
 							<div class="featured-place-wrap">
-								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
+								<a href="detail.php?review_id=<?php echo $result2[$cnt]["id"]; ?>">
 
 								<!--session for detail.php not in ajax-->
 								<?php
@@ -476,7 +476,7 @@
 					?>
 						<div class="col-md-4 featured-responsive">
 							<div class="featured-place-wrap">
-								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
+								<a href="detail.php?review_id=<?php echo $result3[$cnt]["id"]; ?>">
 
 								<!--session for detail.php not in ajax-->
 								<?php
@@ -581,9 +581,7 @@
 				                <div class="col-xs-12 col-sm-8">
 				                    <h2 style="display: inline-block;"><?php echo $usernamePhp;?></h2><a href="edit_profile.php" style="margin-left: 15px">Edit Profile</a>
 				                    <p><strong>Email: </strong>  <?php echo $userEmail;?></p>
-				                    <p><strong>Description: </strong>asdfksdjklfjdskf
-				                    saldkfjsdkljfsdklfjsdklfj
-				                sdlkfjsdklfjsdklfjsdklfjsdklfjsdklfjsdkljf</p>
+				                    <p><strong>Description: </strong><?php echo $userDescription;?></p>
 				                    <!-- <p><strong>Hobbies: </strong> Read, out with friends, listen to music, draw and learn new things. </p> -->
 				                    <!-- <p><strong>Skills: </strong>
 				                        <span class="tags">html5</span> 

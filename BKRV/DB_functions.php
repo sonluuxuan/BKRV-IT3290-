@@ -3,7 +3,7 @@
 
 
 function hashSSHA($password) {
-    echo"\nhasscalled";
+    // echo"\nhasscalled";
     $salt = sha1(rand());
     $salt = substr($salt, 0, 10);
     $encrypted = base64_encode(sha1($password . $salt, true) . $salt);
@@ -18,19 +18,20 @@ function checkhashSSHA($salt, $password) {
     return $hash;
 }
 
-function storeUser($password, $username, $email){
+function storeUser($password, $username, $email, $bio){
     include 'connection.php';
     require_once('work_around_func.php');
     $hash = hashSSHA($password);
     $encrypted_password = $hash["encrypted"];
     $salt = $hash["salt"];
-    $query = "INSERT INTO User (username, email, password, salt) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO User (username, email, password, salt, bio) VALUES (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn,$query);
-    mysqli_stmt_bind_param($stmt, "ssss", $username, $email, $encrypted_password, $salt);
+    mysqli_stmt_bind_param($stmt, "sssss", $username, $email, $encrypted_password, $salt, $bio);
     if(mysqli_stmt_execute($stmt))
     {
        
         $kq = TRUE;
+        echo ($kq);
     }
     mysqli_stmt_close($stmt);
     mysqli_close($conn);
@@ -42,7 +43,7 @@ function change_profile_and_password($useridPhp, $Username, $Email, $NewPassword
     $hash = hashSSHA($NewPassword);
     $encrypted_password = $hash["encrypted"];
     $salt = $hash["salt"];
-    $query = "UPDATE User SET username=?, email=?, password=?, salt=?, bio=? WHERE user_id=?";
+    $query = "UPDATE User SET username=?, email=?, password=?, salt=?, bio=? WHERE id=?";
     $stmt = mysqli_prepare($conn,$query);
     mysqli_stmt_bind_param($stmt, "sssssi", $Username, $Email, $encrypted_password, $salt, $Description, $useridPhp);
     if(mysqli_stmt_execute($stmt))
@@ -127,13 +128,35 @@ function isUserExisted($username) {
     }
 }
 
-function isEmailExisted($email){
-	include 'connection.php';
+function isUserExistedProfile($username, $userId) {
+    include 'connection.php';
     require_once('work_around_func.php');
-    $query = "SELECT * FROM User WHERE email = ?";
+    $query = "SELECT * FROM User WHERE username = ? and id != ?";
     //$stmt = mysqli_stmt_init();
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_bind_param($stmt, "si", $username, $userId);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+    if (mysqli_stmt_num_rows($stmt) > 0) {
+        // user existed
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return true;
+    } else {
+        // user not existed
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return false;
+    }
+}
+
+function isEmailExistedProfile($email, $userId){
+	include 'connection.php';
+    require_once('work_around_func.php');
+    $query = "SELECT * FROM User WHERE email = ? and id != ?";
+    //$stmt = mysqli_stmt_init();
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "si", $email, $userId);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
     if (mysqli_stmt_num_rows($stmt) > 0) {
@@ -1371,7 +1394,7 @@ function get_user($review_id){
 function get_comment_user($review_id){
     include 'connection.php';
     require_once('work_around_func.php');
-    $query = "SELECT * FROM Review_comments WHERE Review_id = ? limit 5";
+    $query = "SELECT * FROM Review_comments WHERE Review_id = ? order by id desc limit 3";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "i", $review_id);
     if (mysqli_stmt_execute($stmt)){
@@ -1387,7 +1410,7 @@ function get_comment_user($review_id){
 function get_comment_user_view_more($review_id, $cnt){
     include 'connection.php';
     require_once('work_around_func.php');
-    $query = "SELECT * FROM Review_comments WHERE Review_id = ? order by id limit ?,3";
+    $query = "SELECT * FROM Review_comments WHERE Review_id = ? order by id desc limit ?,3";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "ii", $review_id, $cnt);
     if (mysqli_stmt_execute($stmt)){

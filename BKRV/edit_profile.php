@@ -12,7 +12,7 @@
 				$usernamePhp = $_SESSION['username'];
 				$useridPhp = $_SESSION['userid'];
 				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
-				// $loggedInUser = get_user($useridPhp)[0];
+				$userDescription = get_user_description($useridPhp);
 				$userEmail = get_user_email($useridPhp);
 			}
 	}
@@ -133,16 +133,19 @@ if(isset($_GET['error'])){
 		<!--============================= REVIEW DETAILS =============================-->
 		<script type="text/javascript">
 			function submitForm (){
+				// alert(total_file);
 				// match anything not a [ or ]
 				regexp = /^[^[\]]+/;
 				var fileInput = $('.putImages input[type="file"]');
 				var fileInputName = regexp.exec( fileInput.attr('name') );
-
+				alert(fileInputName);
 				// make files available
 				var data = new FormData();
 				jQuery.each($(fileInput)[0].files, function(i, file) {
 				    data.append(fileInputName+'['+i+']', file);
 				});
+				var userid = "<?php echo $useridPhp;?>";
+				// data.append(userid);
 				// alert(fileInputName[1]);
 				// HERE
 			    $.ajax({
@@ -154,10 +157,13 @@ if(isset($_GET['error'])){
     				cache:false,
     				enctype: 'multipart/form-data',
 			        data: data,
-			        success:function(){
-			            alert("Upload thành công!");
+			        success:function(response){
+			        	console.log(response);
+			            alert("Upload thành công! ajax");
+			            var parsed = JSON.parse(response);
+			            alert(parsed["message"]);
 			            //window.location.href="index.php"; // TODO: swap index.php with index file 
-			            window.location.href="index.php";
+			            // window.location.href="index.php";
 			        }
 			    });
 			}
@@ -176,7 +182,7 @@ if(isset($_GET['error'])){
 								<div class="info-input">
 									<div class="item-label">Username:</div>
 									<div class="item-detail">
-										<input type="text" style="opacity: 0.7" id="Username" value="<?php echo $usernamePhp?>">
+										<input type="text" style="opacity: 0.7" id="Username" value="<?php echo $usernamePhp;?>">
 									</div>
 								</div>
 								<div class="info-input">
@@ -189,7 +195,7 @@ if(isset($_GET['error'])){
 						<div class="info-content">
 							<div class="info-input">
 								<div class="item-label" style="width: 100%">Description:</div>
-								<textarea id="Description" value="<?php echo $usernamePhp?>" style="opacity: 0.7; width: 70%; height: 200px; padding: 16px"></textarea>
+								<textarea id="Description" style="opacity: 0.7; width: 70%; height: 200px; padding: 16px"><?php echo $userDescription;?></textarea>
 							</div>
 						</div>
 						<div class="review-checkbox" name="basic_info" >
@@ -225,8 +231,7 @@ if(isset($_GET['error'])){
 						</script>
 						<script>
 							var Mapp = angular.module('mealApp', []);
-							Mapp.controller('mealController', function($scope, $http) {
-								
+							Mapp.controller('mealController', function($scope, $http){
 								$scope._submit = function() {
 									$scope.sel = {};
 								 	$scope.Username = document.getElementById("Username").value;
@@ -245,14 +250,10 @@ if(isset($_GET['error'])){
 									$scope.sel['NewPassword'] = $scope.NewPassword;
 									$scope.sel['ConfirmPassword'] = $scope.ConfirmPassword;
 									$scope.sel['Description'] = $scope.Description;
-									// $scope.sel['storeOpnMin'] = $scope.storeOpnMin;
-									// $scope.sel['storeClsHour'] = $scope.storeClsHour;
-									// $scope.sel['storeClsMin'] = $scope.storeClsMin;
-									// $scope.sel['storeRating'] = $scope.storeRating;
-									// $scope.sel['mealName'] = $scope.selMealName;
-									// $scope.sel['mealPrice'] = $scope.selMealPrice;
-									// $scope.sel['storeReview'] = $scope.storeReview;
-									// $scope.sel['username'] = "<?php echo $usernamePhp;?>";
+									$scope.sel['OldDescription'] = "<?php echo $userDescription;?>";
+									$scope.sel['OldUsername'] = "<?php echo $usernamePhp;?>";
+									$scope.sel['OldEmail'] = "<?php echo $userEmail;?>";
+									$scope.sel['UserId'] = "<?php echo $useridPhp;?>";
 									console.log("message=" + $.param($scope.sel));
 									// working //
 									$http({
@@ -263,14 +264,22 @@ if(isset($_GET['error'])){
 									})
 									.then(function(response) {
 								        console.log(response);
-								        if(total_file > 0){
-								        	submitForm();
-								        }
-								        else{
-								        	alert("Upload thành công!");
-								            window.location.href="index.php";
-								        }
-								        
+								        if(response["data"].error == 1){
+									        alert(response["data"].message);
+									        // alert(response["data"].userid);
+									    }
+									    else{
+									        if(document.getElementById("upload_profile_pic").files.length > 0){
+										        submitForm();
+										    }
+										    else{
+										    	alert("Upload thành công!");
+										    	alert(response["data"].results);
+										    	alert($scope.Username);
+										    	// $_SESSION['username'] = response["data"].newusername;
+									            // window.location.href="index.php";
+										    }
+										}
 								    });
 								};
 							});
@@ -379,6 +388,7 @@ if(isset($_GET['error'])){
 		function preview_image() 
 		{
 		 var total_file=document.getElementById("upload_profile_pic").files.length;
+		 // alert(total_file);
 		 for(var i=0;i<total_file;i++)
 		 {
 		  $('#image_preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'>");

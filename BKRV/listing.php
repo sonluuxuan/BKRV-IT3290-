@@ -391,6 +391,12 @@
 								$no_districts = 0;
 								$no_prices = 0;
 								$no_cates = 0;
+							}else if($button == "posterpost"){
+								$posterId = $_GET['posterid'];
+								$result = get_posted_review($posterId);
+								$no_districts = 0;
+								$no_prices = 0;
+								$no_cates = 0;
 							}else if($button == "filter"){
 								$no_districts = $_GET['no_districts'];
 								$no_prices = $_GET['no_prices'];
@@ -604,10 +610,14 @@
 							var no_districts = 0;
 							var no_cates = 0;
 							var no_prices = 0;
+							var posterId = -1;
 							console.log(<?php echo json_encode($districts)?>);
 							if (type == 'find'){
 								search_input = "<?php echo $search_input;?>";
 								console.log(search_input);
+							}
+							else if (type == 'posterpost'){
+								posterId = "<?php echo $posterId;?>";
 							}
 							else if(type == 'filter'){
 								console.log("yes");
@@ -625,7 +635,7 @@
 							else {
 								console.log(type);
 							}
-							var data = {cnt_post:cnt_post, type:type, search_input:search_input, no_districts:no_districts, no_prices:no_prices, no_cates:no_cates,districts:districts,prices:prices,cates:cates};
+							var data = {cnt_post:cnt_post, posterId:posterId, type:type, search_input:search_input, no_districts:no_districts, no_prices:no_prices, no_cates:no_cates,districts:districts,prices:prices,cates:cates};
 							console.log(data);
 							$.ajax({
 											url: 'view_more.php',

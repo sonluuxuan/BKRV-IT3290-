@@ -278,7 +278,7 @@
 							<?php
 							if ($flags == 1){ // loged in able to like and dislike
 								$type = check_like_dislike($review_id, $useridPhp);
-								echo '<script> alert("'.$type.'");</script>';
+								// echo '<script> alert("'.$type.'");</script>';
 								if($type == -1){
 									echo'<div class="upvote-btn">';
 									echo '<div class="featured-btn-wrap">';
@@ -511,7 +511,7 @@
 								$('#taithem').click(function(){
 									var review_id = '<?php echo $review_id;?>';
 									var large = '';
-									alert(cnt);
+									alert("cnt:"+cnt);
 									$.ajax({
 										url:'load_comments.php',
 										type:'post',
@@ -523,7 +523,7 @@
 											// alert(data["cntmore"]);
 											// alert(data[2]['comment']);
 											for (i=0; i<data['cntmore']; i++){
-												large += '<div class="customer-review_wrap">	<div class="customer-img">		<img src="'+data[i]["profile_pic"]+'"class="img-fluid" alt="#" name="user_avatar">		<p name="user_comment">'+data[i]["username"]+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data[i]["summary"]+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data[i]["comment"]+'</p>	</div></div> <hr>';
+												large += '<hr><div class="customer-review_wrap">	<div class="customer-img">		<img src="'+data[i]["profile_pic"]+'"class="img-fluid" alt="#" name="user_avatar">		<p name="user_comment">'+data[i]["username"]+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data[i]["summary"]+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data[i]["comment"]+'</p>	</div></div>';
 												cnt += 1;
 											}
 											$("#comments_box").append(large);

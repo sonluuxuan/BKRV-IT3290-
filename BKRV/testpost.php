@@ -14,6 +14,7 @@
 	$mealName = $_POST['mealName'];
 	$mealPrice = $_POST['mealPrice'];
 	$username = $_POST['username'];
+	// echo $storeReview;
 
 	//get time
 	$storeOpnTime = $storeOpnHour.":".$storeOpnMin.":"."00";

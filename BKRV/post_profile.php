@@ -1,107 +1,67 @@
 <?php
-	include "DB_functions.php";
-	include 'function.php';
 	session_start();
-	$flags = 0;
-	$usernamePhp = "none";
-	if(isset($_SESSION["logged_in"]))
-	{
-		$flags = $_SESSION["logged_in"];
-		if($flags == 1)
-			{
-				$usernamePhp = $_SESSION['username'];
-				$useridPhp = $_SESSION['userid'];
-				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
-				$userDescription = get_user_description($useridPhp);
-				$userEmail = get_user_email($useridPhp);
-			}
-		echo $useridPhp;
-	}
-	if($flags == 0){
-		header('Location: index.php');
-	}
-	// $scope.sel['Username'] = $scope.Username;
-	// $scope.sel['Email'] = $scope.Email;
-	// $scope.sel['NewPassword'] = $scope.NewPassword;
-	// $scope.sel['ConfirmPassword'] = $scope.ConfirmPassword;
-	// $scope.sel['Description'] = $scope.Description;
-	if(isset($_POST['Username'])){
+	include "DB_functions.php";
+	$userId = $_POST['UserId'];
+	if(($_POST['Username'] != "")){
 		$Username = $_POST['Username'];
-		echo $Username;
-		if(isUserExisted($Username)){
-	        //header("Location: register.php?error=userexisted");
-	        $url = 'edit_profile.php?error=userexisted';        
-	        header('Location: ' . $url);
+		if(isUserExistedProfile($Username, $userId)){
+	        $result = array();
+			$result["message"] = "usernameExisted";
+			$result["error"] = 1;
+			// $result["userid"] = $userId;
+			echo json_encode($result);
 	        exit();
 	    }
 	}
 	else{
-		$Username = $usernamePhp;
-		echo $Username;
+		$Username = $_POST["OldUsername"];
 	}
 
-	if(isset($_POST['Email'])){
+	if(($_POST['Email'] != "")){
 		$Email = $_POST['Email'];
-		if(isEmailExisted($Email)){
-	        //header("Location: register.php?error=EmailExisted");
-	        $url = 'edit_profile.php?error=EmailExisted';
-	        header('Location: ' . $url);
+		if(isEmailExistedProfile($Email, $userId)){
+	        $result = array();
+			$result["message"] = "emailExisted";
+			$result["error"] = 1;
+			echo json_encode($result);
 	        exit();
 	    }
 	}
 	else{
-		$Email = $userEmail;
+		$Email = $_POST["OldEmail"];
 	}
 
-	if(isset($_POST['Description'])){
+	if(($_POST['Description'] != "")){
 		$Description = $_POST['Description'];
 	}
 	else{
-		$Description = $userDescription;
+		$Description = $_POST['OldDescription'];
 	}
 
-	if(isset($_POST['NewPassword']) && isset($_POST['ConfirmPassword'])){
+	if(($_POST['NewPassword'] != "") || ($_POST['ConfirmPassword'] != "")){
 		if($_POST['NewPassword'] == $_POST['ConfirmPassword']){
 			$NewPassword = $_POST['NewPassword'];
 			$ConfirmPassword = $_POST['ConfirmPassword'];
-			$result = change_profile_and_password($useridPhp, $Username, $Email, $NewPassword ,$Description);
+			$results = change_profile_and_password($userId, $Username, $Email, $NewPassword ,$Description);
+			$result = array();
+			$result["results"] = $results;
+			$_SESSION["username"] = $Username;
+			echo json_encode($result);
+	        exit();
 		}
 		else{
-			$url = 'edit_profile.php?error=passwordnotmatched';
-	        // if(isset($redirect)) {
-	        //     $url .= '&location=' . urlencode($redirect);
-	        // }
-	        header('Location: ' . $url);
+			$result = array();
+			$result["message"] = "passwordsNotMatched";
+			echo json_encode($result);
 	        exit();
 		}
 	}
 	else{
-		$result = change_profile($useridPhp, $Username, $Email, $Description);
-		echo "after";
+		$results = change_profile($userId, $Username, $Email, $Description);
+        $result = array();
+		$result["results"] = "here2";
+		$_SESSION["username"] = $Username;
+		echo json_encode($result);
+        exit();
 	}
-
-	/*if ($username){
-			$dir = "./myDir";
-		if ( !file_exists($dir) ) {
-	     	mkdir ($dir, 0777, true);
-	 	}
-		$myfile = fopen("myDir/test.txt", "a") or die("Unable to open file!");
-		
-		fwrite($myfile, $storeType);
-		fwrite($myfile, $storeReview);
-		fwrite($myfile, $storeRating);
-		fwrite($myfile, $storeName);
-		fwrite($myfile, $storeLocation);
-		fwrite($myfile, $storeOpnTime);
-		fwrite($myfile, $storeClsTime);
-		fwrite($myfile, $username);
-	}*/
-	//bug here, no result received
-	// $result = change_profile($Username, $Email, $NewPassword, $ConfirmPassword ,$Description);
-	/*if($result){
-		fwrite($myfile, $result);
-	}else{
-		fwrite($myfile, "no result received");
-	}*/
-	echo $result;
 ?>
