@@ -387,7 +387,7 @@
 							<!-- Actual Comments --> <!-- TODO: -->
 							<div class="customer-review_wrap">
 								<div class="customer-img">
-									<img src="<?php echo get_profile_pic("profile_pics/".$useridPhp)?>" class="img-fluid" alt="#" name="user_avatar"> <!-- current user's profile pic -->
+									<a style="padding:0" href="profile2.php"><img src="<?php echo get_profile_pic("profile_pics/".$useridPhp)?>" class="img-fluid" alt="#" name="user_avatar"> <!-- current user's profile pic --></a>
 									<p name="user_comment"><?php echo $usernamePhp;?></p> <!-- current user's username -->
 								</div>
 								<div class="customer-content-wrap">
@@ -429,6 +429,7 @@
 								var comment = $("#actual_comment").val();
 								var title = $("#title").val();
 								var username = "<?php echo $usernamePhp;?>";
+								var posterId = "<?php echo $posterId;?>";
 								var large = '';
 								$.ajax({
 									url: 'receive_comment.php',
@@ -438,7 +439,7 @@
 											success: function(data){
 												
 												var profile_picture = data['profile_picture'];
-												large += '<div class="customer-review_wrap">		<div class="customer-img">			<img src="'+data['profile_picture']+'" class="img-fluid" alt="#" name="user_avatar">			<p name="user_comment">'+username+'</p>		</div>		<div class="customer-content-wrap">			<div class="customer-content">				<div class="customer-review">					<h6 name="comment_title">'+data['title']+'</h6>				</div>			</div>			<p class="customer-text" name="comment_detail">'+data['comment']+'</p>		</div>	</div> <hr>';
+												large += '<div class="customer-review_wrap">		<div class="customer-img">			<a style="padding:0" href="view_profile.php?userid='+posterId+'"><img src="'+data['profile_picture']+'" class="img-fluid" alt="#" name="user_avatar"></a>			<p name="user_comment">'+username+'</p>		</div>		<div class="customer-content-wrap">			<div class="customer-content">				<div class="customer-review">					<h6 name="comment_title">'+data['title']+'</h6>				</div>			</div>			<p class="customer-text" name="comment_detail">'+data['comment']+'</p>		</div>	</div> <hr>';
 												$("#comments_box").prepend(large);
 												
 												}
@@ -484,7 +485,7 @@
 									$result_user_commented = getUserById($result_comment_user[$i]["user_id"]);
 									$user_commented = $result_user_commented[0];
 								
-									echo '<img src="'.get_profile_pic('profile_pics/'.$result_comment_user[$i]["user_id"]).'"class="img-fluid" alt="#" name="user_avatar">';
+									echo '<a style="padding:0" href="view_profile.php?userid='.$user_commented["id"].'"><img src="'.get_profile_pic('profile_pics/'.$result_comment_user[$i]["user_id"]).'"class="img-fluid" alt="#" name="user_avatar"></a>';
 									echo '<p name="user_comment">'.$user_commented["username"].'</p>';
 								echo '</div>';
 								echo '<div class="customer-content-wrap">';
@@ -590,8 +591,8 @@
 									// echo $user['id'], $useridPhp;
 									$sub_status = check_sub($user['id'], $useridPhp);
 								?>
-								<img src="<?php echo get_profile_pic("profile_pics/".$user['id']);?>" class="img-fluid" alt="#" name="writer-avatar">
-								<h6 name="writer-name"><?php echo $user["username"];?></h6>
+								<a style="padding:0" href="view_profile.php?userid=<?php echo $user["id"];?>"><img src="<?php echo get_profile_pic("profile_pics/".$user['id']);?>" class="img-fluid" alt="#" name="writer-avatar"></a>
+								<a style="padding:0" href="view_profile.php?userid=<?php echo $user["id"];?>"><h6 name="writer-name"><?php echo $user["username"];?></h6></a>
 								<?php
 								if($sub_status == 0 && $flags == 1){
 									// echo "<script type='text/javascript'>alert('shiteesfdfdk');</script>";
