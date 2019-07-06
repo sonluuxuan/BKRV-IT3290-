@@ -640,7 +640,7 @@
 							$.ajax({
 											url: 'view_more.php',
 											type: 'post',
-											data: {cnt_post:cnt_post, type:type, search_input:search_input, no_districts:no_districts, no_prices:no_prices, no_cates:no_cates,districts:districts,prices:prices,cates:cates},
+											data: {cnt_post:cnt_post, posterId:posterId, type:type, search_input:search_input, no_districts:no_districts, no_prices:no_prices, no_cates:no_cates,districts:districts,prices:prices,cates:cates},
 											dataType: 'json',
 											success: function(data){
 												console.log("success");

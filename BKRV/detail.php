@@ -115,6 +115,8 @@
 				$result_loai = get_loai($review_id);
 				$loai = $result_loai[0];
 				$result_mon_gia = get_mon_gia($review_id);
+				$result_profile = get_user($review_id);
+				$user = $result_profile[0];
 				// $sub_result = check_sub()
 		?>
 		<!-- <div clas -->
@@ -227,7 +229,7 @@
 										var text = split_id[0];
 										var postid = split_id[1];  // postid
 										//get username
-										var userid = "<?php echo $useridPhp;?>";
+										var userid = "<?php echo $user["id"];?>";
 										// Finding click type
 										var type = 0;
 										if(text == "like"){
@@ -586,8 +588,8 @@
 						<div class="follow">
 							<div class="follow-img">
 								<?php
-									$result_profile = get_user($review_id);
-									$user = $result_profile[0];
+									// $result_profile = get_user($review_id);
+									// $user = $result_profile[0];
 									// echo $user['id'], $useridPhp;
 									$sub_status = check_sub($user['id'], $useridPhp);
 								?>
