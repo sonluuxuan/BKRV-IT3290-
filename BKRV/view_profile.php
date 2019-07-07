@@ -91,7 +91,7 @@
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 							<i class="fa fa-bars"></i>
 						</button>
-						<a class="navbar-brand" href=""><img class="logo" src="images/logo.png" alt="" style="width: 200px; height: 50px"></a>
+						<a class="navbar-brand" href="index.php"><img class="logo" src="images/logo.png" alt="" style="width: 200px; height: 50px"></a>
 					</div>
 					<!-- Navigation -->
 					<div class="collapse navbar-collapse" id="navbar-menu">

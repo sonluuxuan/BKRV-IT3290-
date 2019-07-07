@@ -12,6 +12,7 @@
 		if($flags == 1)
 			{
 				$usernamePhp = $_SESSION['username'];
+				// echo $flags;
 				$useridPhp = $_SESSION['userid'];
 				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
 			}
@@ -352,6 +353,7 @@
 				if($flags == 1){
 					$result0 = get_subscribe_review($useridPhp);
 				}
+				// echo $result0[0]["id"];
 				if(!empty($result2[0]))
 					$popular_review1 = $result2[0];
 				if(!empty($result2[1]))
