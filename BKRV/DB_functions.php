@@ -150,6 +150,28 @@ function isUserExistedProfile($username, $userId) {
     }
 }
 
+function isEmailExisted($email){
+    include 'connection.php';
+    require_once('work_around_func.php');
+    $query = "SELECT * FROM User WHERE email = ?";
+    //$stmt = mysqli_stmt_init();
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+    if (mysqli_stmt_num_rows($stmt) > 0) {
+        // user existed
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return true;
+    } else {
+        // user not existed
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return false;
+    }
+}
+
 function isEmailExistedProfile($email, $userId){
 	include 'connection.php';
     require_once('work_around_func.php');

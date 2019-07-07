@@ -392,7 +392,7 @@
 										<div class="service_item">
 											<img src="<?php echo get_thumbnail("images/".$result0[$i]["id"]);?>"/>
 											<h3> <?php echo $result0[$i]["ten"]?> </h3>
-											<a style="padding:0" href="view_profile.php?userid=<?php echo $result0[$i]["user_id"];?>"><h4 style="font-style:italic; font-size: 15px; color:grey;"> <?php echo getUserById($result0[$i]["user_id"])[0]["username"]?> </h4></a>
+											<a style="padding:0" href="view_profile.php?userid=<?php echo $result0[$i]["user_id"];?>"><h4 style="font-style:italic; font-size: 15px; color:	#1E90FF;"> <?php echo getUserById($result0[$i]["user_id"])[0]["username"]?> </h4></a>
 											<p> <?php echo nl2br($result0[$i]["review"]). "<br>";?> </p>
 											<!--session for xem them button in-->
 											<?php
@@ -430,7 +430,7 @@
 						<div class="service_item">
 							<img src="<?php echo get_thumbnail("images/".$result[$i]["id"]);?>"/>
 							<h3> <?php echo $result[$i]["ten"]?> </h3>
-							<a style="padding:0" href="view_profile.php?userid=<?php echo $result0[$i]["user_id"];?>"><h4 style="font-style:italic; font-size: 15px; color:grey;"> <?php echo getUserById($result0[$i]["user_id"])[0]["username"]?> </h4></a>
+							<a style="padding:0" href="view_profile.php?userid=<?php echo $result[$i]["user_id"];?>"><h4 style="font-style:italic; font-size: 15px; color:	#1E90FF;"> <?php echo getUserById($result[$i]["user_id"])[0]["username"]?> </h4></a>
 							<p> <?php echo nl2br($result[$i]["review"]). "<br>";?> </p>
 							<!--session for xem them button in-->
 							<?php
@@ -477,7 +477,7 @@
 						<div class="service_item">
 							<img src="<?php echo get_thumbnail("images/".$result2[$i]["id"]);?>"/>
 							<h3> <?php echo $result2[$i]["ten"]?> </h3>
-							<a style="padding:0" href="view_profile.php?userid=<?php echo $result0[$i]["user_id"];?>"><h4 style="font-style:italic; font-size: 15px; color:grey;"> <?php echo getUserById($result0[$i]["user_id"])[0]["username"]?> </h4></a>
+							<a style="padding:0" href="view_profile.php?userid=<?php echo $result2[$i]["user_id"];?>"><h4 style="font-style:italic; font-size: 15px; color:	#1E90FF;"> <?php echo getUserById($result2[$i]["user_id"])[0]["username"]?> </h4></a>
 							<p> <?php echo nl2br($result2[$i]["review"]). "<br>";?> </p>
 							<!--session for xem them button in-->
 							<?php

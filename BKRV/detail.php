@@ -10,6 +10,7 @@
 			{
 				$usernamePhp = $_SESSION['username'];
 				$useridPhp = $_SESSION['userid'];
+				// echo $useridPhp;
 				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
 			}
 	}
@@ -228,8 +229,11 @@
 
 										var text = split_id[0];
 										var postid = split_id[1];  // postid
+										alert(text);
+										alert(postid);
 										//get username
-										var userid = "<?php echo $user["id"];?>";
+										var posterid = "<?php echo $user["id"];?>";
+										var userid = "<?php echo $useridPhp;?>";
 										// Finding click type
 										var type = 0;
 										if(text == "like"){
@@ -242,7 +246,7 @@
 										$.ajax({
 											url: 'likeunlike.php',
 											type: 'post',
-											data: {postid:postid,type:type,userid:userid},
+											data: {postid:postid,type:type,userid:userid,posterid:posterid},
 											dataType: 'json',
 											success: function(data){
 												var likes = data['likes'];
@@ -280,7 +284,7 @@
 							<?php
 							if ($flags == 1){ // loged in able to like and dislike
 								$type = check_like_dislike($review_id, $useridPhp);
-								// echo '<script> alert("'.$type.'");</script>';
+								echo '<script> alert("'.$type.'");</script>';
 								if($type == -1){
 									echo'<div class="upvote-btn">';
 									echo '<div class="featured-btn-wrap">';

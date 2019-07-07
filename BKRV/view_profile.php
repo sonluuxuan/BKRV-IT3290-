@@ -4,27 +4,20 @@
 	session_start();
 	$flags = 0;
 	$usernamePhp = "none";
-	if(isset($_SESSION["logged_in"]))
-	{
+	if(isset($_SESSION['logged_in'])){
 		$flags = $_SESSION["logged_in"];
-		if($flags == 1)
-			{
-				$usernamePhp = $_SESSION['username'];
-				$useridPhp = $_SESSION['userid'];
-				$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
-				$userDescription = get_user_description($useridPhp);
-				$userEmail = get_user_email($useridPhp);
-				$posterId = $_GET['userid'];
-				$poster = getUserById($posterId);
-				$posternamePhp = $poster[0]['username'];
-				$posterProfilePic = get_profile_pic("profile_pics/".$posterId);
-				$posterDescription = get_user_description($posterId);
-				$posterEmail = get_user_email($posterId);
-			}
+		$usernamePhp = $_SESSION['username'];
+		$useridPhp = $_SESSION['userid'];
+		$userProfilePic = get_profile_pic("profile_pics/".$useridPhp);
+		$userDescription = get_user_description($useridPhp);
+		$userEmail = get_user_email($useridPhp);
 	}
-	if($flags == 0){
-		header('Location: index.php');
-	}
+	$posterId = $_GET['userid'];
+	$poster = getUserById($posterId);
+	$posternamePhp = $poster[0]['username'];
+	$posterProfilePic = get_profile_pic("profile_pics/".$posterId);
+	$posterDescription = get_user_description($posterId);
+	$posterEmail = get_user_email($posterId);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -114,6 +107,10 @@
 									echo "<li><a href='logout.php'>Logout</a></li>";
 									echo "<a href='profile2.php'><img href='profile2.php' src=".$userProfilePic." style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>";
 								}
+								else{
+									echo "<li><a href='index.php'>Trang chủ</a></li>";
+									echo "<li><a href='login.php?location=".urlencode($_SERVER['REQUEST_URI'])."'>Đăng Nhập</a></li>";
+								}
 							?>
 						</ul>
 					</div>
@@ -129,13 +126,26 @@
 		    <div class="span3 well" style="width:100%">
 		        <center>
 		        <a href="#aboutModal" data-toggle="modal" data-target="#myModal"><img src="<?php echo $posterProfilePic;?>" name="aboutme" style = "width:140px; height:140px;" class="img-circle"></a>
-		        <h3 style="margin-bottom: 10px; margin-top: 10px;"><?php echo $posternamePhp;?></h3>
-		        <br>
-		        <div>
+		        <h3 style="margin-bottom: 5px; margin-top: 10px;"><?php echo $posternamePhp;?></h3>
+		        <?php
+		        	$sub_status = check_sub($posterId, $useridPhp);
+					if($sub_status == 0 && $flags == 1){
+						// echo "<script type='text/javascript'>alert('shiteesfdfdk');</script>";
+						echo'<button class="sub_but" id="sub_button" style="margin-top:0px; background-color: #46cd38; border-radius: 10px; border: none; color:white; /*opacity: 0.5; cursor: not-allowed;*/" type="button">SUBSCRIBE</button>';
+					}
+					else if($sub_status > 0 && $flags == 1){
+						// echo "<script type='text/javascript'>alert('shiteesfdfdk');</script>";
+						echo '<button class="sub_but" id="sub_button" style="margin-top:0px; /*background-color: #46cd38;*/ border-radius: 10px; border: none; color:grey; opacity: 0.5; /*cursor: not-allowed;*/" type="button">SUBSCRIBED</button>';
+					}
+					else{
+						echo '<button class="sub_but" id="sub_button" style="margin-top:0px; background-color: #46cd38; border-radius: 10px; border: none; color:white; opacity:0.5;/*cursor: not-allowed;*/" type="button" disabled title="login to subscribe">SUBSCRIBE</button>';
+					}
+				?>
+		        <div style="padding-top: 10px; margin-top: 10px;">
                     <span class="label label-success spanlabel2"><?php echo get_number_of_like_of_user($posterId);?> Likes</span>
                     <span style="background-color:red" class="label label-info spanlabel2"><?php echo get_number_of_dislike_of_user($posterId);?> Dislikes</span>
                     <span class="label label-warning spanlabel2"><?php echo get_number_of_post_by_user($posterId);?> Posts</span>
-                    <span class="label label-info spanlabel2"><?php echo get_number_of_subscribers($posterId);?> Subscribers</span>
+                    <span id="writer_subscribers" class="label label-info spanlabel2"><?php echo get_number_of_subscribers($posterId);?> Subscribers</span>
                     <style>
                     	.spanlabel2{
                     		text-align : center;
@@ -145,7 +155,54 @@
 						  	/*height : 6em;
 						  	/*border-radius: 100%;*/
                     	}
+                    	.sub_but{
+                    		text-align : center;
+                    		font-size: 22px;
+						  	/*padding : 0.5em;*/
+						  	width  : 160px;
+						  	height : 50px;
+						  	/*border-radius: 100%;*/
+                    	}
                     </style>
+                    <script type="text/javascript">
+						$(document).ready(function(){
+							var sub_status = "<?php echo $sub_status;?>";
+							$('#sub_button').click(function(){
+								var posterId = "<?php echo $posterId;?>";
+								var subscriberId = "<?php echo $useridPhp;?>";
+								alert(posterId);
+								alert(subscriberId);
+								alert(sub_status);
+								$.ajax({
+									url:'subscribe.php',
+									type:'post',
+									data:{posterId:posterId, subscriberId:subscriberId, sub_status:sub_status},
+									dataType:'json',
+									success: function(data){
+										alert(data["result"]);
+										if(sub_status == 0){
+											$("#writer_subscribers").text(data["countSub"] +1+' Subscribers');
+											// $("#sub_button").attr("disabled", true);
+											$("#sub_button").text("SUBSCRIBED");
+											$("#sub_button").css('background-color','grey');
+											$("#sub_button").css('opacity','0.5');
+											sub_status = 1;
+										}
+										else{
+											$("#writer_subscribers").text(data["countSub"] -1+' Subscribers');
+											// $("#sub_button").attr("disabled", true);
+											$("#sub_button").text("SUBSCRIBE");
+											$("#sub_button").css('background-color','#46cd38');
+											$("#sub_button").css('color','white');
+											$("#sub_button").css('opacity','1');
+											sub_status = 0;
+										}
+									}
+
+								});
+							});
+						});
+                    </script>
 		        <br>
 		        <br>
 		        </div>
@@ -318,12 +375,60 @@
 					</div> 				
 				</div>
 			<div class="featured_btn_wrap" style="width: 100%" >
-						<a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=posterpost&posterid=<?php echo $posterId;?>" id="<?php echo $button?>">XEM THÊM</a> 
+						<!-- <a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=posterpost&posterid=<?php //echo $posterId;?>" id="<?php //echo $button?>">XEM THÊM</a> --> 
+						<button class="wtf view_more_button" id="viewmoreprofile">XEM THÊM</button>
 					</div>
 			</section>
 			<hr>
 		</div>
 		<!-- POSTED REVIEWS END -->
+		<script>
+					$(document).ready(function(){
+						console.log("ready");
+						var cnt = <?php echo $cnt;?>;
+						var flags = <?php echo $flags;?>;						
+						$("#viewmoreprofile").click(function(){
+							console.log("clicked");
+							var type = "posterpost";
+							var cnt_post = cnt;  // postid
+							//alert(cnt_post);
+							//alert(type);
+							var search_input = "";
+							var districts = [];
+							var prices = [];
+							var cates = [];
+							var no_districts = 0;
+							var no_cates = 0;
+							var no_prices = 0;
+							var posterId = -1;
+							console.log(<?php echo json_encode($districts)?>);
+							if (type == 'posterpost'){
+								posterId = "<?php echo $posterId;?>";
+							}
+							var data = {cnt_post:cnt_post, posterId:posterId, type:type, search_input:search_input, no_districts:no_districts, no_prices:no_prices, no_cates:no_cates,districts:districts,prices:prices,cates:cates};
+							console.log(data);
+							$.ajax({
+									url: 'view_more.php',
+									type: 'post',
+									data: {cnt_post:cnt_post, posterId:posterId, type:type, search_input:search_input, no_districts:no_districts, no_prices:no_prices, no_cates:no_cates,districts:districts,prices:prices,cates:cates},
+									dataType: 'json',
+									success: function(data){
+										console.log("success");
+										var cnt_received = data['cnt_received'];
+										var large = '<div class="row"> ' ;
+										for (i=0; i<cnt_received; i++){
+											large += '<div class="col-md-4 featured-responsive">	                    <div class="featured-place-wrap">	                        <a href="detail.php?review_id='+data[i]['id']+'">	                            <img src="'+data[i]['thumbnail']+'" class="img-fluid" alt="#">	                            <span class="'+data[i]['class_rating']+'">'+data[i]['rating']+'</span>	                            <div class="featured-title-box">	                                <h6>'+data[i]['ten']+'</h6>	                                <p>'+data[i]['loai']+'</p>	                                <ul>	                                    <li><span class="ti-location-pin"></span>	                                        <p name="store_name">'+data[i]['dia_chi']+'</p>	                                    </li>	                                    <li><span class="fa fa-tag minmaxpriceicon"></span>	                                        <p name="store_pricerange">'+data[i]['low']+' - '+data[i]['high']+'</p>	                                    </li>	                                    <li><span class="ti-time"></span>	                                        <p name="store_opening">'+data[i]['time_low']+' - '+data[i]['time_high']+'</p>	                                    </li>	                                </ul><h4 style="font-style:italic; font-size: 15px; color:grey;">'+ data[i]["username"]+'</h4>	                                <div class="bottom-icons">	                                    <div class="'+data[i]['class_time']+'">'+data[i]['status']+'</div>	                                    <span class="ti-heart"><span class="upvote display-number" name="no_upvotes">'+data[i]['likes']+'</span></span>	                                    <span class="ti-comments"><span class="comment display-number" name="no_comments">'+data[i]['comments']+'</span></span>	                                </div>	                            </div>	                        </a>	                    </div>	                </div>';
+													cnt = cnt+1;
+													//alert(cnt);
+											}
+											alert(cnt);
+											large += '</div>';
+											$("#row_of_review").append(large);
+										}
+									});		
+								});
+							});
+				</script>
 		<!--=================================== END REVIEW DETAILS ==================================-->
 
 
