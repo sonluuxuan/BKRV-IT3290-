@@ -14,6 +14,7 @@ foreach($results as $result){
 	$profile_pic = get_profile_pic('profile_pics/'.$user_commented["id"]);
 	$response[$cnt_received]["profile_pic"] = $profile_pic;
 	$response[$cnt_received]["username"] = $user_commented['username'];
+	$response[$cnt_received]["userId"] = $user_commented['id'];
 	$response[$cnt_received]["summary"] = $result['summary'];
 	$response[$cnt_received]["comment"] = $result['comment'];
 	$cnt_received++;

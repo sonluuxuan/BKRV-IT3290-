@@ -423,7 +423,6 @@
 						<script>
 							$(document).ready(function() {
 								$(".comment-submit").click(postComment);
-
 							});
 
 							function postComment(){
@@ -435,7 +434,6 @@
 								var comment = $("#actual_comment").val();
 								var title = $("#title").val();
 								var username = "<?php echo $usernamePhp;?>";
-								var posterId = "<?php echo $posterId;?>";
 								var large = '';
 								$.ajax({
 									url: 'receive_comment.php',
@@ -445,7 +443,7 @@
 											success: function(data){
 												
 												var profile_picture = data['profile_picture'];
-												large += '<div class="customer-review_wrap">		<div class="customer-img">			<a style="padding:0" href="view_profile.php?userid='+posterId+'"><img src="'+data['profile_picture']+'" class="img-fluid" alt="#" name="user_avatar"></a>			<p name="user_comment">'+username+'</p>		</div>		<div class="customer-content-wrap">			<div class="customer-content">				<div class="customer-review">					<h6 name="comment_title">'+data['title']+'</h6>				</div>			</div>			<p class="customer-text" name="comment_detail">'+data['comment']+'</p>		</div>	</div> <hr>';
+												large += '<div class="customer-review_wrap">		<div class="customer-img">			<a style="padding:0" href="view_profile.php?userid='+user_id+'"><img src="'+data['profile_picture']+'" class="img-fluid" alt="#" name="user_avatar"></a>			<p name="user_comment">'+username+'</p>		</div>		<div class="customer-content-wrap">			<div class="customer-content">				<div class="customer-review">					<h6 name="comment_title">'+data['title']+'</h6>				</div>			</div>			<p class="customer-text" name="comment_detail">'+data['comment']+'</p>		</div>	</div> <hr>';
 												$("#comments_box").prepend(large);
 												
 												}
@@ -530,7 +528,7 @@
 											// alert(data["cntmore"]);
 											// alert(data[2]['comment']);
 											for (i=0; i<data['cntmore']; i++){
-												large += '<hr><div class="customer-review_wrap">	<div class="customer-img">		<img src="'+data[i]["profile_pic"]+'"class="img-fluid" alt="#" name="user_avatar">		<p name="user_comment">'+data[i]["username"]+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data[i]["summary"]+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data[i]["comment"]+'</p>	</div></div>';
+												large += '<hr><div class="customer-review_wrap">	<div class="customer-img">		<a style="padding:0" href="view_profile.php?userid='+data[i]['userId']+'"><img src="'+data[i]["profile_pic"]+'"class="img-fluid" alt="#" name="user_avatar"></a>		<p name="user_comment">'+data[i]["username"]+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data[i]["summary"]+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data[i]["comment"]+'</p>	</div></div>';
 												cnt += 1;
 											}
 											$("#comments_box").append(large);
