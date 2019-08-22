@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<link rel="icon" href="{{ url_for('static', filename='images/logo.png')}}">
+		<!-- Mobile Specific Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- Custom Fonts -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='custom-font/fonts.css') }}" />
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/font-awesome.min.css') }}" />
+		<!-- Bootsnav -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/bootsnav.css') }}">
+		<!-- Fancybox -->
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/jquery.fancybox.css') }}" media="screen" />	
+		<!-- Custom stylesheet -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/custom.css') }}"/>
+		<!-- AngularJS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	</head>
+	<body>
+
+		<!-- Preloader -->
+
+		<div id="loading">
+			<div id="loading-center">
+				<div id="loading-center-absolute">
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+				</div>
+			</div>
+		</div>
+
+		<!--End off Preloader -->
+
+		<!-- Header -->
+		<header>
+			<!-- Navbar -->
+			<nav class="navbar bootsnav">
+				<div class="container">
+					<!-- Header Navigation -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+							<i class="fa fa-bars"></i>
+						</button>
+						<a class="navbar-brand" href=""><img class="logo" src="{{url_for('static', filename='images/logo.png')}}" alt="" style="height: 50px; width: 200px"></a>
+					</div>
+					<!-- Navigation -->
+					<div class="collapse navbar-collapse" id="navbar-menu">
+						<ul class="nav navbar-nav menu">
+							<li><a href="{{url_for('index')}}">Trang chủ</a></li>
+							{% if not current_user.is_authenticated %}
+								<li><a href="{{url_for('login')}}">Đăng Nhập</a></li>
+								<li><a href="{{url_for('registration')}}">Đăng Ký</a></li>
+							{% else %}
+								<li><a href="{{ url_for('logout') }}">Logout</a></li>
+							{% endif %}
+							<li><a href="#new">Mới</a></li>
+							<li><a href="#popular">Phổ biến</a></li>
+							{% if current_user.is_authenticated %}
+								<a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename = 'images/testimonial_img1.png') }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
+							{% endif %}
+						</ul>
+					</div>
+				</div>   
+			</nav><!-- Navbar end -->
+		</header><!-- Header end -->
+
+		{% with messages = get_flashed_messages(with_categories = true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					<div class = "alert alert-{{category}}" style="margin-bottom: 0">
+						{{message}}
+					</div>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+		
+		<section id="home" class="home">
+			<!-- Carousel -->
+			<div id="carousel" class="carousel slide" data-ride="carousel">
+				<!-- Carousel-inner -->
+				<div class="carousel-inner" role="listbox">
+					<div class="item active">
+						<img src="{{url_for('static', filename='images/food.jpg')}}">
+						<div class="overlay" ng-app="myApp" ng-controller="myCtrl" ng-init="show='false'">
+						<!-- session for form -->
+								<div class="inner-form">
+									<div class="input-field first-wrap">
+										<input class="search_box" id="search" name="search_input" type="text" placeholder="Quán ăn / món ăn / địa chỉ" />
+										<i class="fa fa-sliders" style="margin-top: 3px" ng-click="switchShow()"></i>
+								  	</div>
+								  	<div class="input-field third-wrap">
+										<input id="ignored_element" class="btn know_btn" type="submit" name="find" value="Tìm"></input>
+								 	</div>
+								</div>
+							</form>
+							<div class="carousel-caption">
+								<h3>Hedspi Food Review</h3>
+								<h1>Đánh giá đồ ăn</h1>
+								<h1 class="second_heading">Creative & Professional</h1>
+								<!-- session for viet review -->
+							</div>					
+						</div>
+					</div>        
+				</div><!-- Carousel-inner end -->
+			</div><!-- Carousel end-->
+		</section>
+
+		
+		<section id="new">
+			<div class="container">
+				<div class="button__header">
+					<h2 class="styled-heading">SUBSCRIBE REVIEW</h2>
+					<a class='btn-view__more' href='listing.php?button=subscribe'>Xem tất cả</a>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="service_item">
+							<img src=""/>
+							<h3>h3</h3>
+							<a style="padding:0" href=""><h4 style="font-style:italic; font-size: 15px; color:	#1E90FF;">userID</h4></a>
+							<p>Review</p>
+							<!--session for xem them button in-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- Sub review end -->
+		<section id="new">
+			<div class="container">
+				<div class="button__header">
+					<h2 class="styled-heading">REVIEW GẦN ĐÂY</h2>
+				</div>
+				<div class="row">
+				<div class="col-md-4">
+					<div class="service_item">
+						<img src=""/>
+						<h3> <?php echo $result[$i]["ten"]?> </h3>
+						<a><h4 style="font-style:italic; font-size: 15px; color:	#1E90FF;">Username</h4></a>
+						<p>Review<br></p>
+						<!--session for xem them button in-->
+					</div>
+				</div>
+				</div>
+			</div>
+		</section><!-- New review end -->
+		<!-- Popular review -->
+		<section id="popular">
+			<div class="container">
+				<div class="button__header">
+					<h2 class="styled-heading">REVIEW PHỔ BIẾN</h2>
+					<a class='btn-view__more' href='listing.php?button=popular'>Xem tất cả</a>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="service_item">
+							<img src=""/>
+							<h3>Ten</h3>
+							<a style="padding:0" href="view_profile.php">
+							<h4 style="font-style:italic; font-size: 15px; color:	#1E90FF;">Username</h4></a>
+							<p>Review<br></p>
+							<!--session for xem them button in-->
+							<a href="detail.php" class="btn know_btn">xem thêm</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- Popular review end -->
+		<!-- start blog Area -->		
+		<section id="quick">
+			<div class="container">
+				<h2 class="styled-heading">TÌM KIẾM NHANH</h2>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="service_item">
+						<a href="listing.php?button=an_vat_via_he">
+							<!--<a href="listing.html">-->
+								<div class ="container">
+									<img class="img-fluid image" src="{{url_for('static', filename='images/anvat.jpg')}}"/>
+									<div class="overlay">
+										<div class="text">Ăn vặt / Vỉa hè</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="service_item">
+						<a href="listing.php?button=cafe_dessert">
+							<!--<a href="listing.html">-->
+								<div class ="container2">
+									<img class="img-fluid image2" src="{{url_for('static', filename='images/cake.jpg')}}"/>
+									<div class="overlay2">
+										<div class="text">Café / Dessert</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="service_item">
+							<a href="listing.php?button=bar_pub">';
+								<div class ="container3">
+									<img class="img-fluid image3" src="{{url_for('static', filename='images/pub.jpg')}}"/>
+									<div class="overlay3">
+										<div class="text">Bar / Pub</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="service_item">
+							<a href="listing.php?button=nhahang">
+								<div class ="container4">
+									<img class="img-fluid image4" src="{{url_for('static', filename='images/restaurant.jpg')}}"/>
+									<div class="overlay4">
+										<div class="text">Nhà hàng</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end blog Area -->	
+
+		<!-- Footer -->
+		<footer>
+			<!-- Footer top -->
+			<div class="container footer_top">
+				<div class="row">
+					<div class="col-lg-4 col-sm-7">
+						<div class="footer_item">
+							<h4>About Company</h4>
+							<img class="logo" src="{{url_for('static', filename='images/logo.png')}}" style="width: 200px; height: 50px" />
+							<p>Sản phẩm là quá trình sản sinh tri thức một cách khách quan và tự nguyện của một nhóm bạn trẻ SDL Đại Học Bách Khoa Hà Nội .Lấy ý tưởng từ phần mềm diệt virus BKAV , BKRV ra đời nhằm mục đích quảng bá món ăn Việt Nam đến với bạn bè Thế Giới .</p>
+
+							<ul class="list-inline footer_social_icon">
+								<li><a href=""><span class="fa fa-facebook"></span></a></li>
+								<li><a href=""><span class="fa fa-twitter"></span></a></li>
+								<li><a href=""><span class="fa fa-youtube"></span></a></li>
+								<li><a href=""><span class="fa fa-google-plus"></span></a></li>
+								<li><a href=""><span class="fa fa-linkedin"></span></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-2 col-sm-5">
+						<div class="footer_item">
+							<h4>Sponsers</h4>
+							<ul class="list-unstyled footer_menu">
+								<li><a href="https://www.facebook.com/cafetrasuathayphuong/"><span class="fa fa-play"></span> Citea FUN</a>
+								<li><a href="https://www.facebook.com/chienhedspi"><span class="fa fa-play"></span> TSCBSM Group</a>
+								<li><a href="https://www.facebook.com/vingroup.net/"><span class="fa fa-play"></span> Vin Group</a>
+								<li><a href="https://www.foody.vn/ha-noi"><span class="fa fa-play"></span> Foody.vn</a>
+								<li><a href="https://lala.vn/"><span class="fa fa-play"></span> LALA</a>
+								<li><a href="https://www.facebook.com/The.ThanosMadTitan"><span class="fa fa-play"></span> Thanos</a>
+								<li><a href="https://www.facebook.com/vuduc153"><span class="fa fa-play"></span> Spider MAN</a>
+								<li><a href="https://www.facebook.com/hedspi.nichibu/"><span class="fa fa-play"></span> Hedspi Nichibu</a>
+								<li><a href="https://www.facebook.com/JAV-Company-233850186650513/"><span class="fa fa-play"></span> JAV Company</a>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-7">
+						<div class="footer_item">
+							<h4>Don't read the lines below</h4>
+							<ul class="list-unstyled post">
+								<li><a href=""><span class="date">03 <small>MBR</small></span>  Project made by SDL Team<br/>with 3 members</a></li>
+								<li><a href=""><span class="date">02 <small>WRK</small></span>  Number of people really doing this project</a></li>
+								<li><a href=""><span class="date">01 <small>TER</small></span>  Takes 1 month of implementation</a></li>
+								<li><a href=""><span class="date">10 <small>DIM</small></span><b>  Số điểm mà nhóm mong muốn có được</b></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-5">
+						<div class="footer_item">
+							<h4>Come with us</h4>
+							<ul class="list-unstyled footer_contact">
+								<li><a href=""><span class="fa fa-map-marker"></span> 17 Ta Quang Buu , HBC HN VN</a></li>
+								<li><a href=""><span class="fa fa-envelope"></span> Email.Never.Read@gmail.com</a></li>
+								<li><a href=""><span class="fa fa-mobile"></span><p>+84 24 66 711 211 <br />+84 69 96 069 069</p></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div><!-- Footer top end -->
+
+			<!-- Footer bottom -->
+			<div class="footer_bottom text-center">
+				<p class="wow fadeInRight">
+					Made with 
+					<i class="fa fa-heart"></i>
+					by 
+					<a target="_blank" href="http://bootstrapthemes.co">Bootstrap Themes</a> 
+					2016. All Rights Reserved
+				</p>
+			</div><!-- Footer bottom end -->
+		</footer><!-- Footer end -->
+
+		<!-- JavaScript -->
+		<script src="{{url_for('static', filename='js/jquery-1.12.1.min.js')}}"></script>
+		<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+
+		<!-- Bootsnav js -->
+		<script src="{{url_for('static', filename='js/bootsnav.js')}}"></script>
+
+		<!-- JS Implementing Plugins -->
+		<script src="{{url_for('static', filename='js/isotope.js')}}"></script>
+		<script src="{{url_for('static', filename='js/isotope-active.js')}}"></script>
+		<script src="{{url_for('static', filename='js/jquery.fancybox.js')}}"></script>
+
+		<script src="{{url_for('static', filename='js/jquery.scrollUp.min.js')}}"></script>
+
+		<script src="{{url_for('static', filename='js/main.js')}}"></script>
+	</body>	
+</html>	
+
+
+<!-- kanseishimashit -->
