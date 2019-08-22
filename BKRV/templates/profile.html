@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<!-- Mobile Specific Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- Custom Fonts -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='custom-font/fonts.css') }}" />
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/font-awesome.min.css') }}" />
+		<!-- Bootsnav -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/bootsnav.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/post.css') }}"/>
+		<!-- Fancybox -->
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/jquery.fancybox.css') }}" media="screen" />	
+		<!-- Custom stylesheet -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/listing-detail.css') }}" />
+		<!-- AngularJS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<!-- Simple line Icon -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/simple-line-icons.css') }}">
+		<!-- Themify Icon -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/themify-icons.css') }}">
+		<!-- Magnific Popup CSS -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/magnific-popup.css') }}">
+		<script src="{{ url_for('static',filename='js/jquery-1.12.1.min.js') }}"></script>
+		<script src="http://malsup.github.com/jquery.form.js"></script> 
+	</head>
+	<body>
+
+		<!-- Preloader -->
+
+		<div id="loading">
+			<div id="loading-center">
+				<div id="loading-center-absolute">
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+					<div class="object"></div>
+				</div>
+			</div>
+		</div>
+
+		<!--End off Preloader -->
+
+		<!-- Header -->
+		<header>
+			<!-- Navbar -->
+			<nav class="navbar bootsnav">
+				<div class="container">
+					<!-- Header Navigation -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+							<i class="fa fa-bars"></i>
+						</button>
+						<a class="navbar-brand" href=""><img class="logo" src="images/logo.png" alt="" style="width: 200px; height: 50px"></a>
+					</div>
+					<!-- Navigation -->
+					<div class="collapse navbar-collapse" id="navbar-menu">
+						<ul class="nav navbar-nav menu">
+							<li><a href="{{url_for('index')}}">Trang chủ</a></li>
+							<li><a href="{{ url_for('logout') }}">Logout</a></li>
+							<a href='#'><img src="{{ url_for('static', filename = 'images/testimonial_img1.png') }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
+						</ul>
+					</div>
+				</div>   
+			</nav><!-- Navbar end -->
+		</header><!-- Header end -->
+
+		
+
+		<!--============================= TAB BUTTONS =============================-->
+		<section class="store-block">
+			<div class="container" style="left:0;border:0;padding:0">
+				<div class="row">
+					<!-- TABS -->
+					<div class="tab">
+					  <button class="tablinks" onclick="openTab(event, 'reviews')">REVIEWS</button>
+					  <button class="tablinks" id="defaultOpenTab" onclick="openTab(event, 'infos')">INFO</button>
+					  <!-- <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button> -->
+					</div>
+					<style type="text/css">
+						/* Style the tab */
+						.tab {
+						  overflow: auto;
+						  border: none;
+						  background-color: #f1f1f1;
+						}
+						.tablinks{
+							width:50%;
+							margin:0 auto;
+							font-weight: bold;
+							font-size: 20px;
+						}
+
+						/* Style the buttons that are used to open the tab content */
+						.tab button {
+						  background-color: inherit;
+						  float: left;
+						  border: none;
+						  outline: none;
+						  cursor: pointer;
+						  padding: 14px 16px;
+						  transition: 0.3s;
+						}
+
+						/* Change background color of buttons on hover */
+						.tab button:hover {
+						  background-color: #ddd;
+						}
+
+						/* Create an active/current tablink class */
+						.tab button.active {
+						  background-color: #ccc;
+						}
+
+						/* Style the tab content */
+						.tabcontent {
+						  display: none;
+						  padding: 6px 12px;
+						  border: 1px solid #ccc;
+						  border-top: none;
+						}
+					</style>
+					<script>
+						function openTab(evt, tabname) {
+						  // Declare all variables
+						  var i, tabcontent, tablinks;
+
+						  // Get all elements with class="tabcontent" and hide them
+						  tabcontent = document.getElementsByClassName("tabcontent");
+						  for (i = 0; i < tabcontent.length; i++) {
+						    tabcontent[i].style.display = "none";
+						  }
+
+						  // Get all elements with class="tablinks" and remove the class "active"
+						  tablinks = document.getElementsByClassName("tablinks");
+						  for (i = 0; i < tablinks.length; i++) {
+						    tablinks[i].className = tablinks[i].className.replace(" active", "");
+						  }
+
+						  // Show the current tab, and add an "active" class to the button that opened the tab
+						  document.getElementById(tabname).style.display = "block";
+						  evt.currentTarget.className += " active";
+						}
+					</script>
+					<!-- END TABS -->
+				</div>
+			</div>
+		</section>
+		<!--//END DESCRIPTION -->
+		
+		<!--============================= REVIEW DETAILS =============================-->
+		<div id="reviews" class="tabcontent">
+			<!-- LIKED REVIEWS BEGIN -->
+			<section class="main-block">
+				<div class="container" id="row_of_review">
+					<div class="row justify-content-center">
+						<div class="col-md-5">
+							<div class="styled-heading">
+								<h3>LIKED</h3>
+							</div>
+						</div>
+					</div>
+					<div class="row" > <!-- LIKED REIVEWS -->
+						<div class="col-md-4 featured-responsive">
+							<div class="featured-place-wrap">
+								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
+
+								<!--session for detail.php not in ajax-->
+								<a href="review_id">;
+									<img src="" class="img-fluid" alt="#">
+									<span class="<?php echo $class_rating?>">Rating</span>
+									<div class="featured-title-box">
+										<h6 name="store_name">Store name</h6>
+										<p name="store_type">loai</p>
+										<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
+										<ul>
+											<li><span class="ti-location-pin"></span>
+												<p name="store_address"><?php echo $result[$cnt]["dia_chi"];?></p>
+											</li>
+											<li><span class="fa fa-tag minmaxpriceicon"></span>
+											<p name="store_pricerange"> 
+												Price range
+											</p>
+											</li>
+											<li><span class="ti-time"></span>
+											<p name="store_opening">Opening hours</p>
+											</li>
+										</ul>
+										<h4 style="font-style:italic; font-size: 15px; color:grey;"> username </h4>
+										<div class="bottom-icons">
+											<!--<div class="closed-now">CLOSED NOW</div> --><!-- Based on opening hour -->
+											<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->
+											<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->';
+											<span class="ti-heart"><span class="upvote display-number" name="store_point">Likes</span></span> 
+											<!-- Number of upvotes - number of downvotes -->
+											<span class="ti-comments"><span class="comment display-number" name="no_comments">num comments </span></span>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div> 				
+				</div>
+			<div class="featured_btn_wrap"  style="width:100%">
+				<a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=liked" id="<?php echo $button?>">XEM THÊM</a> 
+			</div>
+			</section>
+			<!-- LIKED REVIEWS END -->
+			<hr>
+			<!-- DISLIKED REVIEWS BEGIN -->
+			<section class="main-block">
+				<div class="container" id="row_of_review">
+					<div class="row justify-content-center">
+						<div class="col-md-5">
+							<div class="styled-heading">
+								<h3>LIKED</h3>
+							</div>
+						</div>
+					</div>
+					<div class="row" > <!-- LIKED REIVEWS -->
+						<div class="col-md-4 featured-responsive">
+							<div class="featured-place-wrap">
+								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
+
+								<!--session for detail.php not in ajax-->
+								<a href="review_id">;
+									<img src="" class="img-fluid" alt="#">
+									<span class="<?php echo $class_rating?>">Rating</span>
+									<div class="featured-title-box">
+										<h6 name="store_name">Store name</h6>
+										<p name="store_type">loai</p>
+										<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
+										<ul>
+											<li><span class="ti-location-pin"></span>
+												<p name="store_address"><?php echo $result[$cnt]["dia_chi"];?></p>
+											</li>
+											<li><span class="fa fa-tag minmaxpriceicon"></span>
+											<p name="store_pricerange"> 
+												Price range
+											</p>
+											</li>
+											<li><span class="ti-time"></span>
+											<p name="store_opening">Opening hours</p>
+											</li>
+										</ul>
+										<h4 style="font-style:italic; font-size: 15px; color:grey;"> username </h4>
+										<div class="bottom-icons">
+											<!--<div class="closed-now">CLOSED NOW</div> --><!-- Based on opening hour -->
+											<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->
+											<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->';
+											<span class="ti-heart"><span class="upvote display-number" name="store_point">Likes</span></span> 
+											<!-- Number of upvotes - number of downvotes -->
+											<span class="ti-comments"><span class="comment display-number" name="no_comments">num comments </span></span>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div> 				
+				</div>
+			<div class="featured_btn_wrap" style="width: 100%" >
+						<a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=disliked" id="<?php echo $button?>">XEM THÊM</a> 
+					</div>
+			</section>
+			<hr>
+			<!-- DISLIKED REVIEWS END -->
+
+			<!-- POSTED REVIEWS BEGIN -->
+			<section class="main-block">
+				<div class="container" id="row_of_review">
+					<div class="row justify-content-center">
+						<div class="col-md-5">
+							<div class="styled-heading">
+								<h3>LIKED</h3>
+							</div>
+						</div>
+					</div>
+					<div class="row" > <!-- LIKED REIVEWS -->
+						<div class="col-md-4 featured-responsive">
+							<div class="featured-place-wrap">
+								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
+
+								<!--session for detail.php not in ajax-->
+								<a href="review_id">;
+									<img src="" class="img-fluid" alt="#">
+									<span class="<?php echo $class_rating?>">Rating</span>
+									<div class="featured-title-box">
+										<h6 name="store_name">Store name</h6>
+										<p name="store_type">loai</p>
+										<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
+										<ul>
+											<li><span class="ti-location-pin"></span>
+												<p name="store_address"><?php echo $result[$cnt]["dia_chi"];?></p>
+											</li>
+											<li><span class="fa fa-tag minmaxpriceicon"></span>
+											<p name="store_pricerange"> 
+												Price range
+											</p>
+											</li>
+											<li><span class="ti-time"></span>
+											<p name="store_opening">Opening hours</p>
+											</li>
+										</ul>
+										<h4 style="font-style:italic; font-size: 15px; color:grey;"> username </h4>
+										<div class="bottom-icons">
+											<!--<div class="closed-now">CLOSED NOW</div> --><!-- Based on opening hour -->
+											<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->
+											<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->';
+											<span class="ti-heart"><span class="upvote display-number" name="store_point">Likes</span></span> 
+											<!-- Number of upvotes - number of downvotes -->
+											<span class="ti-comments"><span class="comment display-number" name="no_comments">num comments </span></span>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div> 				
+				</div>
+			<div class="featured_btn_wrap" style="width: 100%" >
+						<a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=posted" id="<?php echo $button?>">XEM THÊM</a> 
+					</div>
+			</section>
+			<hr>
+		</div>
+		<!-- POSTED REVIEWS END -->
+		<!--=================================== END REVIEW DETAILS ==================================-->
+
+
+
+		<!--=================================== PERSONAL INFORMATION ================================-->
+		<div id="infos" class="tabcontent">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+			    	 	<div class="well profile">
+				            <div class="col-sm-12">
+				                <div class="col-xs-12 col-sm-8">
+				                    <h2 style="display: inline-block;">Username</h2><a href="edit_profile.php" style="margin-left: 15px">Edit Profile</a>
+				                    <p><strong>Email: </strong> Useremail </p>
+				                    <p><strong>Description: </strong>Bio</p>
+				                    <!-- <p><strong>Hobbies: </strong> Read, out with friends, listen to music, draw and learn new things. </p> -->
+				                    <!-- <p><strong>Skills: </strong>
+				                        <span class="tags">html5</span> 
+				                        <span class="tags">css3</span>
+				                        <span class="tags">jquery</span>
+				                        <span class="tags">bootstrap3</span>
+				                    </p> -->
+				                </div>             
+				                <div class="col-xs-12 col-sm-4 text-center">
+				                    <figure>
+				                        <img src="<?php echo $userProfilePic?>">
+				                        <!-- <img src="images/man.png"> -->
+				                        <figcaption class="ratings">
+				                            <!-- <p>Ratings
+				                            <a href="#">
+				                                <span class="fa fa-star"></span>
+				                            </a>
+				                            <a href="#">
+				                                <span class="fa fa-star"></span>
+				                            </a>
+				                            <a href="#">
+				                                <span class="fa fa-star"></span>
+				                            </a>
+				                            <a href="#">
+				                                <span class="fa fa-star"></span>
+				                            </a>
+				                            <a href="#">
+				                                 <span class="fa fa-star-o"></span>
+				                            </a> 
+				                            </p> -->
+				                            <!-- <p style="float:left; margin-right:5px; color: green">Likes: <?php// echo get_number_of_like_of_user($useridPhp);?>
+				                            </p>
+				                            <p style="float:left; color:red">Dislikes: <?php// echo get_number_of_dislike_of_user($useridPhp);?>
+				                        	</p> -->
+				                        </figcaption>
+				                    </figure>
+				                </div>
+				            </div>            
+				            <div class="col-xs-12 divider text-center" style="height:100%">
+				            	
+				                <div class="col-xs-12 col-sm-4 emphasis">
+				                    <h2 style="margin-bottom: 10px; text-align: center; color:blue;display:inline-block;"><strong>num sub</strong></h2>                    
+				                    <!-- <p><small>Subscribers</small></p> -->
+				                    <!-- <button class="btn btn-success btn-block"> Subscribe </button> -->
+				                    <h3 style="color:blue"><strong> SUBSCRIBERS </strong></h3>
+				                </div>
+				                <div class="col-xs-12 col-sm-4 emphasis">
+				                    <h2 style="margin-bottom: 10px; text-align: center; color:green;"><strong>num likes </strong></h2>                    
+				                    <!-- <p><small>Subscribers</small></p> -->
+				                    <!-- <button class="btn btn-success btn-block"> Subscribe </button> -->
+				                    <h3 style="color:green"><strong> LIKES </strong></h3>
+				                </div>
+				                <div class="col-xs-12 col-sm-4 emphasis">
+				                    <h2 style="margin-bottom: 10px; text-align: center; color:red"><strong>num dislikes</strong></h2>                    
+				                    <!-- <p><small>Subscribers</small></p> -->
+				                    <!-- <button class="btn btn-success btn-block"> Subscribe </button> -->
+				                    <h3 style="color:red"><strong> DISLIKES </strong></h3>
+				                </div>
+				                <!-- <button style="float:right">Edit</button> -->
+				            </div>
+			    	    </div>                 
+					</div>
+				</div>
+			</div>
+			<style type="text/css">
+				@import url(http://fonts.googleapis.com/css?family=Lato:400,700);
+				body
+				{
+				    font-family: 'Lato', 'sans-serif';
+				    }
+				.profile 
+				{
+				    min-height: 255px;
+				    display: inline-block;
+				    }
+				.emphasis 
+				{
+				    margin-top:20px;
+				    }
+				figcaption.ratings
+				{
+				    margin-top:20px;
+				    }
+				figcaption.ratings a
+				{
+				    color:#f1c40f;
+				    font-size:11px;
+				    }
+				figcaption.ratings a:hover
+				{
+				    color:#f39c12;
+				    text-decoration:none;
+				    }
+				.divider 
+				{
+				    border-top:1px solid rgba(0,0,0,0.1);
+				    margin-bottom:0;
+				    }
+				.emphasis 
+				{
+				    border-top: 4px solid transparent;
+				    }
+				.emphasis:hover 
+				{
+				    border-top: 4px solid #1abc9c;
+				    }
+				.emphasis h2
+				{
+				    margin-bottom:0;
+				    }
+				span.tags 
+				{
+				    background: #1abc9c;
+				    border-radius: 2px;
+				    color: #f5f5f5;
+				    font-weight: bold;
+				    padding: 2px 4px;
+				    }
+				.dropdown-menu 
+				{
+				    background-color: #34495e;    
+				    box-shadow: none;
+				    -webkit-box-shadow: none;
+				    width: 250px;
+				    margin-left: -125px;
+				    left: 50%;
+				    }
+				.dropdown-menu .divider 
+				{
+				    background:none;    
+				    }
+				.dropdown-menu>li>a
+				{
+				    color:#f5f5f5;
+				    }
+				.dropup .dropdown-menu 
+				{
+				    margin-bottom:10px;
+				    }
+				.dropup .dropdown-menu:before 
+				{
+				    content: "";
+				    border-top: 10px solid #34495e;
+				    border-right: 10px solid transparent;
+				    border-left: 10px solid transparent;
+				    position: absolute;
+				    bottom: -10px;
+				    left: 50%;
+				    margin-left: -10px;
+				    z-index: 10;
+				    }
+			</style>
+		</div>
+		<!--=================================== END PERSONAL INFORMATION ============================-->
+
+
+		<!-- Footer -->
+		<footer>
+			<!-- Footer top -->
+			<div class="container footer_top">
+				<div class="row">
+					<div class="col-lg-4 col-sm-7">
+						<div class="footer_item">
+							<h4>About Company</h4>
+							<img class="logo" src="{{url_for('static', filename='images/logo.png')}}" style="width: 200px; height: 50px" />
+							<p>Sản phẩm là quá trình sản sinh tri thức một cách khách quan và tự nguyện của một nhóm bạn trẻ SDL Đại Học Bách Khoa Hà Nội .Lấy ý tưởng từ phần mềm diệt virus BKAV , BKRV ra đời nhằm mục đích quảng bá món ăn Việt Nam đến với bạn bè Thế Giới .</p>
+
+							<ul class="list-inline footer_social_icon">
+								<li><a href=""><span class="fa fa-facebook"></span></a></li>
+								<li><a href=""><span class="fa fa-twitter"></span></a></li>
+								<li><a href=""><span class="fa fa-youtube"></span></a></li>
+								<li><a href=""><span class="fa fa-google-plus"></span></a></li>
+								<li><a href=""><span class="fa fa-linkedin"></span></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-2 col-sm-5">
+						<div class="footer_item">
+							<h4>Sponsers</h4>
+							<ul class="list-unstyled footer_menu">
+								<li><a href="https://www.facebook.com/cafetrasuathayphuong/"><span class="fa fa-play"></span> Citea FUN</a>
+								<li><a href="https://www.facebook.com/chienhedspi"><span class="fa fa-play"></span> TSCBSM Group</a>
+								<li><a href="https://www.facebook.com/vingroup.net/"><span class="fa fa-play"></span> Vin Group</a>
+								<li><a href="https://www.foody.vn/ha-noi"><span class="fa fa-play"></span> Foody.vn</a>
+								<li><a href="https://lala.vn/"><span class="fa fa-play"></span> LALA</a>
+								<li><a href="https://www.facebook.com/The.ThanosMadTitan"><span class="fa fa-play"></span> Thanos</a>
+								<li><a href="https://www.facebook.com/vuduc153"><span class="fa fa-play"></span> Spider MAN</a>
+								<li><a href="https://www.facebook.com/hedspi.nichibu/"><span class="fa fa-play"></span> Hedspi Nichibu</a>
+								<li><a href="https://www.facebook.com/JAV-Company-233850186650513/"><span class="fa fa-play"></span> JAV Company</a>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-7">
+						<div class="footer_item">
+							<h4>Don't read the lines below</h4>
+							<ul class="list-unstyled post">
+								<li><a href=""><span class="date">03 <small>MBR</small></span>  Project made by SDL Team<br/>with 3 members</a></li>
+								<li><a href=""><span class="date">02 <small>WRK</small></span>  Number of people really doing this project</a></li>
+								<li><a href=""><span class="date">01 <small>TER</small></span>  Takes 1 month of implementation</a></li>
+								<li><a href=""><span class="date">10 <small>DIM</small></span><b>  Số điểm mà nhóm mong muốn có được</b></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-5">
+						<div class="footer_item">
+							<h4>Come with us</h4>
+							<ul class="list-unstyled footer_contact">
+								<li><a href=""><span class="fa fa-map-marker"></span> 17 Ta Quang Buu , HBC HN VN</a></li>
+								<li><a href=""><span class="fa fa-envelope"></span> Email.Never.Read@gmail.com</a></li>
+								<li><a href=""><span class="fa fa-mobile"></span><p>+84 24 66 711 211 <br />+84 69 96 069 069</p></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div><!-- Footer top end -->
+
+			<!-- Footer bottom -->
+			<div class="footer_bottom text-center">
+				<p class="wow fadeInRight">
+					Made with 
+					<i class="fa fa-heart"></i>
+					by 
+					<a target="_blank" href="http://bootstrapthemes.co">Bootstrap Themes</a> 
+					2016. All Rights Reserved
+				</p>
+			</div><!-- Footer bottom end -->
+		</footer><!-- Footer end -->
+
+		<!-- JavaScript -->
+		<!-- JavaScript -->
+		<script>
+		document.getElementById("defaultOpenTab").click();
+		$(document).ready(function() 
+		{ 
+		 $('#uploadForm').ajaxForm(function() 
+		 {
+		  alert("Uploaded SuccessFully");
+		 }); 
+		});
+
+		function preview_image() 
+		{
+		 var total_file=document.getElementById("upload_file").files.length;
+		 for(var i=0;i<total_file;i++)
+		 {
+		  $('#image_preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'>");
+		 }
+		}
+		</script>
+		<script src="{{url_for('static', filename='js/jquery-1.12.1.min.js')}}"></script>
+		<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+
+		<!-- Bootsnav js -->
+		<script src="{{url_for('static', filename='js/bootsnav.js')}}"></script>
+
+		<!-- JS Implementing Plugins -->
+		<script src="{{url_for('static', filename='js/isotope.js')}}"></script>
+		<script src="{{url_for('static', filename='js/isotope-active.js')}}"></script>
+		<script src="{{url_for('static', filename='js/jquery.fancybox.js')}}"></script>
+
+		<script src="{{url_for('static', filename='js/jquery.scrollUp.min.js')}}"></script>
+
+		<script src="{{url_for('static', filename='js/main.js')}}"></script>
+	</body>	
+</html>	
+
+
+<!-- kanseishimashit -->
