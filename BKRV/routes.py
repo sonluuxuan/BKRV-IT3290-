@@ -1,6 +1,6 @@
 from flask import Flask, Response, url_for, flash
 from flask import render_template, redirect, request
-from BKRV.forms import Registration_form, Login_form
+from BKRV.forms import Registration_form, Login_form, Edit_profile_form
 from BKRV import app, db, bcrypt
 from BKRV.model import District, Loai_quan, User_subscribes_, User, Review, Review_comments, Review_mon_gia, User_like_dislike
 from flask_login import login_user, current_user, logout_user
@@ -45,3 +45,15 @@ def logout():
 @app.route("/profile")
 def profile():
 	return render_template('profile.html')
+
+@app.route("/edit_profile")
+def edit_profile():
+	form = Edit_profile_form()
+	if form.validate_on_submit():
+		current_user.username = form.username.data
+		current_user.email = form.email.data
+		current_user.bio = form.bio.data
+		db.session.commit()
+		flash('Updated!', success)
+		return redirect(url_for('profile'))
+	return render_template('edit_profile2.html', form=form)

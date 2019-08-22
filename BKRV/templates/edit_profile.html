@@ -1,0 +1,67 @@
+{% extends 'simple_layout.html' %}
+{% block content %}
+		<section class="light-bg review-details_wrap">
+			<div class="container">
+				<div class="review-checkbox_wrap" style="height: auto;">
+						<div class="review-checkbox" name="detailed_info" style="margin-top: 50px">
+							<span class="ti-check-box"></span>
+							<h6 style="display: inline-block;">Personal Informations</h6>
+							<hr>
+						</div>
+							<form action="" method='post'>
+							<div class="info-content">
+									<div class="info-input">
+										<div class="item-label">Username:</div>
+										<div class="item-detail">
+											<input type="text" style="opacity: 0.7" id="Username" value="username">
+										</div>
+									</div>
+									<div class="info-input">
+										<div class="item-label">Email:</div>
+										<div class="item-detail">
+											<input type="text" style="opacity: 0.7" id="Email" value="useremail">
+										</div>
+									</div>
+							</div>
+							<div class="info-content">
+								<div class="info-input">
+									<div class="item-label" style="width: 100%">Description:</div>
+									<textarea id="Description" style="opacity: 0.7; width: 70%; height: 200px; padding: 16px">Description</textarea>
+								</div>
+							</div>
+						</form>
+						<!-- <div class="review-checkbox" name="basic_info" >
+							<button onclick="changePass();">Change password:</button>
+							<hr>
+						</div>
+						<div class="info-content" style="display: none" id="changePass">
+							<div class="info-input">
+									<div class="item-label">New password:</div>
+									<div class="item-detail">
+										<input type="text" name="store_name" id="NewPassword" required/>
+									</div>
+							</div>
+							<div class="info-input">
+								<div class="item-label">Confirm password:</div>
+								<div class="item-detail">
+										<input type="text" name="store_location" id="ConfirmPassword" required/>
+								</div>
+							</div>								
+						</div> -->
+						<script type="text/javascript">
+							function changePass() {
+							  var x = document.getElementById("changePass");
+							  if (x.style.display === "none") {
+							    x.style.display = "block";
+							  } else {
+							    x.style.display = "none";
+							  }
+							}
+						</script>
+						<button type="button" class="btn submit_btn" ng-click="_submit()">Submit</button>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--//END REVIEW DETAILS -->
+{% endblock content %}

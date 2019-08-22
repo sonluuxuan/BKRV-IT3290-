@@ -34,7 +34,7 @@ class User(db.Model, UserMixin):
 	email = db.Column('email', db.VARCHAR(length = 100))
 	username = db.Column('username', db.VARCHAR(length = 100))
 	bio = db.Column('bio', db.Text, nullable=True)
-	
+	profile_picture = db.Column('profile_picture', db.Text)
 	reviews = db.relationship('Review', backref='author', lazy='dynamic')
 	comments = db.relationship('Review_comments', backref='commenter', lazy='dynamic')
 
