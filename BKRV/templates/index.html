@@ -68,8 +68,7 @@
 							<li><a href="#new">Mới</a></li>
 							<li><a href="#popular">Phổ biến</a></li>
 							{% if current_user.is_authenticated %}
-								profile_pic = 'images/'~current_user.id
-								<a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename = 'images/'~current_user.id) }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
+								<a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename = current_user.profile_picture) }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
 							{% endif %}
 						</ul>
 					</div>

@@ -56,4 +56,4 @@ def edit_profile():
 		db.session.commit()
 		flash('Updated!', success)
 		return redirect(url_for('profile'))
-	return render_template('edit_profile2.html', form=form)
+	return render_template('edit_profile.html', form=form)

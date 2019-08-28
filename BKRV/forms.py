@@ -13,12 +13,12 @@ class Registration_form(FlaskForm):
 	submit = SubmitField('Sign up')
 
 	def validate_username(self, username):
-		user = User.query.filter_by(username = username.data)[0]
+		user = User.query.filter_by(username = username.data).first()
 		if user:
 			raise ValidationError('Username not available !!!')
 			
 	def validate_email(self, email):
-		user = User.query.filter_by(email = email.data)[0]
+		user = User.query.filter_by(email = email.data).first()
 		if user:
 			raise ValidationError('Email not available !!!')
 
