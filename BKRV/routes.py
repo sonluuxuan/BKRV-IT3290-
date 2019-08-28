@@ -46,14 +46,14 @@ def logout():
 def profile():
 	return render_template('profile.html')
 
-@app.route("/edit_profile")
+@app.route("/edit_profile", methods = ['GET', 'POST'])
 def edit_profile():
 	form = Edit_profile_form()
-	if form.validate_on_submit():
+	if (form.validate_on_submit()):
 		current_user.username = form.username.data
 		current_user.email = form.email.data
 		current_user.bio = form.bio.data
 		db.session.commit()
-		flash('Updated!', success)
+		flash('Updated!', 'success')
 		return redirect(url_for('profile'))
 	return render_template('edit_profile.html', form=form)

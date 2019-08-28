@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<link rel="icon" href="{{ url_for('static', filename='images/logo.png')}}">
 		<!-- Mobile Specific Meta -->
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- Custom Fonts -->
@@ -71,7 +72,7 @@
 						<ul class="nav navbar-nav menu">
 							<li><a href="{{url_for('index')}}">Trang chủ</a></li>
 							<li><a href="{{ url_for('logout') }}">Logout</a></li>
-							<a href='#'><img src="{{ url_for('static', filename = current_user.profile_picture) }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
+							<a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename = current_user.profile_picture) }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
 						</ul>
 					</div>
 				</div>   

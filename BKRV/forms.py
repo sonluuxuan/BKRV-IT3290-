@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+from wtforms.widgets import TextArea
 from BKRV.model import User
 from flask_login import current_user
 
@@ -31,10 +32,7 @@ class Login_form(FlaskForm):
 class Edit_profile_form(FlaskForm):
 	username = StringField('Username', validators = [DataRequired(), Length(min=2, max=20)])
 	email = StringField('Email', validators=[DataRequired(), Email()])
-	bio = StringField('Bio')
-	# password = StringField('Password', validators = [DataRequired()])
-	# confirm_password = StringField('Confirm Password', validators = [DataRequired(), EqualTo('password')])
-
+	bio = StringField('Bio', widget=TextArea(), default = current_user.bio)
 	submit = SubmitField('Update')
 
 	def validate_username(self, username):
