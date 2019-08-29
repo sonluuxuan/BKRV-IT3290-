@@ -32,7 +32,7 @@ class Login_form(FlaskForm):
 class Edit_profile_form(FlaskForm):
 	username = StringField('Username', validators = [DataRequired(), Length(min=2, max=20)])
 	email = StringField('Email', validators=[DataRequired(), Email()])
-	bio = StringField('Bio', widget=TextArea(), default = current_user.bio)
+	bio = StringField('Bio', widget=TextArea())
 	submit = SubmitField('Update')
 
 	def validate_username(self, username):

@@ -60,12 +60,12 @@
 												padding: 16px;
 											}
 										</style>
-										{% if current_user.bio != None%}
+										{% if current_user.bio is not none %}
 											{{form.bio(class='bio')}}	
+											<script type="text/javascript">document.getElementById("bio").defaultValue = "{{current_user.bio}}";</script>
 										{% else %}
-											{{form.bio(class='bio', placeholder='Tell us about you! ')}}
+											{{form.bio(class='bio', id='bio', placeholder='Tell us about you! ')}}
 										{% endif %}
-										
 									</div>
 								</div>
 								{{ form.submit(class='btn submit_btn')}}
