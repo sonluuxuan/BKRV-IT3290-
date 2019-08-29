@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from wtforms.widgets import TextArea
@@ -33,6 +34,7 @@ class Edit_profile_form(FlaskForm):
 	username = StringField('Username', validators = [DataRequired(), Length(min=2, max=20)])
 	email = StringField('Email', validators=[DataRequired(), Email()])
 	bio = StringField('Bio', widget=TextArea())
+	picture = FileField('Update profile picture', validators = [FileAllowed(['jpg', 'png'])])
 	submit = SubmitField('Update')
 
 	def validate_username(self, username):
