@@ -13,23 +13,12 @@
 		<link rel="stylesheet" href="{{ url_for('static',filename='css/font-awesome.min.css') }}" />
 		<!-- Bootsnav -->
 		<link rel="stylesheet" href="{{ url_for('static',filename='css/bootsnav.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/post.css') }}"/>
-		{% block css %}
-		{% endblock css %}
 		<!-- Fancybox -->
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/jquery.fancybox.css') }}" media="screen" />	
 		<!-- Custom stylesheet -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/listing-detail.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/custom.css') }}"/>
 		<!-- AngularJS -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-		<!-- Simple line Icon -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/simple-line-icons.css') }}">
-		<!-- Themify Icon -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/themify-icons.css') }}">
-		<!-- Magnific Popup CSS -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/magnific-popup.css') }}">
-		<script src="{{ url_for('static',filename='js/jquery-1.12.1.min.js') }}"></script>
-		<script src="http://malsup.github.com/jquery.form.js"></script> 
 	</head>
 	<body>
 
@@ -64,24 +53,131 @@
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 							<i class="fa fa-bars"></i>
 						</button>
-						<a class="navbar-brand" href="{{url_for('index')}}"><img class="logo" src="{{url_for('static', filename='images/logo.png')}}" alt="" style="height: 50px; width: 200px"></a>
-						<a class="navbar-brand" href=""><img class="logo" src="images/logo.png" alt="" style="width: 200px; height: 50px"></a>
+						<a class="navbar-brand" href=""><img class="logo" src="{{url_for('static', filename='images/logo.png')}}" alt="" style="height: 50px; width: 200px"></a>
 					</div>
 					<!-- Navigation -->
 					<div class="collapse navbar-collapse" id="navbar-menu">
 						<ul class="nav navbar-nav menu">
 							<li><a href="{{url_for('index')}}">Trang chủ</a></li>
-							<li><a href="{{ url_for('logout') }}">Logout</a></li>
-							<a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename = current_user.profile_picture) }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
+							{% if not current_user.is_authenticated %}
+								<li><a href="{{url_for('login')}}">Đăng Nhập</a></li>
+								<li><a href="{{url_for('registration')}}">Đăng Ký</a></li>
+							{% else %}
+								<li><a href="{{ url_for('logout') }}">Logout</a></li>
+							{% endif %}
+							<li><a href="#new">Mới</a></li>
+							<li><a href="#popular">Phổ biến</a></li>
+							{% if current_user.is_authenticated %}
+								<a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename = current_user.profile_picture) }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
+							{% endif %}
 						</ul>
 					</div>
 				</div>   
 			</nav><!-- Navbar end -->
 		</header><!-- Header end -->
 
-		{% block content %}
+		{% with messages = get_flashed_messages(with_categories = true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					<div class = "alert alert-{{category}}" style="margin-bottom: 0">
+						{{message}}
+					</div>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+		
+		<section id="home" class="home">
+			<!-- Carousel -->
+			<div id="carousel" class="carousel slide" data-ride="carousel">
+				<!-- Carousel-inner -->
+				<div class="carousel-inner" role="listbox">
+					<div class="item active">
+						<img src="{{url_for('static', filename='images/food.jpg')}}">
+						<div class="overlay" ng-app="myApp" ng-controller="myCtrl" ng-init="show='false'">
+						<!-- session for form -->
+								<div class="inner-form">
+									<div class="input-field first-wrap">
+										<input class="search_box" id="search" name="search_input" type="text" placeholder="Quán ăn / món ăn / địa chỉ" />
+										<i class="fa fa-sliders" style="margin-top: 3px" ng-click="switchShow()"></i>
+								  	</div>
+								  	<div class="input-field third-wrap">
+										<input id="ignored_element" class="btn know_btn" type="submit" name="find" value="Tìm"></input>
+								 	</div>
+								</div>
+							</form>
+							<div class="carousel-caption">
+								<h3>Hedspi Food Review</h3>
+								<h1>Đánh giá đồ ăn</h1>
+								<h1 class="second_heading">Creative & Professional</h1>
+								<!-- session for viet review -->
+							</div>					
+						</div>
+					</div>        
+				</div><!-- Carousel-inner end -->
+			</div><!-- Carousel end-->
+		</section>
 
-		{% endblock content%}
+		{% block reviews %}
+		{% endblock reviews %}
+		<!-- start blog Area -->		
+		<section id="quick">
+			<div class="container">
+				<h2 class="styled-heading">TÌM KIẾM NHANH</h2>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="service_item">
+						<a href="listing.php?button=an_vat_via_he">
+							<!--<a href="listing.html">-->
+								<div class ="container">
+									<img class="img-fluid image" src="{{url_for('static', filename='images/anvat.jpg')}}"/>
+									<div class="overlay">
+										<div class="text">Ăn vặt / Vỉa hè</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="service_item">
+						<a href="listing.php?button=cafe_dessert">
+							<!--<a href="listing.html">-->
+								<div class ="container2">
+									<img class="img-fluid image2" src="{{url_for('static', filename='images/cake.jpg')}}"/>
+									<div class="overlay2">
+										<div class="text">Café / Dessert</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="service_item">
+							<a href="listing.php?button=bar_pub">
+								<div class ="container3">
+									<img class="img-fluid image3" src="{{url_for('static', filename='images/pub.jpg')}}"/>
+									<div class="overlay3">
+										<div class="text">Bar / Pub</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="service_item">
+							<a href="listing.php?button=nhahang">
+								<div class ="container4">
+									<img class="img-fluid image4" src="{{url_for('static', filename='images/restaurant.jpg')}}"/>
+									<div class="overlay4">
+										<div class="text">Nhà hàng</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end blog Area -->	
 
 		<!-- Footer -->
 		<footer>
@@ -91,7 +187,7 @@
 					<div class="col-lg-4 col-sm-7">
 						<div class="footer_item">
 							<h4>About Company</h4>
-							<img class="logo" src="{{url_for('static', filename = 'images/logo.png')}}" style="width: 200px; height: 50px" />
+							<img class="logo" src="{{url_for('static', filename='images/logo.png')}}" style="width: 200px; height: 50px" />
 							<p>Sản phẩm là quá trình sản sinh tri thức một cách khách quan và tự nguyện của một nhóm bạn trẻ SDL Đại Học Bách Khoa Hà Nội .Lấy ý tưởng từ phần mềm diệt virus BKAV , BKRV ra đời nhằm mục đích quảng bá món ăn Việt Nam đến với bạn bè Thế Giới .</p>
 
 							<ul class="list-inline footer_social_icon">
@@ -154,7 +250,8 @@
 				</p>
 			</div><!-- Footer bottom end -->
 		</footer><!-- Footer end -->
-		</script>
+
+		<!-- JavaScript -->
 		<script src="{{url_for('static', filename='js/jquery-1.12.1.min.js')}}"></script>
 		<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
 
@@ -172,4 +269,5 @@
 	</body>	
 </html>	
 
-<!-- kanseishimashita -->
+
+<!-- kanseishimashit -->
