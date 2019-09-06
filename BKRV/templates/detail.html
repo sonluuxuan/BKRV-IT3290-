@@ -1,0 +1,384 @@
+{% extends 'detail_layout.html' %}
+{% block content %}
+<!-- Swiper -->
+	<!-- <div clas -->
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			{% if pictures|length % 3 == 0%}
+				{% for picture in pictures %}
+					<div class="swiper-slide">
+					<a href="{{ picture }}" class="grid image-link">
+					<img src="{{ picture }}" class="img-fluid" alt="#">
+					</a>
+					</div>
+				{% endfor %}
+			{% elif pictures|length % 3 == 1%}
+				{% for picture in pictures %}
+					<div class="swiper-slide">
+					<a href="{{ picture }}" class="grid image-link">
+					<img src="{{ picture }}" class="img-fluid" alt="#">
+					</a>
+					</div>
+				{% endfor %}
+				{% for i in range(2) %}
+					<div class="swiper-slide">
+					<a href="{{ pictures[0] }}" class="grid image-link">
+					<img src="{{ pictures[0] }}" class="img-fluid" alt="#">
+					</a>
+					</div>
+				{% endfor %}
+			{% elif pictures|length % 3 == 2 %}
+				{% for picture in pictures %}
+					<div class="swiper-slide">
+					<a href="{{ picture }}" class="grid image-link">
+					<img src="{{ picture }}" class="img-fluid" alt="#">
+					</a>
+					</div>
+				{% endfor %}
+				<div class="swiper-slide">
+				<a href="{{ pictures[0] }}" class="grid image-link">
+				<img src="{{ pictures[0] }}" class="img-fluid" alt="#">
+				</a>
+				</div>
+			{% endif %}
+			<!--<div class="swiper-slide">
+				<a href="temp/reserve-slide1.jpg" class="grid image-link">
+					<img src="temp/reserve-slide1.jpg" class="img-fluid" alt="#">
+				</a>
+			</div>
+			-->
+		</div>
+		<!-- Add Pagination -->
+		<div class="swiper-pagination swiper-pagination-white"></div>
+		<!-- Add Arrows -->
+		<div class="swiper-button-next swiper-button-white"></div>
+		<div class="swiper-button-prev swiper-button-white"></div>
+	</div>
+
+	<!--============================= RATE A REVIEW =============================-->
+	<section class="store-block">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<h5 name="store_name">{{ review.ten }}</h5>
+						<p><span>$$$</span>$$</p> <!-- Based on price range -->
+						<p class="store-description" style="display: block;">
+							<span class="store-description-type" name="store_type">{{ loai }}</span>
+							<span class="store-description" style="display: inline-block; color: #b2b8c3">
+								<span name="no_upvotes" id="num_of_likes" style="color: #b2b8c3">{{ review_likes }}</span> người thấy review này hữu ích 
+								<span style="display: inline-block; color: #b2b8c3; margin: 0 10px 0">•</span>
+								<span name="no_downvotes" id="num_of_dislikes" style="color: #b2b8c3"><b>{{ review_dislikes }}</b></span> người thấy review này không hữu ích
+							</span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<div class="store-seat-block">
+							<div class="store-rating">
+								<span>{{ review.rating }}</span>
+							</div>
+							{% if current_user.is_authenticated %}
+								{% if like_type == 0 %}
+									<div class="upvote-btn">
+									<div class="featured-btn-wrap">
+										<button class="btn know_btn like" id="like_button" name="upvote" style="font-size: 14px">UPVOTE</button>
+									</div>
+									</div>
+									<div class="downvote-btn">
+										<button class="btn btn-outline-danger dislike" id="dislike_button" name="downvote" style="font-size: 14px">DOWNVOTE</button>
+									</div>
+								{% elif like_type == 1%}
+									<div class="upvote-btn">
+									<div class="featured-btn-wrap">
+										<button class="btn know_btn like" id="like_button" name="upvote" style="font-size: 14px; background: #A0A0A0;" disabled>UPVOTE</button>
+									</div>
+									</div>
+									<div class="downvote-btn">
+										<button class="btn btn-outline-danger dislike" id="dislike_button" name="downvote" style="font-size: 14px">DOWNVOTE</button>
+									</div>
+								{% elif like_type == -1%}
+									<div class="upvote-btn">
+									<div class="featured-btn-wrap">
+										<button class="btn know_btn like" id="like_button" name="upvote" style="font-size: 14px">UPVOTE</button>
+									</div>
+									</div>
+									<div class="downvote-btn">
+										<button class="btn btn-outline-danger dislike" id="dislike_button" name="downvote" style="font-size: 14px; background: #A0A0A0;" disabled>DOWNVOTE</button>
+									</div>
+									{% endif %}
+							{% else %} <!-- not loged in like dislike button navigate to login site -->
+								<div class="upvote-btn">
+								<div class="featured-btn-wrap">
+									<button class="btn know_btn like disabled" id="like_'.$review_id.'" name="upvote" style="font-size: 14px; background: #A0A0A0;">UPVOTE</button>
+								</div>
+								</div>
+								<div class="downvote-btn">
+									<button class="btn btn-outline-danger dislike disabled" id="dislike_'.$review_id.'" name="downvote" style="font-size: 14px; background: #A0A0A0;">DOWNVOTE</button>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--//END RATE A REVIEW -->
+		
+		<!--============================= REVIEW DETAILS =============================-->
+		<section class="light-bg review-details_wrap">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 responsive-wrap">
+						<div class="review-checkbox_wrap">
+							<div class="review-checkbox" name="review_detail">
+								<p>{{ review.review|replace('\n', '<br>'|safe) }}</p>
+								<hr>
+							</div>
+							<div class="row">
+							{% for dish in dishes %}
+								<div class="col-md-4">
+									<label class="custom-checkbox">
+										<span class="ti-check-box"></span>
+										<span class="custom-control-description" name="store_menu">{{dish['mon']}}</span>
+									</label>
+									<br>
+									<label class="custom-checkbox">
+									   <span class="fa fa-tag minmaxpriceicon"></span>
+										<span class="custom-control-description" name="store_menu_price">{{dish['gia']}}</span>
+									</label>
+								</div>
+							{% endfor %}
+							</div>
+						</div>
+						<!-- Write comment section -->
+						<div class="review-checkbox_wrap mt-4" style="margin-top: 1.5rem!important; padding-bottom: 50px;">
+							<h5>Viết nhận xét</h5>
+							{% if current_user.is_authenticated %}
+								<hr>
+								<!-- Actual Comments --> <!-- TODO: -->
+								<div class="customer-review_wrap">
+									<div class="customer-img">
+										<a style="padding:0" href="{{url_for('profile')}}"><img src="{{thumbnail}}" class="img-fluid" alt="#" name="user_avatar"> <!-- current user's profile pic --></a>
+										<p name="user_comment">{{current_user.username}}</p> <!-- current user's username -->
+									</div>
+									<div class="customer-content-wrap">
+										<div class="customer-content">
+											<div class="customer-review" style="width: 100%">
+												<input type="text" name="store_name" id="summary" required/>
+											</div>
+										</div>
+										<textarea id="actual_comment" style="width: 100%; height: 200px; padding: 16px; margin-top: 20px"></textarea>
+									</div>
+								</div>
+								<button id="submit_comment" class="comment-submit">Gửi</button>
+								<script>
+									$(document).ready(function(){
+										$('#submit_comment').click(function(){
+											var summary = $('#summary').val();
+											var comment = $('#actual_comment').val();
+											var review_id = "{{review.id}}";
+											var post_data = {"summary": summary, "comment": comment, "review_id": review_id};
+											alert(post_data);
+											$.ajax({
+												type : 'POST',
+											    url : "{{url_for('submit_comment')}}",
+											    contentType: 'application/json;charset=UTF-8',
+												data: JSON.stringify(post_data),
+												success: function(data){
+													large += '<div class="customer-review_wrap">	<div class="customer-img">		<a style="padding:0" href="/view_profile"><img src="'+data.profile_picture+'"class="img-fluid" alt="#" name="user_avatar"></a>		<p name="user_comment">'+data.username+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data.summary+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data.comment+'</p>	</div></div><hr>';
+												
+													$("#comments_box").append(large);
+													last_id = data.next_last_id;
+												}
+											})
+										});
+									});
+								</script>
+							<!--end write comment -->
+								<hr>
+							{% else %}
+							<!--html code for button to login here-->
+								<div class="customer-review_wrap">
+								<a class="notice_review" href="{{url_for('login')}}">Đăng nhập để viết review</a></li>
+								</div>
+							{% endif %}
+						</div>									
+						<!-- Comment section -->
+						<div id="comments_box_title" class="review-checkbox_wrap mt-4" style="margin-top: 1.5rem!important;">
+							<h5 name="no_comments">{{num_comments}} comments</h5>
+							<hr>
+						</div>
+						<div  id="comments_box" class="review-checkbox_wrap mt-4">
+							<!-- Actual Comments -->
+							{% if num_comments != 0 %}
+								{% for comment in comments %}
+								<div class="customer-review_wrap">
+									<div class="customer-img">
+										<a style="padding:0" href="{{url_for('view_profile')}}"><img src="{{url_for('static', filename=comment['user'].profile_picture)}}"class="img-fluid" alt="#" name="user_avatar"></a>
+										<p name="user_comment">{{comment['user'].username}}</p>
+									</div>
+									<div class="customer-content-wrap">
+										<div class="customer-content">
+											<div class="customer-review">
+												<h6 name="comment_title">{{comment.summary}}</h6>
+											</div>
+										</div>
+										<p class="customer-text" name="comment_detail">{{comment.comment}}</p>
+									</div>
+								</div>
+								<hr>
+								{% endfor %}
+								<script>
+									$(document).ready(function(){
+										var last_id = "{{comments[-1].id}}";
+										$('#taithem').click(function(){
+											var post_data = {'id':last_id};
+											alert(last_id);
+											$.ajax({
+												url:"{{url_for('load_comments')}}",
+												type:'post',
+												contentType: 'application/json;charset=UTF-8',
+												data: JSON.stringify(post_data),
+												success: function(data){
+													large=''
+													for (i=0; i<data.count; i++){
+														large += '<div class="customer-review_wrap">	<div class="customer-img">		<a style="padding:0" href="/view_profile"><img src="'+data.data[i].profile_picture+'"class="img-fluid" alt="#" name="user_avatar"></a>		<p name="user_comment">'+data.data[i].username+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data.data[i].summary+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data.data[i].comment+'</p>	</div></div><hr>';
+													}
+													$("#comments_box").append(large);
+													last_id = data.next_last_id;
+													alert(last_id);
+												}
+		 
+											});
+										});
+									});
+								</script>
+								<button id="taithem" class="comment-submit">TAI THEM</button>
+							{% endif %}
+							<!-- <button id="taithem" class="comment-submit">TAI THEM</button> --> <!-- submit -->
+						</div>
+					</div>
+					<div class="col-md-4 responsive-wrap">
+						<div class="contact-info">
+							<div class="address">
+								<span class="icon-location-pin"></span>
+								<p name="store_address">{{review.dia_chi}}</p>
+							</div>
+							<div class="address">
+								<span class="fa fa-tag minmaxpriceicon"></span>
+								<p name="store_pricerange"> 
+									{% if price_range[0] == price_range[1] %}
+											{{price_range[0]}}
+									{% else %}
+											{{price_range[0]}} - {{price_range[1]}}
+									{% endif %}
+								</p>
+							</div>
+							<div class="address">
+								<span class="ti-time"></span>
+								<p style="margin-bottom: 16px" name="store_opening">{{review.time_open}} - {{review.time_close}}<br>
+								{%if openning %}
+									<span class="open-now" style="margin-top: 10px">OPEN NOW</span></p>
+								{%else%}
+									<span class="closed-now" style="margin-top: 10px">CLOSE NOW</span></p>
+								{% endif %}
+							</div>
+						</div>
+						<div class="follow">
+							<div class="follow-img">
+								<a style="padding:0" href="{{url_for('view_profile')}}"><img src="{{url_for('static', filename=poster.profile_picture)}}" class="img-fluid" alt="#" name="writer-avatar"></a>
+								<a style="padding:0" href="{{url_for('view_profile')}}"><h6 name="writer-name">{{poster.username}}</h6></a>
+								{% if sub_status == 0 and current_user.is_authenticated %}
+									<button class="sub_but" id="sub_button" style="margin-top:10px; background-color: #46cd38; border-radius: 10px; border: none; color:white; height: 40px; width: 120px; /*opacity: 0.5; cursor: not-allowed;*/" type="button">SUBSCRIBE</button>
+								{% elif sub_status != 0 and current_user.is_authenticated %}
+									<button class="sub_but" id="sub_button" style="margin-top:10px; /*background-color: #46cd38;*/ border-radius: 10px; border: none; color:grey; height: 40px; width: 120px; opacity: 0.5; /*cursor: not-allowed;*/" type="button">SUBSCRIBED</button>
+								{% else %}
+									<button class="sub_but" id="sub_button" style="margin-top:10px; background-color: #46cd38; border-radius: 10px; border: none; color:white; height: 40px; width: 120px; opacity: 0.5; /*cursor: not-allowed;*/" type="button" disabled title="login to subscribe">SUBSCRIBE</button>
+								{% endif %}
+							</div>
+							<ul class="social-counts">
+								<li>
+									<h6 name="writer_no_reviews">{{poster_statistic['num_reviews']}}</h6>
+									<span>Reviews</span>
+								</li>
+								<li>
+									<h6 id="writer_subscribers" name="writer_no_subscriber">{{poster_statistic['num_subscribes']}}</h6>
+									<span>Subscribers</span>
+								</li>
+								<li>
+									<h6 id="writer_likes" name="writer_no_upvotes">{{poster_statistic['num_likes']}}</h6>
+									<span>Upvotes</span>
+								</li>
+								<li>
+									<h6 id="writer_dislikes" name="writer_no_downvotes">{{poster_statistic['num_dislikes']}}</h6>
+									<span>Downvotes</span>
+								</li>
+							</ul>
+						</div>
+						<script type="text/javascript">
+							$(document).ready(function(){
+								$('#sub_button').click(function(){
+									var posterId = "{{poster.id}}";
+									alert(posterId);
+									$.ajax({
+										url:"{{url_for('subscribe')}}",
+										type:'post',
+										data:JSON.stringify({"posterId":posterId}),
+										contentType: 'application/json;charset=UTF-8',
+										success: function(data){
+											if(data.sub_status == 1){
+												$("#writer_subscribers").text(data.num_subs);
+												$("#sub_button").text("SUBSCRIBED");
+												$("#sub_button").css('background-color','grey');
+												$("#sub_button").css('opacity','0.5');
+											}
+											else{
+												$("#writer_subscribers").text(data.num_subs);
+												$("#sub_button").text("SUBSCRIBE");
+												$("#sub_button").css('background-color','#46cd38');
+												$("#sub_button").css('color','white');
+												$("#sub_button").css('opacity','1');
+											}
+										}
+
+									});
+								});
+
+								$('#like_button, #dislike_button').click(function(){
+									var review_id = "{{review.id}}";
+									var type = this.id;
+									alert(type);
+									$.ajax({
+										url:"{{url_for('like_dislike')}}",
+										type:'post',
+										data:JSON.stringify({"review_id":review_id, "type": type}),
+										contentType: 'application/json;charset=UTF-8',
+										success: function(data){
+											$("#num_of_likes").text(data.review_likes);        // setting likes
+											$("#num_of_dislikes").text(data.review_dislikes);    // setting unlikes
+											$("#writer_likes").text(data.poster_likes);        // setting likes
+											$("#writer_dislikes").text(data.poster_dislikes);    // setting unlikes
+											if(data.like_status == 1){
+												
+												$("#like_button").css("background-color","#A0A0A0");
+												$("#like_button").attr("disabled", true);
+												$("#dislike_button").css("background-color","#ff3a6d");
+												$("#dislike_button").attr("disabled", false);
+											}
+											else{
+												$("#dislike_button").css("background-color","#A0A0A0");
+												$("#dislike_button").attr("disabled", true);
+												$("#like_button").css("background-color","#ffcb0f");
+												$("#like_button").attr("disabled", false);
+											}
+												
+										}
+
+									});
+								});
+							});
+						</script>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--//END REVIEW DETAILS -->
+{% endblock content %}

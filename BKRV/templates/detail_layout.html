@@ -2,34 +2,33 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<link rel="icon" href="{{ url_for('static', filename='images/logo.png')}}">
 		<!-- Mobile Specific Meta -->
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- Custom Fonts -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='custom-font/fonts.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='custom-font/fonts.css')}}" />
 		<!-- Bootstrap -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}" />
 		<!-- Font Awesome -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/font-awesome.min.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css')}}" />
 		<!-- Bootsnav -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/bootsnav.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/post.css') }}"/>
-		{% block css %}
-		{% endblock css %}
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bootsnav.css')}}">
 		<!-- Fancybox -->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/jquery.fancybox.css') }}" media="screen" />	
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.fancybox.css')}}" media="screen" />	
 		<!-- Custom stylesheet -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/listing-detail.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/listing-detail.css')}}" />
 		<!-- AngularJS -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<!-- jquery 3.3.1 -->
+		<script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js')}}"></script>
 		<!-- Simple line Icon -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/simple-line-icons.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/simple-line-icons.css')}}">
 		<!-- Themify Icon -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/themify-icons.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/themify-icons.css')}}">
+		<!-- Swipper Slider -->
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/swiper.min.css')}}">
 		<!-- Magnific Popup CSS -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/magnific-popup.css') }}">
-		<script src="{{ url_for('static',filename='js/jquery-1.12.1.min.js') }}"></script>
-		<script src="http://malsup.github.com/jquery.form.js"></script> 
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css')}}">
 	</head>
 	<body>
 
@@ -64,8 +63,7 @@
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 							<i class="fa fa-bars"></i>
 						</button>
-						<a class="navbar-brand" href="{{url_for('index')}}"><img class="logo" src="{{url_for('static', filename='images/logo.png')}}" alt="" style="height: 50px; width: 200px"></a>
-						<a class="navbar-brand" href=""><img class="logo" src="images/logo.png" alt="" style="width: 200px; height: 50px"></a>
+						<a class="navbar-brand" href="index.php"><img class="logo" src="{{url_for('static', filename='images/logo.png')}}" alt="" style="height: 50px; width: 200px"></a>
 					</div>
 					<!-- Navigation -->
 					<div class="collapse navbar-collapse" id="navbar-menu">
@@ -154,10 +152,9 @@
 				</p>
 			</div><!-- Footer bottom end -->
 		</footer><!-- Footer end -->
-		</script>
 		<script src="{{url_for('static', filename='js/jquery-1.12.1.min.js')}}"></script>
 		<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
-
+		<script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
 		<!-- Bootsnav js -->
 		<script src="{{url_for('static', filename='js/bootsnav.js')}}"></script>
 
@@ -169,7 +166,43 @@
 		<script src="{{url_for('static', filename='js/jquery.scrollUp.min.js')}}"></script>
 		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 		<script src="{{url_for('static', filename='js/main.js')}}"></script>
+		<!-- Magnific popup JS -->
+		<script src="{{url_for('static', filename='js/jquery.magnific-popup.js')}}"></script>
+		<!-- Swipper Slider JS -->
+		<script src="{{url_for('static', filename='js/swiper.min.js')}}"></script>
+		<script>
+			var swiper = new Swiper('.swiper-container', {
+				slidesPerView: 3,
+				slidesPerGroup: 3,
+				loop: true,
+				loopFillGroupWithBlank: true,
+				pagination: {
+					el: '.swiper-pagination',
+					clickable: true,
+				},
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+				},
+			});
+		</script>
+		<script>
+			if ($('.image-link').length) {
+				$('.image-link').magnificPopup({
+					type: 'image',
+					gallery: {
+						enabled: true
+					}
+				});
+			}
+			if ($('.image-link2').length) {
+				$('.image-link2').magnificPopup({
+					type: 'image',
+					gallery: {
+						enabled: true
+					}
+				});
+			}
+		</script>
 	</body>	
 </html>	
-
-<!-- kanseishimashita -->

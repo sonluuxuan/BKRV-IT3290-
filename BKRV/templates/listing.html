@@ -1,0 +1,90 @@
+{% extends 'main_layout.html' %}
+{% block reviews %}
+<section class="main-block">
+			<div class="container" id="row_of_review">
+				<div class="row justify-content-center">
+					<div class="col-md-5">
+						<div class="styled-heading">
+							<h3>Kết quả tìm kiếm</h3>
+						</div>
+					</div>
+				</div>
+				<div class="row" > <!-- add new row for new content -->
+					{% for review in reviews[:3] %}
+					<div class="col-md-4 featured-responsive">
+						<div class="featured-place-wrap">
+							<a href="{{url_for('detail', review_id=review.review.id)}}">
+								<img src="{{review.thumbnail}}" class="img-fluid" alt="thumbnail">
+								<span class="{{review.rating_class}}">{{review.review.rating}}</span>
+								<div class="featured-title-box">
+									<h6 name="store_name">{{review.review.ten}}</h6>
+									<p name="store_type">{{review.loai}}</p>
+									<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
+									<ul>
+										<li><span class="ti-location-pin"></span>
+											<p name="store_address">{{review.review.dia_chi}}</p>
+										</li>
+										<li><span class="fa fa-tag minmaxpriceicon"></span>
+											<p name="store_pricerange"> 
+												{% if review.price_range[0] == review.price_range[1] %}
+														{{review.price_range[0]}}
+												{% else %}
+														{{review.price_range[0]}} - {{review.price_range[1]}}
+												{% endif %}
+											</p>
+										</li>
+										<li><span class="ti-time"></span>
+											<p name="store_opening">{{review.review.time_open}} - {{review.review.time_close}}</p>
+										</li>
+									</ul>
+									<h4 style="font-style:italic; font-size: 15px; color:grey;">{{review.review.author.username}}</h4>
+									<div class="bottom-icons">
+										{% if review.openning %}
+											<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->
+										{% else %}
+											<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->
+										{% endif %}
+										<span class="ti-heart"><span class="upvote display-number" name="store_point">{{review.review_likes}}</span></span> 
+										<!-- Number of upvotes - number of downvotes -->
+										<span class="ti-comments"><span class="comment display-number" name="no_comments">{{review.comments}}</span></span>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				<script>
+					$(document).ready(function(){						
+						var last_id = "{{reviews[-1].review.id}}";
+						$(".wtf").click(function(){
+							alert("clicked");
+							var search_type = "{{search_type}}"
+							$.ajax({
+								url:"{{url_for('load_reviews')}}",
+								type:'post',
+								data: JSON.stringify({"last_id":last_id, "search_type": search_type}),
+								contentType: 'application/json;charset=UTF-8',
+								success: function(datas){
+									// alert('success');
+									var large = '<div class="row"> ';
+									for (i=0; i<datas['reviews'].length; i++){
+										data = datas['reviews']
+										large += '<div class="col-md-4 featured-responsive">	                    <div class="featured-place-wrap">	                        <a href="'+data[i].url+'">	                            <img src="'+data[i].thumbnail+'" class="img-fluid" alt="#">	                            <span class="'+data[i].rating_class+'">'+data[i].rating+'</span>	                            <div class="featured-title-box">	                                <h6>'+data[i].ten+'</h6>	                                <p>'+data[i].loai+'</p>	                                <ul>	                                    <li><span class="ti-location-pin"></span>	                                        <p name="store_name">'+data[i].dia_chi+'</p>	                                    </li>	                                    <li><span class="fa fa-tag minmaxpriceicon"></span>	                                        <p name="store_pricerange">'+data[i].price_range[0]+' - '+data[i].price_range[0]+'</p>	                                    </li>	                                    <li><span class="ti-time"></span>	                                        <p name="store_opening">'+data[i].time_open+' - '+data[i].time_close+'</p>	                                    </li>	                                </ul><h4 style="font-style:italic; font-size: 15px; color:grey;">'+ data[i].author+'</h4>	                                <div class="bottom-icons">	                                    <div class="'+data[i].time_class+'">'+data[i].store_status+'</div>	                                    <span class="ti-heart"><span class="upvote display-number" name="no_upvotes">'+data[i].review_likes+'</span></span>	                                    <span class="ti-comments"><span class="comment display-number" name="no_comments">'+data[i].comments+'</span></span>	                                </div>	                            </div>	                        </a>	                    </div>	                </div>';
+									}
+									large += '</div>';
+									$("#row_of_review").append(large);
+									last_id = datas.next_last_id;
+								}
+							});		
+						});
+					});
+				</script>
+				</div>
+				<div class="featured_btn_wrap" style="width: 100%" >
+					<button class="wtf view_more_button" id="<?php echo $button?>">XEM THÊM</button> <!-- load 3 each time -->
+				</div>
+				<p id="test"></p>
+		</section>
+		<!--//END FEATURED PLACES -->
+{% endblock reviews %}

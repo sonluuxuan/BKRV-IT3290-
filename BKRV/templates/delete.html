@@ -1,0 +1,127 @@
+  <div ng-repeat="meal in Meals">
+    <div class="info-input">
+        <div class="item-label">
+        	{{form.dish_name.label }}
+        </div>
+        <div class="item-detail">
+            <input type="text" name="item_name[]" required/>
+            {{ form.dish_name }}
+        </div>
+    </div>
+    <div class="info-input">
+        <div class="item-label">
+        	{{ form.dish_price.label }}
+        </div>
+        <div class="item-detail">
+            <input type="text" name="item_price[]" required/>
+            {{ form.dish_price }}
+        </div>
+    </div>
+</div>
+<!-- {% if item_error %}
+<small style="color: red">Please enter a valid number</small>
+{% endif %} -->
+
+                    <script>
+                            var Mapp = angular.module('mealApp', []);
+                            Mapp.controller('mealController', function($scope) {
+                                $scope.Meals = [{
+                                    Id: 1
+                                    }];
+                                $scope.id = 2;
+                                $scope.addElement = function() {
+                                    $scope.Meals.push({
+                                        Id: $scope.id
+                                    });
+                                    $scope.id = $scope.id + 1;
+                                };
+                                $scope.removeElement = function () {
+                                    if($scope.id > 2) {
+                                        $scope.Meals.pop();
+                                        $scope.id = $scope.id - 1;
+                                    }
+                                };
+                            });
+                        </script>
+                        <div class="info-content">
+                            <div ng-repeat="meal in Meals">
+                                <!-- {% for dish in form.dishes.entries %} -->
+                                    <div class="info-input">
+                                        <div class="item-label">
+                                            {{ dish.dish_name.label }}
+                                        </div>
+                                        <div class="item-detail">
+                                            {{ dish.dish_name }}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="item-label">
+                                            {{ dish.dish_price.label }}
+                                        </div>
+                                        <div class="item-detail">
+                                            {{ dish.dish_price }}
+                                        </div>
+                                    </div>
+                                <!-- {%endfor%} -->
+                            </div>
+                            <div class="add-meal-btn" style="margin-bottom: 10px">
+                                <button type="button" ng-click="addElement()">+</button>
+                            </div>
+                            <div class="add-meal-btn" style="margin-bottom: 10px">
+                                <button type="button" ng-click="removeElement()">-</button>
+                            </div>
+                        </div>
+
+                        <!-- <div class="info-input">
+                                <div class="item-label">
+                                    {{ form.place_type.label}}
+                                </div>
+                                    {% if form.place_type.errors %}
+                                    <div class='item-detail'>
+                                        {{ form.place_type}}
+                                        <div class="invalid-feedback">
+                                        {% for error in form.place_type.errors %}
+                                            <span>
+                                                {{ error }}
+                                            </span>
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <div class="item-detail">
+                                        {{form.place_type}}
+                                    </div>
+                                    {% endif %}
+                        </div> -->
+                        <!-- <div class="info-input">
+                            <div class="item-label">
+                                {{ form.area.label }}
+                            </div>
+                            <div class="item-detail">
+                                {% if form.area.errors %}
+                                <div class='item-detail'>
+                                    {{ form.area}}
+                                    <div class="invalid-feedback">
+                                    {% for error in form.area.errors %}
+                                        <span>
+                                            {{ error }}
+                                        </span>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div>
+                                    {{ form.area }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="info-input">
+                                <div class="item-label">
+                                    {{ form.rating.label }}
+                                </div>
+                                <div class="item-detail">
+                                    {{ form.rating }}
+                                </div>
+                        </div> -->

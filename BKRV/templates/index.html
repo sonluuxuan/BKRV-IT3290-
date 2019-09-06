@@ -1,62 +1,75 @@
 {% extends 'main_layout.html'%}
 {% block reviews %}
-<section id="new">
-			<div class="container">
-				<div class="button__header">
-					<h2 class="styled-heading">SUBSCRIBE REVIEW</h2>
-					<a class='btn-view__more' href='listing.php?button=subscribe'>Xem tất cả</a>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="service_item">
-							<img src=""/>
-							<h3>h3</h3>
-							<a style="padding:0" href=""><h4 style="font-style:italic; font-size: 15px; color:	#1E90FF;">userID</h4></a>
-							<p>Review</p>
-							<!--session for xem them button in-->
-						</div>
-					</div>
-				</div>
-			</div>
-		</section><!-- Sub review end -->
-		<section id="new">
-			<div class="container">
-				<div class="button__header">
-					<h2 class="styled-heading">REVIEW GẦN ĐÂY</h2>
-				</div>
-				<div class="row">
+{% if current_user.is_authenticated %}
+<section id="popular">
+	<div class="container">
+		<div class="button__header">
+			<h2 class="styled-heading">SUBSCRIBE REVIEW</h2>
+			<a class='btn-view__more' href="{{ url_for('listing', search_type='subscribe')}}">Xem tất cả</a>
+		</div>
+		<div class="row">
+			{% for review in (popular) %}
 				<div class="col-md-4">
 					<div class="service_item">
-						<img src=""/>
-						<h3> <?php echo $result[$i]["ten"]?> </h3>
-						<a><h4 style="font-style:italic; font-size: 15px; color:	#1E90FF;">Username</h4></a>
-						<p>Review<br></p>
-						<!--session for xem them button in-->
+						<img src="{{review.thumbnail}}"/>
+						<h3>{{ review['review'].ten }}</h3>
+						<a style="padding:0" href="{{url_for('view_profile')}}">
+						<h4 style="font-style:italic; font-size: 15px; color:#1E90FF;">{{review['user'].username}}</h4>
+						</a>
+						<p>{{review['review'].review}}<br></p>
+						<a href="{{ url_for('detail', review_id = review['review'].id)}}" class="btn know_btn">xem thêm</a>
 					</div>
 				</div>
-				</div>
-			</div>
-		</section><!-- New review end -->
-		<!-- Popular review -->
-		<section id="popular">
-			<div class="container">
-				<div class="button__header">
-					<h2 class="styled-heading">REVIEW PHỔ BIẾN</h2>
-					<a class='btn-view__more' href='listing.php?button=popular'>Xem tất cả</a>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="service_item">
-							<img src=""/>
-							<h3>Ten</h3>
-							<a style="padding:0" href="view_profile.php">
-							<h4 style="font-style:italic; font-size: 15px; color:	#1E90FF;">Username</h4></a>
-							<p>Review<br></p>
-							<!--session for xem them button in-->
-							<a href="detail.php" class="btn know_btn">xem thêm</a>
-						</div>
+			{% endfor %}
+		</div>
+	</div>
+</section><!-- Sub review end -->
+{% endif %}
+<section id="new">
+	<div class="container">
+		<div class="button__header">
+			<h2 class="styled-heading">REVIEW GẦN ĐÂY</h2>
+			<a class='btn-view__more' href="{{ url_for('listing', search_type='latest')}}">Xem tất cả</a>
+		</div>
+		<div class="row">
+			{% for review in (latest) %}
+				<div class="col-md-4">
+					<div class="service_item">
+						<img src="{{review.thumbnail}}"/>
+						<h3>{{ review['review'].ten }}</h3>
+						<a style="padding:0" href="{{url_for('view_profile')}}">
+						<h4 style="font-style:italic; font-size: 15px; color:#1E90FF;">{{review['user'].username}}</h4>
+						</a>
+						<p>{{review['review'].review}}<br></p>
+						<a href="{{ url_for('detail', review_id = review['review'].id)}}" class="btn know_btn">xem thêm</a>
 					</div>
 				</div>
-			</div>
-		</section><!-- Popular review end -->
+			{% endfor %}
+		</div>
+	</div>
+</section><!-- New review end -->
+<!-- Popular review -->
+<section id="popular">
+	<div class="container">
+		<div class="button__header">
+			<h2 class="styled-heading">REVIEW PHỔ BIẾN</h2>
+			<a class='btn-view__more' href="{{ url_for('listing', search_type='popular')}}">Xem tất cả</a>
+		</div>
+		<div class="row">
+			{% for review in (popular) %}
+				<div class="col-md-4">
+					<div class="service_item">
+						<img src="{{review.thumbnail}}"/>
+						<h3>{{ review['review'].ten }}</h3>
+						<a style="padding:0" href="{{url_for('view_profile')}}">
+						<h4 style="font-style:italic; font-size: 15px; color:#1E90FF;">{{review['user'].username}}</h4>
+						</a>
+						<p>{{review['review'].review}}<br></p>
+						<a href="{{ url_for('detail', review_id = review['review'].id)}}" class="btn know_btn">xem thêm</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section><!-- Popular review end -->
 {% endblock reviews %}

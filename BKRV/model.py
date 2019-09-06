@@ -9,11 +9,13 @@ class District(db.Model):
 	__tablename__ = 'District'
 	id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
 	quan = db.Column('quan', db.VARCHAR(length = 30))
+	reviews = db.relationship("Review", backref="district", primaryjoin="Review.district_id == District.id", lazy='dynamic')
 
 class Loai_quan(db.Model):
 	__tablename__ = 'Loai_quan'
 	id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
 	loai = db.Column('loai', db.VARCHAR(length=30))
+	reviews = db.relationship("Review", backref="loai", lazy='dynamic')
 
 # User_subscribes_ = db.Table('User_subscribes',
 # 						db.Column('user_id', db.Integer, db.ForeignKey('User.id')),
@@ -36,7 +38,7 @@ class User(db.Model, UserMixin):
 	bio = db.Column('bio', db.Text, nullable=True)
 	profile_picture = db.Column('profile_picture', db.VARCHAR(length = 250), nullable=False, default='profile_pics/default_avatar.jpg')
 	reviews = db.relationship('Review', backref='author', lazy='dynamic')
-	comments = db.relationship('Review_comments', backref='commenter', lazy='dynamic')
+	comments = db.relationship('Review_comments', backref='user', lazy='dynamic')
 
 	channel = db.relationship('User_subscribes_', backref='subber', foreign_keys = User_subscribes_.user_id, lazy='dynamic')
 	subber = db.relationship('User_subscribes_', backref='channel', foreign_keys = User_subscribes_.sub_to_id, lazy='dynamic')
@@ -57,7 +59,7 @@ class Review(db.Model):
 	district_id = db.Column('district_id', db.Integer, db.ForeignKey('District.id'), nullable=False)
 	loai_id = db.Column('loai_id', db.Integer, db.ForeignKey('Loai_quan.id'), nullable=False)
 	
-	comments = db.relationship('Review_comments', backref='comments', lazy='dynamic')
+	comments = db.relationship('Review_comments', backref='review', lazy='dynamic', order_by="Review_comments.id.desc()")
 	mon_gia = db.relationship('Review_mon_gia', backref='review', lazy='dynamic')
 
 class Review_comments(db.Model):
@@ -72,10 +74,9 @@ class Review_comments(db.Model):
 
 class Review_mon_gia(db.Model):
 	__tablename__ = 'Review_mon_gia'
-	id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
-	ten_mon = db.Column('ten_mon', db.VARCHAR(length=100))
-	gia = db.Column('gia', db.Integer)
-	review_id = db.Column('review_id', db.Integer, db.ForeignKey('Review.id'))
+	ten_mon = db.Column('ten_mon', db.VARCHAR(length=100), primary_key=True)
+	gia = db.Column('gia', db.Integer, primary_key=True)
+	review_id = db.Column('review_id', db.Integer, db.ForeignKey('Review.id'), primary_key=True)
 
 class User_like_dislike(db.Model):
 	__tablename__ = 'User_like_dislike'
