@@ -183,19 +183,19 @@
 											    contentType: 'application/json;charset=UTF-8',
 												data: JSON.stringify(post_data),
 												success: function(data){
-													large += '<div class="customer-review_wrap">	<div class="customer-img">		<a style="padding:0" href="/view_profile"><img src="'+data.profile_picture+'"class="img-fluid" alt="#" name="user_avatar"></a>		<p name="user_comment">'+data.username+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data.summary+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data.comment+'</p>	</div></div><hr>';
+													alert(data.author)
+													large = '<div class="customer-review_wrap">	<div class="customer-img">		<a style="padding:0" href="/view_profile"><img src="'+data.profile_picture+'"class="img-fluid" alt="#" name="user_avatar"></a>		<p name="user_comment">'+data.author+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data.summary+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data.comment+'</p>	</div></div><hr>';
 												
-													$("#comments_box").append(large);
+													$("#comments_box").prepend(large);
 													last_id = data.next_last_id;
+													document.getElementById('taithem').style.display = 'block';
 												}
 											})
 										});
 									});
 								</script>
-							<!--end write comment -->
 								<hr>
 							{% else %}
-							<!--html code for button to login here-->
 								<div class="customer-review_wrap">
 								<a class="notice_review" href="{{url_for('login')}}">Đăng nhập để viết review</a></li>
 								</div>
@@ -206,9 +206,9 @@
 							<h5 name="no_comments">{{num_comments}} comments</h5>
 							<hr>
 						</div>
-						<div  id="comments_box" class="review-checkbox_wrap mt-4">
-							<!-- Actual Comments -->
+							<div  id="comments_box" class="review-checkbox_wrap mt-4">
 							{% if num_comments != 0 %}
+							<!-- Actual Comments -->
 								{% for comment in comments %}
 								<div class="customer-review_wrap">
 									<div class="customer-img">
@@ -251,10 +251,15 @@
 										});
 									});
 								</script>
-								<button id="taithem" class="comment-submit">TAI THEM</button>
 							{% endif %}
-							<!-- <button id="taithem" class="comment-submit">TAI THEM</button> --> <!-- submit -->
-						</div>
+							</div>
+							<button id="taithem" class="comment-submit">TAI THEM</button>
+							{% if num_comments == 0%}
+							<script type="text/javascript">
+								document.getElementById("taithem").style.display = "none";
+							</script>
+							{% endif %}
+						<!-- <button id="taithem" class="comment-submit">TAI THEM</button> --> <!-- submit -->
 					</div>
 					<div class="col-md-4 responsive-wrap">
 						<div class="contact-info">
