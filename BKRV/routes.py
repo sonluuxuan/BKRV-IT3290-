@@ -37,7 +37,8 @@ def index():
 			first_file = os.listdir(os.path.join(app.root_path, "static",folder_name))[0]
 			thumbnail = url_for('static', filename = folder_name+'/'+first_file)
 			subscribe.append({"review": review, "thumbnail": thumbnail, "user": user})
-	return render_template('index.html', latest=latest, popular=popular, subscribe=subscribe, form=form)
+	wall = url_for('static', filename='images/food.jpg')
+	return render_template('index.html', latest=latest, popular=popular, subscribe=subscribe, form=form, wall = wall)
 
 def get_reviews(search_type, key_word = '', last_id=-1):
 	if search_type == 'latest':
@@ -45,14 +46,21 @@ def get_reviews(search_type, key_word = '', last_id=-1):
 			reviews = Review.query.order_by(Review.id.desc()).filter(Review.id<last_id).limit(3).all()
 		else:
 			reviews = Review.query.order_by(Review.id.desc()).limit(3).all()
-	if(reviews):
+	if key_word != '':
+		print('accessed key_word')
+		tag = "%{}%".format(key_word)
+		reviews = Review.query.order_by(Review.id.desc()).filter(Review.ten.like(tag)).limit(3).all()
+		print(len(reviews), 'len reviews in key_word')
+	if(reviews!=None):
 		return reviews
 	else:
 		return None
 
 def data_listing(review_records):
 	reviews = []
+	print('in data listing')
 	for review in review_records:
+		print('in loops')
 		review_dict = {}
 		folder_name = 'images/'+str(review.id)
 		first_file = os.listdir(os.path.join(app.root_path, "static",folder_name))[0]
@@ -87,14 +95,31 @@ def data_listing(review_records):
 		reviews.append(review_dict)
 	return reviews
 
-@app.route("/listing", defaults={'search_type':'unselected'})
-@app.route("/listing/<search_type>")
+@app.route("/listing", defaults={'search_type':'unselected'}, methods=['POST', 'GET'])
+@app.route("/listing/<search_type>", methods=['POST', 'GET'])
 def listing(search_type):
 	form=Search_form()
-	review_records = get_reviews(search_type=search_type)
-	reviews = data_listing(review_records)
+	print(form.search.data)
+	print(search_type)
 
-	return render_template('listing.html', form=form, reviews=reviews, search_type=search_type)
+	if(form.validate_on_submit()):
+		print('validated, ===================')
+		key = form.search.data
+		print(key)
+		review_records = get_reviews(key_word=key, search_type = search_type)
+		print(len(review_records), 'len review_records')
+
+	if(search_type != 'unselected'):
+		review_records = get_reviews(search_type=search_type)
+
+	if(review_records == None):
+		reviews = []
+	else:
+		reviews = data_listing(review_records)
+	print(len(reviews), 'len reivews after data_listing')
+
+	wall = url_for('static', filename='images/listing-food.jpg')
+	return render_template('listing.html', form=form, reviews=reviews, search_type=search_type, wall=wall)
 
 
 @app.route("/load_reviews", methods=['POST'])
@@ -123,6 +148,15 @@ def load_reviews():
 		del(review['review'])
 	return jsonify({'reviews': reviews, 'next_last_id':next_last_id})
 
+def user_statistic(user_id):
+	user_reviews = Review.query.filter_by(user_id=user_id)
+	user_review_ids = [review.id for review in user_reviews]
+	user_statistic = {}
+	user_statistic['num_reviews'] = user_reviews.count()
+	user_statistic['num_subscribes'] = User_subscribes_.query.filter_by(sub_to_id=user_id).count()
+	user_statistic['num_likes'] = User_like_dislike.query.filter(User_like_dislike.review_id.in_(user_review_ids), User_like_dislike.type==1).count()
+	user_statistic['num_dislikes'] = User_like_dislike.query.filter(User_like_dislike.review_id.in_(user_review_ids), User_like_dislike.type==0).count()
+	return user_statistic
 
 @app.route("/detail/<review_id>", methods=['GET', 'POST'])
 def detail(review_id):
@@ -172,14 +206,7 @@ def detail(review_id):
 		sub_status = 1
 	else:
 		sub_status = 0
-	poster_reviews = Review.query.filter_by(user_id=poster.id)
-	poster_review_ids = [review.id for review in poster_reviews]
-	poster_statistic = {}
-	poster_statistic['num_reviews'] = poster_reviews.count()
-	poster_statistic['num_subscribes'] = User_subscribes_.query.filter_by(sub_to_id=poster.id).count()
-	poster_statistic['num_likes'] = User_like_dislike.query.filter(User_like_dislike.review_id.in_(poster_review_ids), User_like_dislike.type==1).count()
-	poster_statistic['num_dislikes'] = User_like_dislike.query.filter(User_like_dislike.review_id.in_(poster_review_ids), User_like_dislike.type==0).count()
-	
+	poster_statistic = user_statistic(user_id = poster.id)
 	templateLoader = jinja2.FileSystemLoader('./BKRV/templates/')
 	templateEnv = jinja2.Environment(loader=templateLoader, autoescape=True)
 	TEMPLATE_FILE = "detail.html"
@@ -272,7 +299,7 @@ def like_dislike():
 			like_status = 0
 		db.session.commit()
 	else:
-		if(liking_type == 'dislike_button'):
+		if(liking_type == 'like_button'):
 			new_liking = User_like_dislike(user=current_user, review=review, type = 1)
 			like_status = 1
 		else:
@@ -324,8 +351,27 @@ def logout():
 
 @app.route("/profile")
 def profile():
-	liked_reviews = current_user.like_dislike
-	return render_template('profile.html')
+	user_liked_reviews = User_like_dislike.query.filter_by(user_id = current_user.id, type = 1).limit(3)
+	user_disliked_reviews = User_like_dislike.query.filter_by(user_id = current_user.id, type = 0).limit(3)
+	posted_reviews = Review.query.filter_by(user_id = current_user.id)
+	liked_reviews = Review.query.filter(Review.id.in_([review.review_id for review in user_liked_reviews])).all()
+	disliked_reviews = Review.query.filter(Review.id.in_([review.review_id for review in user_disliked_reviews])).all()
+	posted = data_listing(posted_reviews)
+	liked = data_listing(liked_reviews)
+	disliked = data_listing(disliked_reviews)
+	review_types=[{"section_name":"LIKED", "reviews": liked, "search_type": "liked"}, 
+				  {"section_name":"DISLIKED", "reviews": disliked, "search_type": "disliked"}, 
+				  {"section_name": "POSTED", "reviews": posted, "search_type": "my_posted"}]
+	user_statistics = user_statistic(user_id = current_user.id)
+	return render_template('profile.html', review_types=review_types, user_statistics=user_statistics)
+
+@app.route("/view_profile/<user_id>", methods=['GET', 'POST'])
+def view_profile(user_id):
+	user_statistics = user_statistic(user_id=user_id)
+	posted_reviews = Review.query.filter_by(user_id = user_id)
+	posted = data_listing(posted_reviews)
+	review_type={"section_name": "POSTED", "reviews": posted, "search_type": "my_posted"}
+	return render_template("view_profile.html", review_type=review_type)
 
 def save_picture(form_pictures = None, profile=False, review_id=-1, form_picture = None):
 	if(form_picture != None):
@@ -367,9 +413,6 @@ def edit_profile():
 		return redirect(url_for('profile'))
 	return render_template('edit_profile.html', form=form)
 
-@app.route("/view_profile", methods=['GET', 'POST'])
-def view_profile():
-	return render_template("view_profile.html")
 
 @app.route("/post", methods = ['GET', 'POST'])
 def post():

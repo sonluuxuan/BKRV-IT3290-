@@ -1,4 +1,15 @@
 {% extends 'main_layout.html' %}
+{% block headers %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/listing-detail.css') }}" />
+<!-- AngularJS -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<!-- Simple line Icon -->
+<link rel="stylesheet" href="{{ url_for('static',filename='css/simple-line-icons.css') }}">
+<!-- Themify Icon -->
+<link rel="stylesheet" href="{{ url_for('static',filename='css/themify-icons.css') }}">
+<!--ajax lib-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% endblock headers%}
 {% block reviews %}
 <section class="main-block">
 			<div class="container" id="row_of_review">
@@ -10,6 +21,7 @@
 					</div>
 				</div>
 				<div class="row" > <!-- add new row for new content -->
+				{% if reviews|length != 0 %}
 					{% for review in reviews[:3] %}
 					<div class="col-md-4 featured-responsive">
 						<div class="featured-place-wrap">
@@ -53,38 +65,49 @@
 						</div>
 					</div>
 					{% endfor %}
-				</div>
-				<script>
-					$(document).ready(function(){						
-						var last_id = "{{reviews[-1].review.id}}";
-						$(".wtf").click(function(){
-							alert("clicked");
-							var search_type = "{{search_type}}"
-							$.ajax({
-								url:"{{url_for('load_reviews')}}",
-								type:'post',
-								data: JSON.stringify({"last_id":last_id, "search_type": search_type}),
-								contentType: 'application/json;charset=UTF-8',
-								success: function(datas){
-									// alert('success');
-									var large = '<div class="row"> ';
-									for (i=0; i<datas['reviews'].length; i++){
-										data = datas['reviews']
-										large += '<div class="col-md-4 featured-responsive">	                    <div class="featured-place-wrap">	                        <a href="'+data[i].url+'">	                            <img src="'+data[i].thumbnail+'" class="img-fluid" alt="#">	                            <span class="'+data[i].rating_class+'">'+data[i].rating+'</span>	                            <div class="featured-title-box">	                                <h6>'+data[i].ten+'</h6>	                                <p>'+data[i].loai+'</p>	                                <ul>	                                    <li><span class="ti-location-pin"></span>	                                        <p name="store_name">'+data[i].dia_chi+'</p>	                                    </li>	                                    <li><span class="fa fa-tag minmaxpriceicon"></span>	                                        <p name="store_pricerange">'+data[i].price_range[0]+' - '+data[i].price_range[0]+'</p>	                                    </li>	                                    <li><span class="ti-time"></span>	                                        <p name="store_opening">'+data[i].time_open+' - '+data[i].time_close+'</p>	                                    </li>	                                </ul><h4 style="font-style:italic; font-size: 15px; color:grey;">'+ data[i].author+'</h4>	                                <div class="bottom-icons">	                                    <div class="'+data[i].time_class+'">'+data[i].store_status+'</div>	                                    <span class="ti-heart"><span class="upvote display-number" name="no_upvotes">'+data[i].review_likes+'</span></span>	                                    <span class="ti-comments"><span class="comment display-number" name="no_comments">'+data[i].comments+'</span></span>	                                </div>	                            </div>	                        </a>	                    </div>	                </div>';
+					<script>
+						$(document).ready(function(){						
+							var last_id = "{{reviews[-1].review.id}}";
+							$(".wtf").click(function(){
+								alert("clicked");
+								var search_type = "{{search_type}}"
+								$.ajax({
+									url:"{{url_for('load_reviews')}}",
+									type:'post',
+									data: JSON.stringify({"last_id":last_id, "search_type": search_type}),
+									contentType: 'application/json;charset=UTF-8',
+									success: function(datas){
+										// alert('success');
+										var large = '<div class="row"> ';
+										for (i=0; i<datas['reviews'].length; i++){
+											data = datas['reviews']
+											large += '<div class="col-md-4 featured-responsive">	                    <div class="featured-place-wrap">	                        <a href="'+data[i].url+'">	                            <img src="'+data[i].thumbnail+'" class="img-fluid" alt="#">	                            <span class="'+data[i].rating_class+'">'+data[i].rating+'</span>	                            <div class="featured-title-box">	                                <h6>'+data[i].ten+'</h6>	                                <p>'+data[i].loai+'</p>	                                <ul>	                                    <li><span class="ti-location-pin"></span>	                                        <p name="store_name">'+data[i].dia_chi+'</p>	                                    </li>	                                    <li><span class="fa fa-tag minmaxpriceicon"></span>	                                        <p name="store_pricerange">'+data[i].price_range[0]+' - '+data[i].price_range[0]+'</p>	                                    </li>	                                    <li><span class="ti-time"></span>	                                        <p name="store_opening">'+data[i].time_open+' - '+data[i].time_close+'</p>	                                    </li>	                                </ul><h4 style="font-style:italic; font-size: 15px; color:grey;">'+ data[i].author+'</h4>	                                <div class="bottom-icons">	                                    <div class="'+data[i].time_class+'">'+data[i].store_status+'</div>	                                    <span class="ti-heart"><span class="upvote display-number" name="no_upvotes">'+data[i].review_likes+'</span></span>	                                    <span class="ti-comments"><span class="comment display-number" name="no_comments">'+data[i].comments+'</span></span>	                                </div>	                            </div>	                        </a>	                    </div>	                </div>';
+										}
+										large += '</div>';
+										$("#row_of_review").append(large);
+										last_id = datas.next_last_id;
 									}
-									large += '</div>';
-									$("#row_of_review").append(large);
-									last_id = datas.next_last_id;
-								}
-							});		
+								});		
+							});
 						});
-					});
-				</script>
+					</script>
+				{% else %}
+					<h4>NO RESULT</h4>
+					<script type="text/javascript">
+						document.getElementById("view_more_button").style.display = "none";
+					</script>
+				{% endif %}
+				</div>
 				</div>
 				<div class="featured_btn_wrap" style="width: 100%" >
-					<button class="wtf view_more_button" id="<?php echo $button?>">XEM THÊM</button> <!-- load 3 each time -->
+					<button class="wtf view_more_button" id="view_more_button">XEM THÊM</button> <!-- load 3 each time -->
 				</div>
 				<p id="test"></p>
 		</section>
+		{% if reviews|length == 0 %}
+			<script type="text/javascript">
+				document.getElementById("view_more_button").style.display = "none";
+			</script>
+		{% endif %}
 		<!--//END FEATURED PLACES -->
 {% endblock reviews %}

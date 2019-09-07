@@ -55,10 +55,10 @@ class MultiCheckboxField(SelectMultipleField):
 
 
 class Search_form(FlaskForm):
-	search = StringField("search")
-	area = MultiCheckboxField('area', choices = [("dongda", "Quận Đống Đa"), ("hoankiem", "Quận Hoàn Kiếm"), ("thnanhxuan", "Quận Thanh Xuân"), ("bactuliem", "Quận Bắc Từ Liêm"), ("caugiay", "Quận Cầu Giấy")])
-	price_range = MultiCheckboxField('price_range', choices = [('0-10', '0-10000'), ('10-50', '10000-50000'), ('50-100', '50000-100000'), ('100-200', '100000-200000'), ('200-500', '200000-500000'), ('500', '>500000')])
-	place_type = MultiCheckboxField('type', choices = [("street", "Ăn vặt - Vỉa hè"), ("restaurant", "Nhà hàng"), ("barpub", "Bar - Pub"), ("cafe", "Cafe - Dessert")])
+	search = StringField('key_word', validators = [DataRequired()])
+	# area = MultiCheckboxField('area', choices = [("dongda", "Quận Đống Đa"), ("hoankiem", "Quận Hoàn Kiếm"), ("thnanhxuan", "Quận Thanh Xuân"), ("bactuliem", "Quận Bắc Từ Liêm"), ("caugiay", "Quận Cầu Giấy")])
+	# price_range = MultiCheckboxField('price_range', choices = [('0-10', '0-10000'), ('10-50', '10000-50000'), ('50-100', '50000-100000'), ('100-200', '100000-200000'), ('200-500', '200000-500000'), ('500', '>500000')])
+	# place_type = MultiCheckboxField('type', choices = [("street", "Ăn vặt - Vỉa hè"), ("restaurant", "Nhà hàng"), ("barpub", "Bar - Pub"), ("cafe", "Cafe - Dessert")])
 	submit = SubmitField('Search')
 
 class Dish_detail(Form):

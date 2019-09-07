@@ -125,3 +125,75 @@
                                     {{ form.rating }}
                                 </div>
                         </div> -->
+
+advanced search box
+<div id="advance_search" class="advance-search unselectable" ng-init="type='area'" ng-hide="show!='true'">
+                                <div class="sf-left">
+                                    <ul class="sf-cate">
+                                        <li ng-click="changeType('area')">
+                                            <i class="fa fa-location-arrow"></i>
+                                            <label style="margin-bottom: 0px; margin-left: 3px;">Khu vực</label>
+                                            <i class="fa fa-angle-right" style="float: right"></i>
+                                        </li>
+                                        <li ng-click="changeType('price')">
+                                            <i class="fa fa-bars"></i>
+                                            <label style="margin-bottom: 0px; margin-left: 3px;">Mức giá</label>
+                                            <i class="fa fa-angle-right" style="float: right"></i>
+                                        </li>
+                                        <li ng-click="changeType('category')">
+                                            <i class="fa fa-cutlery"></i>
+                                            <label style="margin-bottom: 0px; margin-left: 3px; ">Phân loại</label>
+                                            <i class="fa fa-angle-right" style="float: right"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="sf-right">
+                                    <div class="sf-result" ng-hide="type!='area'">
+                                        <!-- <ul>
+                                            <li ng-repeat="district in Districts">
+                                                <label class="checkbox-container" style="font-family: arial">{{ form.area }}
+                                                    <input type="checkbox" ng-model="district.Selected">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </li>   
+                                        </ul> -->
+                                        {{form.area(class='checkbox-container')}}
+                                    </div>
+                                    <div class="sf-result" ng-hide="type!='price'">
+                                        <!-- <ul>
+                                            <li ng-repeat="price in Prices">
+                                                <label class="checkbox-container" style="font-family: arial">
+                                                    <input type="checkbox" ng-model="price.Selected">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </li>
+                                        </ul> -->
+                                        {{form.price_range}}
+                                    </div>
+                                    <div class="sf-result" ng-hide="type!='category'">
+                                        <ul>
+                                            <li ng-repeat="cate in Cates">
+                                                <label class="checkbox-container" style="font-family: arial">
+                                                    <input type="checkbox" ng-model="cate.Selected">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="sf-bottom">
+                                    <div class="sf-btns">
+                                        <a class="fd-btn" href="" style="text-decoration:none;" ng-click="search()">Tìm kiếm</a>
+                                        <a class="fd-btn" href="" style="text-decoration:none;" ng-click="clearFilter()">Xóa bộ lọc</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(document).ready(function(){
+                                  $("#filtertest").click(function(){
+                                    alert('cliked');
+                                    // $("#advance_search").hide(1000);
+                                  });
+                                });
+                            </script>
+end advanced search box                            

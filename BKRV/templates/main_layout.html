@@ -20,15 +20,8 @@
 		<!-- AngularJS -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 		<!-- Custom stylesheet -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/listing-detail.css') }}" />
-		<!-- AngularJS -->
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-		<!-- Simple line Icon -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/simple-line-icons.css') }}">
-		<!-- Themify Icon -->
-		<link rel="stylesheet" href="{{ url_for('static',filename='css/themify-icons.css') }}">
-		<!--ajax lib-->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		{% block headers %}
+		{% endblock headers %}
 	</head>
 	<body>
 
@@ -63,7 +56,7 @@
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 							<i class="fa fa-bars"></i>
 						</button>
-						<a class="navbar-brand" href=""><img class="logo" src="{{url_for('static', filename='images/logo.png')}}" alt="" style="height: 50px; width: 200px"></a>
+						<a class="navbar-brand" href="{{url_for('index')}}"><img class="logo" src="{{url_for('static', filename='images/logo.png')}}" alt="" style="height: 50px; width: 200px"></a>
 					</div>
 					<!-- Navigation -->
 					<div class="collapse navbar-collapse" id="navbar-menu">
@@ -102,100 +95,27 @@
 				<!-- Carousel-inner -->
 				<div class="carousel-inner" role="listbox">
 					<div class="item active">
-						<img src="{{url_for('static', filename='images/food.jpg')}}">
+						<img src="{{wall}}">
 						<div class="overlay" ng-app="myApp" ng-controller="myCtrl" ng-init="show='false'">
-						<!-- session for form -->
-							<form method="post" action="">
+							<form method="post" action="{{url_for('listing')}}">
+								{{ form.csrf_token }}
 								<div class="inner-form">
 									<div class="input-field first-wrap">
 										{{ form.search(class="search_box", placeholder="Quán ăn / món ăn / địa chỉ")}}
-										<!-- <input class="search_box" id="search" name="search_input" type="text" placeholder="Quán ăn / món ăn / địa chỉ" /> -->
 										<i class="fa fa-sliders" style="margin-top: 3px" id="filter"></i>
 								  	</div>
 								  	<div class="input-field third-wrap">
 								  		{{ form.submit(class="btn know_bnt", id='filter') }}
-										<!-- <input id="ignored_element" class="btn know_btn" type="submit" name="find" value="Tìm"></input> -->
 								 	</div>
 								</div>
 							</form>
-							<button id = 'filtertest'> button </button>
+							<!-- <button id = 'filtertest'> button </button> -->
 							<!-- Advanced Search Bar -->
-							<div id="advance_search" class="advance-search unselectable" ng-init="type='area'" ng-hide="show!='true'">
-								<div class="sf-left">
-									<ul class="sf-cate">
-										<li ng-click="changeType('area')">
-											<i class="fa fa-location-arrow"></i>
-											<label style="margin-bottom: 0px; margin-left: 3px;">Khu vực</label>
-											<i class="fa fa-angle-right" style="float: right"></i>
-										</li>
-										<li ng-click="changeType('price')">
-											<i class="fa fa-bars"></i>
-											<label style="margin-bottom: 0px; margin-left: 3px;">Mức giá</label>
-											<i class="fa fa-angle-right" style="float: right"></i>
-										</li>
-										<li ng-click="changeType('category')">
-											<i class="fa fa-cutlery"></i>
-											<label style="margin-bottom: 0px; margin-left: 3px;	">Phân loại</label>
-											<i class="fa fa-angle-right" style="float: right"></i>
-										</li>
-									</ul>
-								</div>
-								<div class="sf-right">
-									<div class="sf-result" ng-hide="type!='area'">
-										<!-- <ul>
-											<li ng-repeat="district in Districts">
-												<label class="checkbox-container" style="font-family: arial">{{ form.area }}
-													<input type="checkbox" ng-model="district.Selected">
-					  								<span class="checkmark"></span>
-												</label>
-											</li>	
-										</ul> -->
-										{{form.area(class='checkbox-container')}}
-									</div>
-									<div class="sf-result" ng-hide="type!='price'">
-										<!-- <ul>
-											<li ng-repeat="price in Prices">
-												<label class="checkbox-container" style="font-family: arial">
-													<input type="checkbox" ng-model="price.Selected">
-					  								<span class="checkmark"></span>
-												</label>
-											</li>
-										</ul> -->
-										{{form.price_range}}
-									</div>
-									<div class="sf-result" ng-hide="type!='category'">
-										<ul>
-											<li ng-repeat="cate in Cates">
-												<label class="checkbox-container" style="font-family: arial">
-													<input type="checkbox" ng-model="cate.Selected">
-					  								<span class="checkmark"></span>
-												</label>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="sf-bottom">
-									<div class="sf-btns">
-										<a class="fd-btn" href="" style="text-decoration:none;" ng-click="search()">Tìm kiếm</a>
-										<a class="fd-btn" href="" style="text-decoration:none;" ng-click="clearFilter()">Xóa bộ lọc</a>
-									</div>
-								</div>
-							</div>
-							<script type="text/javascript">
-								$(document).ready(function(){
-								  $("#filtertest").click(function(){
-								  	alert('cliked');
-								    // $("#advance_search").hide(1000);
-								  });
-								});
-							</script>
+							
 							<!-- Advanced Search Bar end -->
-							<div class="carousel-caption">
-								<h3>Hedspi Food Review</h3>
-								<h1>Đánh giá đồ ăn</h1>
-								<h1 class="second_heading">Creative & Professional</h1>
-								<!-- session for viet review -->
-							</div>					
+							{% block namewrite %}
+										
+							{% endblock namewrite %}	
 						</div>
 					</div>        
 				</div><!-- Carousel-inner end -->

@@ -79,27 +79,27 @@
 							{% if current_user.is_authenticated %}
 								{% if like_type == 0 %}
 									<div class="upvote-btn">
-									<div class="featured-btn-wrap">
-										<button class="btn know_btn like" id="like_button" name="upvote" style="font-size: 14px">UPVOTE</button>
-									</div>
+										<div class="featured-btn-wrap">
+											<button class="btn know_btn like" id="like_button" name="upvote" style="font-size: 14px">UPVOTE</button>
+										</div>
 									</div>
 									<div class="downvote-btn">
 										<button class="btn btn-outline-danger dislike" id="dislike_button" name="downvote" style="font-size: 14px">DOWNVOTE</button>
 									</div>
 								{% elif like_type == 1%}
 									<div class="upvote-btn">
-									<div class="featured-btn-wrap">
-										<button class="btn know_btn like" id="like_button" name="upvote" style="font-size: 14px; background: #A0A0A0;" disabled>UPVOTE</button>
-									</div>
+										<div class="featured-btn-wrap">
+											<button class="btn know_btn like" id="like_button" name="upvote" style="font-size: 14px; background: #A0A0A0;" disabled>UPVOTE</button>
+										</div>
 									</div>
 									<div class="downvote-btn">
 										<button class="btn btn-outline-danger dislike" id="dislike_button" name="downvote" style="font-size: 14px">DOWNVOTE</button>
 									</div>
 								{% elif like_type == -1%}
 									<div class="upvote-btn">
-									<div class="featured-btn-wrap">
-										<button class="btn know_btn like" id="like_button" name="upvote" style="font-size: 14px">UPVOTE</button>
-									</div>
+										<div class="featured-btn-wrap">
+											<button class="btn know_btn like" id="like_button" name="upvote" style="font-size: 14px">UPVOTE</button>
+										</div>
 									</div>
 									<div class="downvote-btn">
 										<button class="btn btn-outline-danger dislike" id="dislike_button" name="downvote" style="font-size: 14px; background: #A0A0A0;" disabled>DOWNVOTE</button>
@@ -107,9 +107,9 @@
 									{% endif %}
 							{% else %} <!-- not loged in like dislike button navigate to login site -->
 								<div class="upvote-btn">
-								<div class="featured-btn-wrap">
-									<button class="btn know_btn like disabled" id="like_'.$review_id.'" name="upvote" style="font-size: 14px; background: #A0A0A0;">UPVOTE</button>
-								</div>
+									<div class="featured-btn-wrap">
+										<button class="btn know_btn like disabled" id="like_'.$review_id.'" name="upvote" style="font-size: 14px; background: #A0A0A0;">UPVOTE</button>
+									</div>
 								</div>
 								<div class="downvote-btn">
 									<button class="btn btn-outline-danger dislike disabled" id="dislike_'.$review_id.'" name="downvote" style="font-size: 14px; background: #A0A0A0;">DOWNVOTE</button>
@@ -362,7 +362,6 @@
 											$("#writer_likes").text(data.poster_likes);        // setting likes
 											$("#writer_dislikes").text(data.poster_dislikes);    // setting unlikes
 											if(data.like_status == 1){
-												
 												$("#like_button").css("background-color","#A0A0A0");
 												$("#like_button").attr("disabled", true);
 												$("#dislike_button").css("background-color","#ff3a6d");
@@ -373,6 +372,7 @@
 												$("#dislike_button").attr("disabled", true);
 												$("#like_button").css("background-color","#ffcb0f");
 												$("#like_button").attr("disabled", false);
+												
 											}
 												
 										}

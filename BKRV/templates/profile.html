@@ -83,177 +83,70 @@
 		
 		<!--============================= REVIEW DETAILS =============================-->
 		<div id="reviews" class="tabcontent">
+			{% for review_type in review_types %}
 			<!-- LIKED REVIEWS BEGIN -->
-			<section class="main-block">
-				<div class="container" id="row_of_review">
-					<div class="row justify-content-center">
-						<div class="col-md-5">
-							<div class="styled-heading">
-								<h3>LIKED</h3>
+				<section class="main-block">
+					<div class="container" id="row_of_review">
+						<div class="row justify-content-center">
+							<div class="col-md-5">
+								<div class="styled-heading">
+									<h3>{{review_type.section_name}}</h3>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row" > <!-- LIKED REIVEWS -->
-						<div class="col-md-4 featured-responsive">
-							<div class="featured-place-wrap">
-								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
-
-								<!--session for detail.php not in ajax-->
-								<a href="review_id">;
-									<img src="" class="img-fluid" alt="#">
-									<span class="<?php echo $class_rating?>">Rating</span>
-									<div class="featured-title-box">
-										<h6 name="store_name">Store name</h6>
-										<p name="store_type">loai</p>
-										<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
-										<ul>
-											<li><span class="ti-location-pin"></span>
-												<p name="store_address"><?php echo $result[$cnt]["dia_chi"];?></p>
-											</li>
-											<li><span class="fa fa-tag minmaxpriceicon"></span>
-											<p name="store_pricerange"> 
-												Price range
-											</p>
-											</li>
-											<li><span class="ti-time"></span>
-											<p name="store_opening">Opening hours</p>
-											</li>
-										</ul>
-										<h4 style="font-style:italic; font-size: 15px; color:grey;"> username </h4>
-										<div class="bottom-icons">
-											<!--<div class="closed-now">CLOSED NOW</div> --><!-- Based on opening hour -->
-											<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->
-											<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->';
-											<span class="ti-heart"><span class="upvote display-number" name="store_point">Likes</span></span> 
-											<!-- Number of upvotes - number of downvotes -->
-											<span class="ti-comments"><span class="comment display-number" name="no_comments">num comments </span></span>
+						<div class="row" > <!-- LIKED REIVEWS -->
+							{% for review in review_type.reviews %}
+							<div class="col-md-4 featured-responsive">
+								<div class="featured-place-wrap">
+									<a href="{{url_for('detail', review_id=review.review.id)}}">
+										<img src="{{review.thumbnail}}" class="img-fluid" alt="thumbnail">
+										<span class="{{review.rating_class}}">{{review.review.rating}}</span>
+										<div class="featured-title-box">
+											<h6 name="store_name">{{review.review.ten}}</h6>
+											<p name="store_type">{{review.loai}}</p>
+											<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
+											<ul>
+												<li><span class="ti-location-pin"></span>
+													<p name="store_address">{{review.review.dia_chi}}</p>
+												</li>
+												<li><span class="fa fa-tag minmaxpriceicon"></span>
+													<p name="store_pricerange"> 
+														{% if review.price_range[0] == review.price_range[1] %}
+																{{review.price_range[0]}}
+														{% else %}
+																{{review.price_range[0]}} - {{review.price_range[1]}}
+														{% endif %}
+													</p>
+												</li>
+												<li><span class="ti-time"></span>
+													<p name="store_opening">{{review.review.time_open}} - {{review.review.time_close}}</p>
+												</li>
+											</ul>
+											<h4 style="font-style:italic; font-size: 15px; color:grey;">{{review.review.author.username}}</h4>
+											<div class="bottom-icons">
+												{% if review.openning %}
+													<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->
+												{% else %}
+													<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->
+												{% endif %}
+												<span class="ti-heart"><span class="upvote display-number" name="store_point">{{review.review_likes}}</span></span> 
+												<!-- Number of upvotes - number of downvotes -->
+												<span class="ti-comments"><span class="comment display-number" name="no_comments">{{review.comments}}</span></span>
+											</div>
 										</div>
-									</div>
-								</a>
+									</a>
+								</div>
 							</div>
-						</div>
-					</div> 				
+							{% endfor %}
+						</div> 				
+					</div>
+				<div class="featured_btn_wrap"  style="width:100%">
+					<a class="wtf view_more_button" style="position:relative; left:5%;" href="{{url_for('listing', search_type='liked')}}" id="">XEM THÊM</a> 
 				</div>
-			<div class="featured_btn_wrap"  style="width:100%">
-				<a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=liked" id="<?php echo $button?>">XEM THÊM</a> 
-			</div>
-			</section>
-			<!-- LIKED REVIEWS END -->
-			<hr>
-			<!-- DISLIKED REVIEWS BEGIN -->
-			<section class="main-block">
-				<div class="container" id="row_of_review">
-					<div class="row justify-content-center">
-						<div class="col-md-5">
-							<div class="styled-heading">
-								<h3>LIKED</h3>
-							</div>
-						</div>
-					</div>
-					<div class="row" > <!-- LIKED REIVEWS -->
-						<div class="col-md-4 featured-responsive">
-							<div class="featured-place-wrap">
-								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
-
-								<!--session for detail.php not in ajax-->
-								<a href="review_id">;
-									<img src="" class="img-fluid" alt="#">
-									<span class="<?php echo $class_rating?>">Rating</span>
-									<div class="featured-title-box">
-										<h6 name="store_name">Store name</h6>
-										<p name="store_type">loai</p>
-										<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
-										<ul>
-											<li><span class="ti-location-pin"></span>
-												<p name="store_address"><?php echo $result[$cnt]["dia_chi"];?></p>
-											</li>
-											<li><span class="fa fa-tag minmaxpriceicon"></span>
-											<p name="store_pricerange"> 
-												Price range
-											</p>
-											</li>
-											<li><span class="ti-time"></span>
-											<p name="store_opening">Opening hours</p>
-											</li>
-										</ul>
-										<h4 style="font-style:italic; font-size: 15px; color:grey;"> username </h4>
-										<div class="bottom-icons">
-											<!--<div class="closed-now">CLOSED NOW</div> --><!-- Based on opening hour -->
-											<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->
-											<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->';
-											<span class="ti-heart"><span class="upvote display-number" name="store_point">Likes</span></span> 
-											<!-- Number of upvotes - number of downvotes -->
-											<span class="ti-comments"><span class="comment display-number" name="no_comments">num comments </span></span>
-										</div>
-									</div>
-								</a>
-							</div>
-						</div>
-					</div> 				
-				</div>
-			<div class="featured_btn_wrap" style="width: 100%" >
-						<a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=disliked" id="<?php echo $button?>">XEM THÊM</a> 
-					</div>
-			</section>
-			<hr>
-			<!-- DISLIKED REVIEWS END -->
-
-			<!-- POSTED REVIEWS BEGIN -->
-			<section class="main-block">
-				<div class="container" id="row_of_review">
-					<div class="row justify-content-center">
-						<div class="col-md-5">
-							<div class="styled-heading">
-								<h3>LIKED</h3>
-							</div>
-						</div>
-					</div>
-					<div class="row" > <!-- LIKED REIVEWS -->
-						<div class="col-md-4 featured-responsive">
-							<div class="featured-place-wrap">
-								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
-
-								<!--session for detail.php not in ajax-->
-								<a href="review_id">;
-									<img src="" class="img-fluid" alt="#">
-									<span class="<?php echo $class_rating?>">Rating</span>
-									<div class="featured-title-box">
-										<h6 name="store_name">Store name</h6>
-										<p name="store_type">loai</p>
-										<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
-										<ul>
-											<li><span class="ti-location-pin"></span>
-												<p name="store_address"><?php echo $result[$cnt]["dia_chi"];?></p>
-											</li>
-											<li><span class="fa fa-tag minmaxpriceicon"></span>
-											<p name="store_pricerange"> 
-												Price range
-											</p>
-											</li>
-											<li><span class="ti-time"></span>
-											<p name="store_opening">Opening hours</p>
-											</li>
-										</ul>
-										<h4 style="font-style:italic; font-size: 15px; color:grey;"> username </h4>
-										<div class="bottom-icons">
-											<!--<div class="closed-now">CLOSED NOW</div> --><!-- Based on opening hour -->
-											<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->
-											<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->';
-											<span class="ti-heart"><span class="upvote display-number" name="store_point">Likes</span></span> 
-											<!-- Number of upvotes - number of downvotes -->
-											<span class="ti-comments"><span class="comment display-number" name="no_comments">num comments </span></span>
-										</div>
-									</div>
-								</a>
-							</div>
-						</div>
-					</div> 				
-				</div>
-			<div class="featured_btn_wrap" style="width: 100%" >
-						<a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=posted" id="<?php echo $button?>">XEM THÊM</a> 
-					</div>
-			</section>
-			<hr>
+				</section>
+				<!-- LIKED REVIEWS END -->
+				<hr>
+			{% endfor %}
 		</div>
 		<!-- POSTED REVIEWS END -->
 		<!--=================================== END REVIEW DETAILS ==================================-->
@@ -271,40 +164,13 @@
 				                    <h2 style="display: inline-block;">{{current_user.username}}</h2><a href="{{url_for('edit_profile')}}" style="margin-left: 15px">Edit Profile</a>
 				                    <p><strong>Email: </strong> {{current_user.email}} </p>
 				                    <p><strong>Description: </strong>{{current_user.bio}}</p>
-				                    <!-- <p><strong>Hobbies: </strong> Read, out with friends, listen to music, draw and learn new things. </p> -->
-				                    <!-- <p><strong>Skills: </strong>
-				                        <span class="tags">html5</span> 
-				                        <span class="tags">css3</span>
-				                        <span class="tags">jquery</span>
-				                        <span class="tags">bootstrap3</span>
-				                    </p> -->
 				                </div>             
 				                <div class="col-xs-12 col-sm-4 text-center">
 				                    <figure>
 				                        <img src="{{url_for('static', filename = current_user.profile_picture)}}" style="border-radius: 50%">
 				                        <!-- <img src="images/man.png"> -->
 				                        <figcaption class="ratings">
-				                            <!-- <p>Ratings
-				                            <a href="#">
-				                                <span class="fa fa-star"></span>
-				                            </a>
-				                            <a href="#">
-				                                <span class="fa fa-star"></span>
-				                            </a>
-				                            <a href="#">
-				                                <span class="fa fa-star"></span>
-				                            </a>
-				                            <a href="#">
-				                                <span class="fa fa-star"></span>
-				                            </a>
-				                            <a href="#">
-				                                 <span class="fa fa-star-o"></span>
-				                            </a> 
-				                            </p> -->
-				                            <!-- <p style="float:left; margin-right:5px; color: green">Likes: <?php// echo get_number_of_like_of_user($useridPhp);?>
-				                            </p>
-				                            <p style="float:left; color:red">Dislikes: <?php// echo get_number_of_dislike_of_user($useridPhp);?>
-				                        	</p> -->
+				                           
 				                        </figcaption>
 				                    </figure>
 				                </div>
@@ -312,24 +178,18 @@
 				            <div class="col-xs-12 divider text-center" style="height:100%">
 				            	
 				                <div class="col-xs-12 col-sm-4 emphasis">
-				                    <h2 style="margin-bottom: 10px; text-align: center; color:blue;display:inline-block;"><strong>num sub</strong></h2>                    
-				                    <!-- <p><small>Subscribers</small></p> -->
-				                    <!-- <button class="btn btn-success btn-block"> Subscribe </button> -->
+				                    <h2 style="margin-bottom: 10px; text-align: center; color:blue;display:inline-block;"><strong>{{user_statistics.num_subscribes}}</strong></h2>                    
 				                    <h3 style="color:blue"><strong> SUBSCRIBERS </strong></h3>
 				                </div>
 				                <div class="col-xs-12 col-sm-4 emphasis">
-				                    <h2 style="margin-bottom: 10px; text-align: center; color:green;"><strong>num likes </strong></h2>                    
-				                    <!-- <p><small>Subscribers</small></p> -->
-				                    <!-- <button class="btn btn-success btn-block"> Subscribe </button> -->
+				                    <h2 style="margin-bottom: 10px; text-align: center; color:green;"><strong>{{user_statistics.num_likes}}</strong></h2>                    
 				                    <h3 style="color:green"><strong> LIKES </strong></h3>
 				                </div>
 				                <div class="col-xs-12 col-sm-4 emphasis">
-				                    <h2 style="margin-bottom: 10px; text-align: center; color:red"><strong>num dislikes</strong></h2>                    
-				                    <!-- <p><small>Subscribers</small></p> -->
-				                    <!-- <button class="btn btn-success btn-block"> Subscribe </button> -->
+				                    <h2 style="margin-bottom: 10px; text-align: center; color:red"><strong>{{user_statistics.num_dislikes}}</strong></h2>                    
 				                    <h3 style="color:red"><strong> DISLIKES </strong></h3>
 				                </div>
-				                <!-- <button style="float:right">Edit</button> -->
+				                
 				            </div>
 			    	    </div>                 
 					</div>
@@ -431,21 +291,21 @@
 		<!-- JavaScript -->
 		<script>
 		document.getElementById("defaultOpenTab").click();
-		$(document).ready(function() 
-		{ 
-		 $('#uploadForm').ajaxForm(function() 
-		 {
-		  alert("Uploaded SuccessFully");
-		 }); 
-		});
+		// $(document).ready(function() 
+		// { 
+		//  $('#uploadForm').ajaxForm(function() 
+		//  {
+		//   alert("Uploaded SuccessFully");
+		//  }); 
+		// });
 
-		function preview_image() 
-		{
-		 var total_file=document.getElementById("upload_file").files.length;
-		 for(var i=0;i<total_file;i++)
-		 {
-		  $('#image_preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'>");
-		 }
-		}
+		// function preview_image() 
+		// {
+		//  var total_file=document.getElementById("upload_file").files.length;
+		//  for(var i=0;i<total_file;i++)
+		//  {
+		//   $('#image_preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'>");
+		//  }
+		// }
 		</script>
 {% endblock content %}
