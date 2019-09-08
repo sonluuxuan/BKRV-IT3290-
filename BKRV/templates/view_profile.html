@@ -6,9 +6,9 @@
 		<div class="container" style="width:100%; margin:0; padding:5;">
 		    <div class="span3 well" style="width:100%">
 		        <center>
-		        <a href="#aboutModal" data-toggle="modal" data-target="#myModal"><img src="<?php echo $posterProfilePic;?>" name="aboutme" style = "width:140px; height:140px;" class="img-circle"></a>
-		        <h3 style="margin-bottom: 5px; margin-top: 10px;"><?php echo $posternamePhp;?></h3>
-		        <?php
+		        <a href="#aboutModal" data-toggle="modal" data-target="#myModal"><img src="{{url_for('static', filename=user_statistics.user.profile_picture)}}" name="aboutme" style = "width:140px; height:140px;" class="img-circle"></a>
+		        <h3 style="margin-bottom: 5px; margin-top: 10px;">{{user_statistics.user.username}}</h3>
+		        <!-- <?php
 		        	$sub_status = check_sub($posterId, $useridPhp);
 					if($sub_status == 0 && $flags == 1){
 						// echo "<script type='text/javascript'>alert('shiteesfdfdk');</script>";
@@ -21,12 +21,19 @@
 					else{
 						echo '<button class="sub_but" id="sub_button" style="margin-top:0px; background-color: #46cd38; border-radius: 10px; border: none; color:white; opacity:0.5;/*cursor: not-allowed;*/" type="button" disabled title="login to subscribe">SUBSCRIBE</button>';
 					}
-				?>
+				?> -->
+				{% if sub_status == 0 and current_user.is_authenticated %}
+					<button class="sub_but" id="sub_button" style="margin-top:0px; background-color: #46cd38; border-radius: 10px; border: none; color:white; /*opacity: 0.5; cursor: not-allowed;*/" type="button">SUBSCRIBE</button>
+				{% elif sub_status != 0 and current_user.is_authenticated %}
+					<button class="sub_but" id="sub_button" style="margin-top:0px; /*background-color: #46cd38;*/ border-radius: 10px; border: none; color:grey; opacity: 0.5; /*cursor: not-allowed;*/" type="button">SUBSCRIBED</button>
+				{% else %}
+					<button class="sub_but" id="sub_button" style="margin-top:0px; background-color: #46cd38; border-radius: 10px; border: none; color:white; opacity:0.5;/*cursor: not-allowed;*/" type="button" disabled title="login to subscribe">SUBSCRIBE</button>
+				{% endif %}
 		        <div style="padding-top: 10px; margin-top: 10px;">
-                    <span class="label label-success spanlabel2"><?php echo get_number_of_like_of_user($posterId);?> Likes</span>
-                    <span style="background-color:red" class="label label-info spanlabel2"><?php echo get_number_of_dislike_of_user($posterId);?> Dislikes</span>
-                    <span class="label label-warning spanlabel2"><?php echo get_number_of_post_by_user($posterId);?> Posts</span>
-                    <span id="writer_subscribers" class="label label-info spanlabel2"><?php echo get_number_of_subscribers($posterId);?> Subscribers</span>
+                    <span class="label label-success spanlabel2">{{user_statistics.num_likes}} Likes</span>
+                    <span style="background-color:red" class="label label-info spanlabel2">{{user_statistics.num_dislikes}} Dislikes</span>
+                    <span class="label label-warning spanlabel2">{{user_statistics.num_reviews}} Posts</span>
+                    <span id="writer_subscribers" class="label label-info spanlabel2">{{user_statistics.num_subscribes}} Subscribers</span>
                     <style>
                     	.spanlabel2{
                     		text-align : center;
@@ -47,36 +54,27 @@
                     </style>
                     <script type="text/javascript">
 						$(document).ready(function(){
-							var sub_status = "<?php echo $sub_status;?>";
 							$('#sub_button').click(function(){
-								var posterId = "<?php echo $posterId;?>";
-								var subscriberId = "<?php echo $useridPhp;?>";
-								alert(posterId);
-								alert(subscriberId);
-								alert(sub_status);
+								var posterId = "{{user_statistics.user.id}}";
+								// alert(posterId);
 								$.ajax({
-									url:'subscribe.php',
+									url:"{{url_for('subscribe')}}",
 									type:'post',
-									data:{posterId:posterId, subscriberId:subscriberId, sub_status:sub_status},
-									dataType:'json',
+									data:JSON.stringify({"posterId":posterId}),
+									contentType: 'application/json;charset=UTF-8',
 									success: function(data){
-										alert(data["result"]);
-										if(sub_status == 0){
-											$("#writer_subscribers").text(data["countSub"] +1+' Subscribers');
-											// $("#sub_button").attr("disabled", true);
+										if(data.sub_status == 1){
+											$("#writer_subscribers").text(data.num_subs+" Subscribers");
 											$("#sub_button").text("SUBSCRIBED");
 											$("#sub_button").css('background-color','grey');
 											$("#sub_button").css('opacity','0.5');
-											sub_status = 1;
 										}
 										else{
-											$("#writer_subscribers").text(data["countSub"] -1+' Subscribers');
-											// $("#sub_button").attr("disabled", true);
+											$("#writer_subscribers").text(data.num_subs+" Subscribers");
 											$("#sub_button").text("SUBSCRIBE");
 											$("#sub_button").css('background-color','#46cd38');
 											$("#sub_button").css('color','white');
 											$("#sub_button").css('opacity','1');
-											sub_status = 0;
 										}
 									}
 
@@ -96,17 +94,17 @@
 		            <div class="modal-content">
 		                <div class="modal-header">
 		                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-		                    <h4 class="modal-title" id="myModalLabel">More About <?php echo $posternamePhp;?></h4>
+		                    <h4 class="modal-title" id="myModalLabel">More About {{user_statistics.user.username}}</h4>
 		                    </div>
 		                <div class="modal-body">
 		                    <center>
-		                    <img src="<?php echo $posterProfilePic;?>" name="aboutme" border="0" class="img-circle" style = "width:140px; height:140px;"></a>
-		                    <h3 class="media-heading"><?php echo $posternamePhp;?></h3>
+		                    <img src="{{url_for('static', filename=user_statistics.user.profile_picture)}}" name="aboutme" border="0" class="img-circle" style = "width:140px; height:140px;"></a>
+		                    <h3 class="media-heading">{{user_statistics.user.username}}</h3>
 		                    <span><strong>Infos: </strong></span>
-		                        <span class="label label-success spanlabel"><?php echo get_number_of_like_of_user($posterId);?> Likes</span>
-		                        <span style="background-color:red" class="label label-info spanlabel"><?php echo get_number_of_dislike_of_user($posterId);?> Dislikes</span>
-		                        <span class="label label-warning spanlabel"><?php echo get_number_of_post_by_user($posterId);?> Posts</span>
-		                        <span class="label label-info spanlabel"><?php echo get_number_of_subscribers($posterId);?> Subscribers</span>
+		                        <span class="label label-success spanlabel">{{user_statistics.num_likes}} Likes</span>
+		                        <span style="background-color:red" class="label label-info spanlabel">{{user_statistics.num_dislikes}} Dislikes</span>
+		                        <span class="label label-warning spanlabel">{{user_statistics.num_reviews}} Posts</span>
+		                        <span class="label label-info spanlabel">{{user_statistics.num_subscribes}} Subscribers</span>
 		                        <style>
 		                        	.spanlabel{
 		                        		height:50px;
@@ -118,9 +116,9 @@
 		                    <hr>
 		                    <center>
 		                    <p class="text-left"><strong>Email: </strong>
-		                        <?php echo $posterEmail;?></p>
+		                        {{user_statistics.user.email}}</p>
 		                    <p class="text-left"><strong>Bio: </strong><br>
-		                        <?php echo $posterDescription;?></p>
+		                        {{user_statistics.user.bio}}</p>
 		                    <br>
 		                    </center>
 		                </div>
@@ -137,178 +135,93 @@
 		
 		<!--============================= REVIEW DETAILS =============================-->
 		<div id="reviews" class="tabcontent">
-			<?php
-				$result3 = get_posted_review($posterId);
-			?>
-			<!-- POSTED REVIEWS BEGIN -->
 			<section class="main-block">
 				<div class="container" id="row_of_review">
 					<div class="row justify-content-center">
 						<div class="col-md-5">
 							<div class="styled-heading">
-								<h3>POSTED</h3>
+								<h3>{{review_type.section_name}}</h3>
 							</div>
 						</div>
 					</div>
 					<div class="row" > <!-- LIKED REIVEWS -->
-			<?php
-					$cnt = 0;
-					if(!empty($result3)) {
-						$cnt_result = count($result3);
-					}
-					// print($cnt)
-					else $cnt_result = 0;
-					// echo($cnt);
-					//echo var_dump($result);
-					while($cnt < 3 && $cnt < $cnt_result){ // 3 reviews per row
-						if($result3[$cnt]["rating"] < 5){
-							$class_rating = "featured-rating";
-						}else if($result3[$cnt]["rating"] >= 5 && $result3[$cnt]["rating"] < 8){
-							$class_rating = "featured-rating-orange";
-						}else if($result3[$cnt]["rating"] >= 8){
-							$class_rating = "featured-rating-green";
-						}
-					?>
+						{% for review in review_type.reviews %}
 						<div class="col-md-4 featured-responsive">
 							<div class="featured-place-wrap">
-								<a href="detail.php?review_id=<?php echo $result[$cnt]["id"]; ?>">
-
-								<!--session for detail.php not in ajax-->
-								<?php
-									echo '<a href="detail.php?review_id='.$result3[$cnt]["id"].'">';
-								?>
-									<img src="<?php echo get_thumbnail("images/".$result3[$cnt]["id"]);?>" class="img-fluid" alt="#">
-									<span class="<?php echo $class_rating?>"><?php echo $result3[$cnt]["rating"];?></span>
+								<a href="{{url_for('detail', review_id=review.review.id)}}">
+									<img src="{{review.thumbnail}}" class="img-fluid" alt="thumbnail">
+									<span class="{{review.rating_class}}">{{review.review.rating}}</span>
 									<div class="featured-title-box">
-										<h6 name="store_name"><?php echo $result3[$cnt]["ten"];?></h6>
-										<?php $result_loai = get_loai($result3[$cnt]["id"]);?>
-										<p name="store_type"><?php echo $result_loai[0]["loai"];?></p>
+										<h6 name="store_name">{{review.review.ten}}</h6>
+										<p name="store_type">{{review.loai}}</p>
 										<!--<p><span>$$$</span>$$</p>--> <!-- Based on price range -->
 										<ul>
 											<li><span class="ti-location-pin"></span>
-												<p name="store_address"><?php echo $result3[$cnt]["dia_chi"];?></p>
+												<p name="store_address">{{review.review.dia_chi}}</p>
 											</li>
 											<li><span class="fa fa-tag minmaxpriceicon"></span>
-											<?php
-												$result_price_range = get_price_range($result3[$cnt]["id"]);
-												$low = $result_price_range[0]["gia"];
-												$high = $result_price_range[1]["gia"];
-												//if($low === $high)
-											?>
 												<p name="store_pricerange"> 
-													<?php
-														if($low === $high){
-															echo $low;
-														}
-														else{
-															echo $low." - ".$high;
-														}	
-													?>
+													{% if review.price_range[0] == review.price_range[1] %}
+															{{review.price_range[0]}}
+													{% else %}
+															{{review.price_range[0]}} - {{review.price_range[1]}}
+													{% endif %}
 												</p>
 											</li>
 											<li><span class="ti-time"></span>
-											<?php
-												$result_time_range = get_time_range($result3[$cnt]["id"]);
-												$time_low = $result_time_range[0]["time_open"];
-												$time_high = $result_time_range[0]["time_close"];
-												//if($low === $high)
-											?>
-												<p name="store_opening"><?php echo $time_low." - ".$time_high?></p>
+												<p name="store_opening">{{review.review.time_open}} - {{review.review.time_close}}</p>
 											</li>
 										</ul>
-										<h4 style="font-style:italic; font-size: 15px; color:grey;"> <?php echo getUserById($result3[$cnt]["user_id"])[0]["username"]?> </h4>
+										<h4 style="font-style:italic; font-size: 15px; color:grey;">{{review.review.author.username}}</h4>
 										<div class="bottom-icons">
-											<!--<div class="closed-now">CLOSED NOW</div> --><!-- Based on opening hour -->
-											<?php
-												date_default_timezone_set("Asia/Ho_Chi_Minh");
-												$time = date("H:i:s");
-												if (strtotime($time) >= strtotime($time_low) && strtotime($time) <= strtotime($time_high)){
-													echo '<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->';
-												}
-												else{
-													echo '<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->';
-												}
-											?>
-											<?php
-												$like_dislike_arr = get_num_of_like_dislike($result3[$cnt]["id"]);
-											?>
-											<span class="ti-heart"><span class="upvote display-number" name="store_point"><?php echo $like_dislike_arr["likes"];?></span></span> 
+											{% if review.openning %}
+												<div class="open-now">OPEN NOW</div> <!-- Based on opening time -->
+											{% else %}
+												<div class="closed-now">CLOSED NOW</div> <!-- Based on opening time -->
+											{% endif %}
+											<span class="ti-heart"><span class="upvote display-number" name="store_point">{{review.review_likes}}</span></span> 
 											<!-- Number of upvotes - number of downvotes -->
-											<?php
-												$result_num_comment = get_number_of_comments($result3[$cnt]["id"]);
-												if(empty($result_num_comment)) {
-													$cnt_comment["cnt"] = 0; 
-												}
-												else 
-													$cnt_comment = $result_num_comment[0]; 
-											?> 
-											<span class="ti-comments"><span class="comment display-number" name="no_comments"><?php echo $cnt_comment["cnt"];?></span></span>
+											<span class="ti-comments"><span class="comment display-number" name="no_comments">{{review.comments}}</span></span>
 										</div>
 									</div>
 								</a>
 							</div>
 						</div>
-						<?php
-						$cnt = $cnt+1;
-						//echo "_____________________________________".$cnt;
-						}
-						?>
+						{% endfor %}
 					</div> 				
 				</div>
-			<div class="featured_btn_wrap" style="width: 100%" >
-						<!-- <a class="wtf view_more_button" style="position:relative; left:5%;" href="listing.php?button=posterpost&posterid=<?php //echo $posterId;?>" id="<?php //echo $button?>">XEM THÊM</a> --> 
-						<button class="wtf view_more_button" id="viewmoreprofile">XEM THÊM</button>
-					</div>
+			<div class="featured_btn_wrap"  style="width:100%">
+				<button class="wtf view_more_button" id="view_more_button">XEM THÊM</button> 
+			</div>
 			</section>
 			<hr>
 		</div>
 		<!-- POSTED REVIEWS END -->
 		<script>
-					$(document).ready(function(){
-						console.log("ready");
-						var cnt = <?php echo $cnt;?>;
-						var flags = <?php echo $flags;?>;						
-						$("#viewmoreprofile").click(function(){
-							console.log("clicked");
-							var type = "posterpost";
-							var cnt_post = cnt;  // postid
-							//alert(cnt_post);
-							//alert(type);
-							var search_input = "";
-							var districts = [];
-							var prices = [];
-							var cates = [];
-							var no_districts = 0;
-							var no_cates = 0;
-							var no_prices = 0;
-							var posterId = -1;
-							console.log(<?php echo json_encode($districts)?>);
-							if (type == 'posterpost'){
-								posterId = "<?php echo $posterId;?>";
+			$(document).ready(function(){						
+				var last_id = "{{review_type.reviews[-1].review.id}}";
+				$(".wtf").click(function(){
+					var search_type = "{{review_type.search_type}}"
+					// alert(search_type);
+					$.ajax({
+						url:"{{url_for('load_reviews')}}",
+						type:'post',
+						data: JSON.stringify({"last_id":last_id, "search_type": search_type, "user_id":"{{user_statistics.user.id}}"}),
+						contentType: 'application/json;charset=UTF-8',
+						success: function(datas){
+							// alert('success');
+							var large = '<div class="row"> ';
+							for (i=0; i<datas['reviews'].length; i++){
+								data = datas['reviews']
+								large += '<div class="col-md-4 featured-responsive">	                    <div class="featured-place-wrap">	                        <a href="'+data[i].url+'">	                            <img src="'+data[i].thumbnail+'" class="img-fluid" alt="#">	                            <span class="'+data[i].rating_class+'">'+data[i].rating+'</span>	                            <div class="featured-title-box">	                                <h6>'+data[i].ten+'</h6>	                                <p>'+data[i].loai+'</p>	                                <ul>	                                    <li><span class="ti-location-pin"></span>	                                        <p name="store_name">'+data[i].dia_chi+'</p>	                                    </li>	                                    <li><span class="fa fa-tag minmaxpriceicon"></span>	                                        <p name="store_pricerange">'+data[i].price_range[0]+' - '+data[i].price_range[0]+'</p>	                                    </li>	                                    <li><span class="ti-time"></span>	                                        <p name="store_opening">'+data[i].time_open+' - '+data[i].time_close+'</p>	                                    </li>	                                </ul><h4 style="font-style:italic; font-size: 15px; color:grey;">'+ data[i].author+'</h4>	                                <div class="bottom-icons">	                                    <div class="'+data[i].time_class+'">'+data[i].store_status+'</div>	                                    <span class="ti-heart"><span class="upvote display-number" name="no_upvotes">'+data[i].review_likes+'</span></span>	                                    <span class="ti-comments"><span class="comment display-number" name="no_comments">'+data[i].comments+'</span></span>	                                </div>	                            </div>	                        </a>	                    </div>	                </div>';
 							}
-							var data = {cnt_post:cnt_post, posterId:posterId, type:type, search_input:search_input, no_districts:no_districts, no_prices:no_prices, no_cates:no_cates,districts:districts,prices:prices,cates:cates};
-							console.log(data);
-							$.ajax({
-									url: 'view_more.php',
-									type: 'post',
-									data: {cnt_post:cnt_post, posterId:posterId, type:type, search_input:search_input, no_districts:no_districts, no_prices:no_prices, no_cates:no_cates,districts:districts,prices:prices,cates:cates},
-									dataType: 'json',
-									success: function(data){
-										console.log("success");
-										var cnt_received = data['cnt_received'];
-										var large = '<div class="row"> ' ;
-										for (i=0; i<cnt_received; i++){
-											large += '<div class="col-md-4 featured-responsive">	                    <div class="featured-place-wrap">	                        <a href="detail.php?review_id='+data[i]['id']+'">	                            <img src="'+data[i]['thumbnail']+'" class="img-fluid" alt="#">	                            <span class="'+data[i]['class_rating']+'">'+data[i]['rating']+'</span>	                            <div class="featured-title-box">	                                <h6>'+data[i]['ten']+'</h6>	                                <p>'+data[i]['loai']+'</p>	                                <ul>	                                    <li><span class="ti-location-pin"></span>	                                        <p name="store_name">'+data[i]['dia_chi']+'</p>	                                    </li>	                                    <li><span class="fa fa-tag minmaxpriceicon"></span>	                                        <p name="store_pricerange">'+data[i]['low']+' - '+data[i]['high']+'</p>	                                    </li>	                                    <li><span class="ti-time"></span>	                                        <p name="store_opening">'+data[i]['time_low']+' - '+data[i]['time_high']+'</p>	                                    </li>	                                </ul><h4 style="font-style:italic; font-size: 15px; color:grey;">'+ data[i]["username"]+'</h4>	                                <div class="bottom-icons">	                                    <div class="'+data[i]['class_time']+'">'+data[i]['status']+'</div>	                                    <span class="ti-heart"><span class="upvote display-number" name="no_upvotes">'+data[i]['likes']+'</span></span>	                                    <span class="ti-comments"><span class="comment display-number" name="no_comments">'+data[i]['comments']+'</span></span>	                                </div>	                            </div>	                        </a>	                    </div>	                </div>';
-													cnt = cnt+1;
-													//alert(cnt);
-											}
-											alert(cnt);
-											large += '</div>';
-											$("#row_of_review").append(large);
-										}
-									});		
-								});
-							});
-				</script>
+							large += '</div>';
+							$("#row_of_review").append(large);
+							last_id = datas.next_last_id;
+						}
+					});		
+				});
+			});
+		</script>
 		<!--=================================== END REVIEW DETAILS ==================================-->
 {% endblock content %}

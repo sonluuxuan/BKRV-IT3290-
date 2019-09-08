@@ -4,9 +4,10 @@ from flask import render_template, redirect, request
 from BKRV.forms import Registration_form, Login_form, Edit_profile_form, Post_form, Search_form, Comment_form
 from BKRV import app, db, bcrypt
 from BKRV.model import District, Loai_quan, User_subscribes_, User, Review, Review_comments, Review_mon_gia, User_like_dislike
-from flask_login import login_user, current_user, logout_user
+from flask_login import login_user, current_user, logout_user ,login_required
 import datetime, json
 import jinja2
+from sqlalchemy import or_
 
 @app.route("/")
 def index():
@@ -40,17 +41,72 @@ def index():
 	wall = url_for('static', filename='images/food.jpg')
 	return render_template('index.html', latest=latest, popular=popular, subscribe=subscribe, form=form, wall = wall)
 
-def get_reviews(search_type, key_word = '', last_id=-1):
+def get_reviews(search_type, key_word = '', last_id=-1, user_id=-1):
 	if search_type == 'latest':
 		if(last_id!=-1):
 			reviews = Review.query.order_by(Review.id.desc()).filter(Review.id<last_id).limit(3).all()
 		else:
 			reviews = Review.query.order_by(Review.id.desc()).limit(3).all()
+	if search_type == 'popular':
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.likes.desc()).filter(Review.id<last_id).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.likes.desc()).limit(3).all()
+	if search_type == 'subscribe':
+		channel_ids = [c.id for c in current_user.channel]
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.id<last_id, Review.user_id.in_(channel_ids)).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.user_id.in_(channel_ids)).limit(3).all()
+	if search_type == 'posted':
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.user_id == user_id, Review.id<last_id).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.user_id == user_id).limit(3).all()
+	if search_type == 'my_posted':
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.user_id == current_user.id, Review.id<last_id).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.user_id == current_user.id).limit(3).all()
+	if search_type == 'liked':
+		liked_ids = [re.review_id for re in User_like_dislike.query.filter_by(user_id=current_user.id, type=1).all()]
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.id.in_(liked_ids), Review.id<last_id).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.id.in_(liked_ids)).limit(3).all()
+	if search_type == 'disliked':
+		disliked_ids = [re.review_id for re in User_like_dislike.query.filter_by(user_id=current_user.id, type=0).all()]
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.id.in_(disliked_ids), Review.id<last_id).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.id.in_(liked_ids)).limit(3).all()
+	if search_type == 'cafedessert':
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.loai_id == 2, Review.id<last_id).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.loai_id == 2).limit(3).all()
+	if search_type == 'barpub':
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.loai_id == 4, Review.id<last_id).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.loai_id == 4).limit(3).all()
+	if search_type == 'nhahang':
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.loai_id == 3, Review.id<last_id).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.loai_id == 3).limit(3).all()
+	if search_type == 'anvatviahe':
+		if(last_id!=-1):
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.loai_id == 1, Review.id<last_id).limit(3).all()
+		else:
+			reviews = Review.query.order_by(Review.id.desc()).filter(Review.loai_id == 1).limit(3).all()
+			
 	if key_word != '':
 		print('accessed key_word')
 		tag = "%{}%".format(key_word)
-		reviews = Review.query.order_by(Review.id.desc()).filter(Review.ten.like(tag)).limit(3).all()
-		print(len(reviews), 'len reviews in key_word')
+		reviews = Review.query.order_by(Review.id.desc()).filter(or_(Review.ten.like(tag), Review.dia_chi.like(tag))).limit(3).all()
+		reviews.extend([re.review for re in Review_mon_gia.query.filter(Review_mon_gia.ten_mon.like(tag))])
+		print(len(reviews), type(reviews), 'len reviews in key_word')
 	if(reviews!=None):
 		return reviews
 	else:
@@ -127,10 +183,18 @@ def load_reviews():
 	data = request.json
 	search_type = data['search_type']
 	last_id = data['last_id']
+	if('user_id' in data):
+		user_id = data['user_id']
+	else:
+		user_id = -1
 	print(search_type, last_id)
-	review_records = get_reviews(search_type = search_type, last_id = last_id)
-	reviews = data_listing(review_records)
-	next_last_id = reviews[-1]['review'].id
+	review_records = get_reviews(search_type = search_type, last_id = last_id, user_id=user_id)
+	if(len(review_records) == 0):
+		reviews = []
+		next_last_id = last_id
+	else:
+		reviews = data_listing(review_records)
+		next_last_id = reviews[-1]['review'].id
 	for review in reviews:
 		review['ten'] = review['review'].ten
 		review['rating'] = review['review'].rating
@@ -166,14 +230,29 @@ def detail(review_id):
 	review_likes = User_like_dislike.query.filter_by(review_id = review.id, type=1).count()
 	review_dislikes = User_like_dislike.query.filter_by(review_id = review.id, type=0).count()
 	loai = Loai_quan.query.filter_by(id = review.loai_id).first().loai
-	like_dislike = User_like_dislike.query.filter_by(user_id = current_user.id, review_id = review.id).first()
-	if(like_dislike):
-		if(like_dislike.type == 1):
-			like_type = 1
-		else:
-			like_type = -1
+	sub_status = 0
+	thumbnail = ''
 	folder_name = 'images/'+str(review_id)
 	picture_names = os.listdir(os.path.join(app.root_path, "static", folder_name))
+	if(current_user.is_authenticated):
+		like_dislike = User_like_dislike.query.filter_by(user_id = current_user.id, review_id = review.id).first()
+		if(like_dislike):
+			if(like_dislike.type == 1):
+				like_type = 1
+			else:
+				like_type = -1
+		folder_name = 'profile_pics/'+str(current_user.id)
+		if(os.path.isdir(folder_name)):
+			first_file = os.listdir(os.path.join(app.root_path, "static",folder_name))[0]
+			thumbnail = url_for('static', filename = folder_name+'/'+first_file)
+		else:
+			thumbnail = url_for('static', filename = 'profile_pics/default_avatar.jpg')
+	
+		subbing = User_subscribes_.query.filter_by(user_id=current_user.id, sub_to_id=review.user_id).first()
+		if(subbing):
+			sub_status = 1
+		else:
+			sub_status = 0
 	pictures = []
 	for name in picture_names:
 		picture = url_for('static', filename=folder_name+'/'+name)
@@ -183,12 +262,6 @@ def detail(review_id):
 		dishes.append({"mon": mon_gia.ten_mon, "gia": mon_gia.gia})
 	min_price = min([dish['gia'] for dish in dishes])
 	max_price = max([dish['gia'] for dish in dishes])
-	folder_name = 'profile_pics/'+str(current_user.id)
-	if(os.path.isdir(folder_name)):
-		first_file = os.listdir(os.path.join(app.root_path, "static",folder_name))[0]
-		thumbnail = url_for('static', filename = folder_name+'/'+first_file)
-	else:
-		thumbnail = url_for('static', filename = 'profile_pics/default_avatar.jpg')
 	num_comments = (review.comments.count())
 	comment_records = (review.comments[:3])
 	comments = []
@@ -201,11 +274,6 @@ def detail(review_id):
 		comment_dict['id'] = comment.id
 		comments.append(comment_dict)
 	poster = User.query.filter_by(id = review.user_id).first()
-	subbing = User_subscribes_.query.filter_by(user_id=current_user.id, sub_to_id=review.user_id).first()
-	if(subbing):
-		sub_status = 1
-	else:
-		sub_status = 0
 	poster_statistic = user_statistic(user_id = poster.id)
 	templateLoader = jinja2.FileSystemLoader('./BKRV/templates/')
 	templateEnv = jinja2.Environment(loader=templateLoader, autoescape=True)
@@ -260,7 +328,7 @@ def load_comments():
 		username = comment.user.username
 		comment_content = comment.comment
 		summary = comment.summary
-		record = {'profile_picture': user_profile_pic, 'username':username, "comment": comment_content, "summary":summary}
+		record = {'profile_picture': user_profile_pic, 'username':username, "comment": comment_content, "summary":summary, "user_id":comment.user.id}
 		comments.append(record)
 		cnt+=1
 	print(cnt)
@@ -309,6 +377,10 @@ def like_dislike():
 		db.session.commit()
 	review_likes = User_like_dislike.query.filter_by(review_id = review.id, type=1).count()
 	review_dislikes = User_like_dislike.query.filter_by(review_id = review.id, type=0).count()
+	review.likes = review_likes
+	review.dislikes = review_dislikes
+	db.session.add(review)
+	db.session.commit()
 	poster_reviews = Review.query.filter_by(user_id=review.user_id)
 	poster_review_ids = [review.id for review in poster_reviews]
 	poster_likes = User_like_dislike.query.filter(User_like_dislike.review_id.in_(poster_review_ids), User_like_dislike.type==1).count()
@@ -368,10 +440,19 @@ def profile():
 @app.route("/view_profile/<user_id>", methods=['GET', 'POST'])
 def view_profile(user_id):
 	user_statistics = user_statistic(user_id=user_id)
-	posted_reviews = Review.query.filter_by(user_id = user_id)
+	user = User.query.filter_by(id=user_id).first()
+	user_statistics['user'] = user
+	posted_reviews = Review.query.filter_by(user_id = user_id).order_by(Review.id.desc()).limit(3)
 	posted = data_listing(posted_reviews)
-	review_type={"section_name": "POSTED", "reviews": posted, "search_type": "my_posted"}
-	return render_template("view_profile.html", review_type=review_type)
+	review_type={"section_name": "POSTED", "reviews": posted, "search_type": "posted"}
+	sub_status = 0
+	if(current_user.is_authenticated):
+		subbing = User_subscribes_.query.filter_by(user_id=current_user.id, sub_to_id=user_id).first()
+		if(subbing):
+			sub_status = 1
+		else:
+			sub_status = 0
+	return render_template("view_profile.html", review_type=review_type, user_statistics=user_statistics, sub_status=sub_status)
 
 def save_picture(form_pictures = None, profile=False, review_id=-1, form_picture = None):
 	if(form_picture != None):
@@ -415,7 +496,10 @@ def edit_profile():
 
 
 @app.route("/post", methods = ['GET', 'POST'])
+# @login_required
 def post():
+	if(not current_user.is_authenticated):
+		return redirect(url_for('login'))
 	form = Post_form()
 	area = {"dongda": 1, "hoankiem": 7, "thnanhxuan": 3, "bactuliem": 12, "caugiay": 4}
 	place_type = {"street": "Ăn vặt - Vỉa hè", "restaurant": "Nhà hàng", "barpub": "Bar - Pub", "cafe": "Cafe - Dessert"}

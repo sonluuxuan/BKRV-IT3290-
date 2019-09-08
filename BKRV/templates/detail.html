@@ -176,15 +176,15 @@
 											var comment = $('#actual_comment').val();
 											var review_id = "{{review.id}}";
 											var post_data = {"summary": summary, "comment": comment, "review_id": review_id};
-											alert(post_data);
+											// alert(post_data);
 											$.ajax({
 												type : 'POST',
 											    url : "{{url_for('submit_comment')}}",
 											    contentType: 'application/json;charset=UTF-8',
 												data: JSON.stringify(post_data),
 												success: function(data){
-													alert(data.author)
-													large = '<div class="customer-review_wrap">	<div class="customer-img">		<a style="padding:0" href="/view_profile"><img src="'+data.profile_picture+'"class="img-fluid" alt="#" name="user_avatar"></a>		<p name="user_comment">'+data.author+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data.summary+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data.comment+'</p>	</div></div><hr>';
+													// alert(data.author)
+													large = '<div class="customer-review_wrap">	<div class="customer-img">		<a style="padding:0" href="/profile"><img src="'+data.profile_picture+'"class="img-fluid" alt="#" name="user_avatar"></a>		<p name="user_comment">'+data.author+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data.summary+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data.comment+'</p>	</div></div><hr>';
 												
 													$("#comments_box").prepend(large);
 													last_id = data.next_last_id;
@@ -212,7 +212,7 @@
 								{% for comment in comments %}
 								<div class="customer-review_wrap">
 									<div class="customer-img">
-										<a style="padding:0" href="{{url_for('view_profile')}}"><img src="{{url_for('static', filename=comment['user'].profile_picture)}}"class="img-fluid" alt="#" name="user_avatar"></a>
+										<a style="padding:0" href="{{url_for('view_profile', user_id=comment.user.id)}}"><img src="{{url_for('static', filename=comment['user'].profile_picture)}}"class="img-fluid" alt="#" name="user_avatar"></a>
 										<p name="user_comment">{{comment['user'].username}}</p>
 									</div>
 									<div class="customer-content-wrap">
@@ -231,7 +231,7 @@
 										var last_id = "{{comments[-1].id}}";
 										$('#taithem').click(function(){
 											var post_data = {'id':last_id};
-											alert(last_id);
+											// alert(last_id);
 											$.ajax({
 												url:"{{url_for('load_comments')}}",
 												type:'post',
@@ -240,11 +240,11 @@
 												success: function(data){
 													large=''
 													for (i=0; i<data.count; i++){
-														large += '<div class="customer-review_wrap">	<div class="customer-img">		<a style="padding:0" href="/view_profile"><img src="'+data.data[i].profile_picture+'"class="img-fluid" alt="#" name="user_avatar"></a>		<p name="user_comment">'+data.data[i].username+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data.data[i].summary+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data.data[i].comment+'</p>	</div></div><hr>';
+														large += '<div class="customer-review_wrap">	<div class="customer-img">		<a style="padding:0" href="/view_profile/'+data.data[i].user_id+'"><img src="'+data.data[i].profile_picture+'"class="img-fluid" alt="#" name="user_avatar"></a>		<p name="user_comment">'+data.data[i].username+'</p>	</div>	<div class="customer-content-wrap">		<div class="customer-content">			<div class="customer-review">				<h6 name="comment_title">'+data.data[i].summary+'</h6>			</div>		</div>		<p class="customer-text" name="comment_detail">'+data.data[i].comment+'</p>	</div></div><hr>';
 													}
 													$("#comments_box").append(large);
 													last_id = data.next_last_id;
-													alert(last_id);
+													// alert(last_id);
 												}
 		 
 											});
@@ -289,8 +289,8 @@
 						</div>
 						<div class="follow">
 							<div class="follow-img">
-								<a style="padding:0" href="{{url_for('view_profile')}}"><img src="{{url_for('static', filename=poster.profile_picture)}}" class="img-fluid" alt="#" name="writer-avatar"></a>
-								<a style="padding:0" href="{{url_for('view_profile')}}"><h6 name="writer-name">{{poster.username}}</h6></a>
+								<a style="padding:0" href="{{url_for('view_profile', user_id=poster.id)}}"><img src="{{url_for('static', filename=poster.profile_picture)}}" class="img-fluid" alt="#" name="writer-avatar"></a>
+								<a style="padding:0" href="{{url_for('view_profile', user_id=poster.id)}}"><h6 name="writer-name">{{poster.username}}</h6></a>
 								{% if sub_status == 0 and current_user.is_authenticated %}
 									<button class="sub_but" id="sub_button" style="margin-top:10px; background-color: #46cd38; border-radius: 10px; border: none; color:white; height: 40px; width: 120px; /*opacity: 0.5; cursor: not-allowed;*/" type="button">SUBSCRIBE</button>
 								{% elif sub_status != 0 and current_user.is_authenticated %}
@@ -322,7 +322,7 @@
 							$(document).ready(function(){
 								$('#sub_button').click(function(){
 									var posterId = "{{poster.id}}";
-									alert(posterId);
+									// alert(posterId);
 									$.ajax({
 										url:"{{url_for('subscribe')}}",
 										type:'post',
@@ -350,7 +350,7 @@
 								$('#like_button, #dislike_button').click(function(){
 									var review_id = "{{review.id}}";
 									var type = this.id;
-									alert(type);
+									// alert(type);
 									$.ajax({
 										url:"{{url_for('like_dislike')}}",
 										type:'post',

@@ -69,7 +69,7 @@
 						$(document).ready(function(){						
 							var last_id = "{{reviews[-1].review.id}}";
 							$(".wtf").click(function(){
-								alert("clicked");
+								// alert("clicked");
 								var search_type = "{{search_type}}"
 								$.ajax({
 									url:"{{url_for('load_reviews')}}",

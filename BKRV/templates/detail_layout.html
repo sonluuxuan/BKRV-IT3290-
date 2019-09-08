@@ -69,8 +69,13 @@
 					<div class="collapse navbar-collapse" id="navbar-menu">
 						<ul class="nav navbar-nav menu">
 							<li><a href="{{url_for('index')}}">Trang chủ</a></li>
-							<li><a href="{{ url_for('logout') }}">Logout</a></li>
-							<a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename = current_user.profile_picture) }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
+							{% if current_user.is_authenticated %}
+								<li><a href="{{ url_for('logout') }}">Logout</a></li>
+								<a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename = current_user.profile_picture) }}" style='height: 50px; width:auto; margin-top:15px; border-radius:50%'></a>
+							{% else %}
+								<li><a href="{{ url_for('login') }}">Login</a></li>
+								<li><a href="{{ url_for('registration') }}">Sign up</a></li>
+							{% endif %}
 						</ul>
 					</div>
 				</div>   
